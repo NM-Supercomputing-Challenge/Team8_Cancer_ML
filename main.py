@@ -6,6 +6,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 import keras
 import matplotlib.pyplot as plt
+import pydicom as dicom
+import os
+import csv
+import cv2
 
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
@@ -21,6 +25,25 @@ target_variable = "PostRT Skeletal Muscle status"
 var_blacklist = ["Gender","Age at Diag"]
 
 num_epochs = 80
+
+def image_prep(png_boolean,dcm_folder_path,save_path):
+    png = png_boolean
+
+    # get elements in dicom path as list
+    images_path = os.listdir(dcm_folder_path)
+
+    for n, image in enumerate(images_path):
+        ds = dicom.dcmread(os.path.join(dcm_folder_path,image))
+        pixel_array_numpy = ds.pixel_array
+        if png == False:
+            image = image.replace(".dcm",".jpg")
+        elif png == True:
+            image = image.replace(".dcm",".png")
+        cv2.imwrite(os.path.join(save_path,image),pixel_array_numpy)
+        if n % 50 == 0:
+            print("{} image converted".format(n))
+
+image_prep(False,"HNSCC-01-0001/03-27-1999-PETCT HEAD  NECK CA-14500/5.000000-PET AC-61630","")
 
 def combine_data(data_file_1,data_file_2):
     file_1 = pd.read_csv(data_file_1)
@@ -139,20 +162,5 @@ def model(data_file,test_file,target_variable,epochs_num):
     NN(adapted_dataset,target_variable,epochs_num)
 
 model(main_data,test_file,target_variable,num_epochs)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
