@@ -10,6 +10,8 @@ import pydicom as dicom
 import os
 import csv
 import cv2
+from PIL import Image as Ig
+import numpy as np
 
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
@@ -20,6 +22,9 @@ main_data = "Patient and Treatment Characteristics.csv"
 sec_data = "HNSCC Clinical Data.csv"
 test_file = "test_2.csv"
 target_variable = "PostRT Skeletal Muscle status"
+
+#if true, dicom images will be converted to png instead of jpg
+png_images = False
 
 #list of names for duplicate columns
 var_blacklist = ["Gender","Age at Diag"]
@@ -33,17 +38,49 @@ def image_prep(png_boolean,dcm_folder_path,save_path):
     images_path = os.listdir(dcm_folder_path)
 
     for n, image in enumerate(images_path):
-        ds = dicom.dcmread(os.path.join(dcm_folder_path,image))
+        ds = dicom.dcmread(os.path.join(dcm_folder_path, image))
         pixel_array_numpy = ds.pixel_array
         if png == False:
-            image = image.replace(".dcm",".jpg")
+            image = image.replace(".dcm", ".jpg")
         elif png == True:
-            image = image.replace(".dcm",".png")
-        cv2.imwrite(os.path.join(save_path,image),pixel_array_numpy)
-        if n % 50 == 0:
-            print("{} image converted".format(n))
+            image = image.replace(".dcm", ".png")
+        cv2.imwrite(os.path.join(save_path, image), pixel_array_numpy)
 
-image_prep(False,"HNSCC-01-0001/03-27-1999-PETCT HEAD  NECK CA-14500/5.000000-PET AC-61630","")
+image_prep(png_images,"HNSCC-01-0001/03-27-1999-PETCT HEAD  NECK CA-14500/5.000000-PET AC-61630","converted_img")
+
+# Find names of every image suitable for use (png or jpg format)
+def collect_images(images_loc,images_format):
+    usable_images_names = []
+    files_in_dir = os.listdir(images_loc)
+    for i in files_in_dir:
+        file_format = i[-4:]
+        if file_format == images_format:
+            usable_images_names.append(i)
+    return usable_images_names
+
+# define "images_format" parameter for function use
+if png_images == False:
+    image_format = ".jpg"
+elif png_images == True:
+    image_format = ".png"
+
+images_list = collect_images("converted_img",image_format)
+
+# converts images to csv
+def read_images(images_names_list):
+    i = 0
+    for names in images_names_list:
+        img = Ig.open("converted_img\\"+names)
+        img = img.convert('L')
+
+        value = np.asarray(img.getdata(), dtype=np.int).reshape((img.size[1],img.size[0]))
+        value = value.flatten()
+        with open("img_pixels"+str(i)+".csv","a") as f:
+            writer = csv.writer(f)
+            writer.writerow(value)
+        i = i + 1
+
+read_images(images_list)
 
 def combine_data(data_file_1,data_file_2):
     file_1 = pd.read_csv(data_file_1)
