@@ -31,6 +31,10 @@ var_blacklist = ["Gender","Age at Diag"]
 
 num_epochs = 80
 
+# initialize lists for annotation data
+patient_ids = []
+study_dates = []
+
 def image_prep(png_boolean,dcm_folder_path,save_path):
     png = png_boolean
 
@@ -39,6 +43,13 @@ def image_prep(png_boolean,dcm_folder_path,save_path):
 
     for n, image in enumerate(images_path):
         ds = dicom.dcmread(os.path.join(dcm_folder_path, image))
+
+        #append annotation data to lists
+        patient_id = ds.PatientID
+        patient_ids.append(patient_id)
+        study_date = ds.StudyDate
+        study_dates.append(study_date)
+
         pixel_array_numpy = ds.pixel_array
         if png == False:
             image = image.replace(".dcm", ".jpg")
@@ -75,7 +86,7 @@ def read_images(images_names_list):
 
         value = np.asarray(img.getdata(), dtype=np.int).reshape((img.size[1],img.size[0]))
         value = value.flatten()
-        with open("img_pixels"+str(i)+".csv","a") as f:
+        with open("img_csv\\img_pixels"+str(i)+".csv","a") as f:
             writer = csv.writer(f)
             writer.writerow(value)
         i = i + 1
@@ -113,7 +124,6 @@ def combine_data(data_file_1,data_file_2):
     return combined_dataset
 
 main_data = combine_data(main_data,sec_data)
-
 
 def model(data_file,test_file,target_variable,epochs_num):
 
