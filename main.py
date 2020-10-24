@@ -25,6 +25,10 @@ png_images = False
 #list of names for duplicate columns
 var_blacklist = ["Gender","Age at Diag"]
 
+load_dir = "D:\Cancer Imagery\HNSCC"
+
+save_dir = "D:\converted_img"
+
 num_epochs = 80
 
 def combine_data(data_file_1,data_file_2):
@@ -142,7 +146,7 @@ def model(data_file,test_file,target_variable,epochs_num):
 
     NN(adapted_dataset,target_variable,epochs_num)
 
-model(main_data,test_file,target_variable,num_epochs)
+#model(main_data,test_file,target_variable,num_epochs)
 
 # initialize lists for annotation data
 patient_ids = []
@@ -177,29 +181,47 @@ def image_digitizer(dir):
     tva = [(255 - x) * 1.0 / 255.0 for x in tv]
     return tva
 
-def image_prep(png_boolean,dcm_folder_path,save_path):
+# collect directory for every image in data
+def collect_image_dirs(patient_data_loc):
+    img_directories = []
+
+    Patients = os.listdir(patient_data_loc)
+
+    for patients in Patients:
+        patient_datasets = os.listdir(patient_data_loc + "\\" + patients)
+        dataset = patient_datasets[0]
+        data_dir = os.listdir(patient_data_loc + "\\" + patients + "\\" + dataset)
+        data = data_dir[0]
+        data_img = os.listdir(patient_data_loc + "\\" + patients + "\\" + dataset + "\\" + data)
+        img = data_img[0]
+        img_directories.append(patient_data_loc + "\\" + patients + "\\" + dataset + "\\" + data + "\\" + img)
+
+    return img_directories
+
+img_directories = collect_image_dirs(load_dir)
+print(img_directories)
+print(len(img_directories))
+
+def image_prep(png_boolean,image_path,save_path):
     png = png_boolean
 
-    # get elements in dicom path as list
-    images_path = os.listdir(dcm_folder_path)
+    ds = dicom.read_file(image_path)
 
-    for n, image in enumerate(images_path):
-        ds = dicom.dcmread(os.path.join(dcm_folder_path, image))
+    #append annotation data to lists
+    patient_id = ds.PatientID
+    patient_ids.append(patient_id)
+    study_date = ds.StudyDate
+    study_dates.append(study_date)
 
-        #append annotation data to lists
-        patient_id = ds.PatientID
-        patient_ids.append(patient_id)
-        study_date = ds.StudyDate
-        study_dates.append(study_date)
+    pixel_array_numpy = ds.pixel_array
+    if png == False:
+        image = image_path.replace(".dcm", ".jpg")
+    elif png == True:
+        image = image_path.replace(".dcm", ".png")
+    cv2.imwrite(image, pixel_array_numpy)
 
-        pixel_array_numpy = ds.pixel_array
-        if png == False:
-            image = image.replace(".dcm", ".jpg")
-        elif png == True:
-            image = image.replace(".dcm", ".png")
-        cv2.imwrite(os.path.join(save_path, image), pixel_array_numpy)
-
-image_prep(png_images,"HNSCC-01-0001/03-27-1999-PETCT HEAD  NECK CA-14500/5.000000-PET AC-61630","converted_img")
+for img in img_directories:
+    image_prep(png_images,img,save_dir)
 
 # Find names of every image suitable for use (png or jpg format)
 def collect_images(images_loc,images_format):
@@ -217,7 +239,7 @@ if png_images == False:
 elif png_images == True:
     image_format = ".png"
 
-images_list = collect_images("converted_img",image_format)
+images_list = collect_images(save_dir,image_format)
 
 data = pd.DataFrame()
 
@@ -235,4 +257,3 @@ for images in images_list:
 data = data.transpose()
 data = data.rename(columns={data.columns[0]:"ID"})
 print(data)
-
