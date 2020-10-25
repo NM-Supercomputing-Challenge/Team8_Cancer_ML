@@ -197,7 +197,7 @@ model(main_data,test_file,target_variable,num_epochs)
 
 # delete converted dicom images after use if boolean is true
 if del_converted_imgs == True:
-    folder = "converted_img"
+    folder = save_dir
     for filename in os.listdir(folder):
         file_path = os.path.join(folder, filename)
         try:
