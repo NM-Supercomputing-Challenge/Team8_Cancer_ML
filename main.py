@@ -8,10 +8,11 @@ import keras
 import matplotlib.pyplot as plt
 import pydicom as dicom
 import os
-import cv2
-from PIL import Image, ImageFilter
 import shutil
+import cv2
 
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
 save_fit = False
 model_save_loc = "saved_model"
 
@@ -20,20 +21,61 @@ sec_data = "HNSCC Clinical Data.csv"
 test_file = "test_2.csv"
 target_variable = "PostRT Skeletal Muscle status"
 
-#if true, dicom images will be converted to png instead of jpg
-png_images = False
+# if true, converted images will be in png format instead of jpg
+png = False
 
-#list of names for duplicate columns
+# list of names for duplicate columns
 var_blacklist = ["Gender","Age at Diag"]
 
-img_path = "D:\Cancer_Project\Cancer Imagery"
+# folder containing Cancer Imagery
+load_dir = "Cancer Imagery"
 
-save_dir = "converted_img"
+# directory to save data such as converted images
+save_dir = "D:\\Cancer_Project\\converted_img"
+
+# number of images to use from each patient
+num_patient_imgs = 5
 
 #if true, converted dicom images will be deleted after use
 del_converted_imgs = True
 
+def collect_img_dirs(data_folder):
+    img_directories = []
+
+    datas = os.listdir(data_folder)[0]
+    Patients = os.listdir(data_folder + "\\" + datas)
+
+    for patients in Patients:
+        data = os.listdir(data_folder + "\\" + datas + "\\" + patients)[0]
+        data2 = os.listdir(data_folder + "\\" + datas + "\\" + patients + "\\" + data)[0]
+        img_directories.append(data_folder + "\\" + datas + "\\" + patients + "\\" + data + "\\" + data2)
+
+    return img_directories
+
+load_dirs = collect_img_dirs(load_dir)
+
 num_epochs = 80
+
+def convert_img(png_boolean,dcm_folder_path,save_path, num_imgs_patient):
+    png = png_boolean
+
+    # get elements in dicom path as list
+    images_path = os.listdir(dcm_folder_path)[:num_imgs_patient]
+    print(dcm_folder_path)
+    print(images_path)
+
+    for n, image in enumerate(images_path):
+        ds = dicom.dcmread(os.path.join(dcm_folder_path,image),force=True)
+        pixel_array_numpy = ds.pixel_array
+
+        if png == False:
+            image = image.replace(".dcm",".jpg")
+        elif png == True:
+            image = image.replace(".dcm",".png")
+        cv2.imwrite(os.path.join(save_path,ds.PatientID+"_"+image),pixel_array_numpy)
+
+for dirs in load_dirs:
+    convert_img(png, dirs,save_dir, num_patient_imgs)
 
 def combine_data(data_file_1,data_file_2):
     file_1 = pd.read_csv(data_file_1)
@@ -66,6 +108,7 @@ def combine_data(data_file_1,data_file_2):
     return combined_dataset
 
 main_data = combine_data(main_data,sec_data)
+
 
 def model(data_file,test_file,target_variable,epochs_num):
 
@@ -151,113 +194,6 @@ def model(data_file,test_file,target_variable,epochs_num):
     NN(adapted_dataset,target_variable,epochs_num)
 
 model(main_data,test_file,target_variable,num_epochs)
-
-# initialize lists for annotation data
-patient_ids = []
-study_dates = []
-
-#input file location. Converts image to digits
-def image_digitizer(dir):
-
-    im = Image.open(dir).convert('L')
-    width = float(im.size[0])
-    height = float(im.size[1])
-    newImage = Image.new('L', (28, 28), (255))  # creates white canvas of 28x28 pixels
-
-    if width > height:
-        nheight = int(round((20.0 / width * height), 0))
-        if (nheight == 0):
-            nheight = 1
-        img = im.resize((20, nheight), Image.ANTIALIAS).filter(ImageFilter.SHARPEN)
-        wtop = int(round(((28 - nheight) / 2), 0))
-        newImage.paste(img, (4, wtop))
-    else:
-        nwidth = int(round((20.0 / height * width), 0))
-        if (nwidth == 0):
-            nwidth = 1
-        img = im.resize((nwidth, 20), Image.ANTIALIAS).filter(ImageFilter.SHARPEN)
-        wleft = int(round(((28 - nwidth) / 2), 0))
-        newImage.paste(img, (wleft, 4))
-
-    tv = list(newImage.getdata())  # get pixel values
-
-    # normalize pixels to 0 and 1. 0 is pure white, 1 is pure black.
-    tva = [(255 - x) * 1.0 / 255.0 for x in tv]
-    return tva
-
-def collect_img_dirs(data_folder):
-    img_directories = []
-
-    datas = os.listdir(data_folder)[0]
-    Patients = os.listdir(data_folder + "\\" + datas)
-
-    for patients in Patients:
-        data = os.listdir(data_folder + "\\" + datas + "\\" + patients)[0]
-        data2 = os.listdir(data_folder + "\\" + datas + "\\" + patients + "\\" + data)[0]
-        img_directories.append(data_folder + "\\" + datas + "\\" + patients + "\\" + data + "\\" + data2)
-
-    return img_directories
-
-img_directories = collect_img_dirs(img_path)
-
-def image_prep(png_boolean,dcm_folder_path,save_path):
-    png = png_boolean
-
-    # get elements in dicom path as list
-    images_path = os.listdir(dcm_folder_path)
-
-    for n, image in enumerate(images_path):
-        ds = dicom.dcmread(os.path.join(dcm_folder_path, image))
-
-        #append annotation data to lists
-        patient_id = ds.PatientID
-        patient_ids.append(patient_id)
-        study_date = ds.StudyDate
-        study_dates.append(study_date)
-
-        pixel_array_numpy = ds.pixel_array
-        if png == False:
-            image = image.replace(".dcm", ".jpg")
-        elif png == True:
-            image = image.replace(".dcm", ".png")
-        cv2.imwrite(os.path.join(save_path, image), pixel_array_numpy)
-
-image_prep(png_images,"HNSCC-01-0001/03-27-1999-PETCT HEAD  NECK CA-14500/5.000000-PET AC-61630",save_dir)
-
-# Find names of every image suitable for use (png or jpg format)
-def collect_images(images_loc,images_format):
-    usable_images_names = []
-    files_in_dir = os.listdir(images_loc)
-    for i in files_in_dir:
-        file_format = i[-4:]
-        if file_format == images_format:
-            usable_images_names.append(i)
-    return usable_images_names
-
-# define "images_format" parameter for function use
-if png_images == False:
-    image_format = ".jpg"
-elif png_images == True:
-    image_format = ".png"
-
-images_list = collect_images(save_dir,image_format)
-
-data = pd.DataFrame()
-
-def ID_append(digitized_image,ID):
-    digitized_image.insert(0,ID)
-    return digitized_image
-
-i = 0
-for images in images_list:
-    dig_img = image_digitizer("converted_img\\"+images)
-    dig_img = ID_append(dig_img,int((patient_ids[i])[-4:]))
-    data.insert(0,i,dig_img)
-    i = i + 1
-
-data = data.transpose()
-data = data.rename(columns={data.columns[0]:"ID"})
-print(data)
 
 # delete converted dicom images after use if boolean is true
 if del_converted_imgs == True:
