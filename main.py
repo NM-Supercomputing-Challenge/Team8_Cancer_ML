@@ -290,7 +290,9 @@ def image_model(save_loc,data_file,test_file,target_var):
         print(data.shape)
         print(data_test.shape)
 
+        # set input shape to dimension of data
         input = keras.layers.Input(shape=(data.shape[1],))
+
         x = Dense(1000, activation='relu')(input)
         x = Dense(1000, activation='relu')(x)
         x = Dense(750, activation='relu')(x)
