@@ -248,7 +248,8 @@ def image_model(save_loc,data_file,test_file,target_var):
                         img_numpy_array = img_to_array(img)
                         img_array = np.append(img_array,img_numpy_array)
 
-    img_array = np.reshape(img_array,(len(matching_ids),786432))
+    # reshape flattened array into proper (legal) dimensions
+    img_array = np.reshape(img_array,(len(matching_ids),int(img_array.size/len(matching_ids))))
 
     adapted_dataset = adapted_dataset.loc[matching_ids]
 
@@ -286,18 +287,26 @@ def image_model(save_loc,data_file,test_file,target_var):
         data = np.concatenate((X_train_img,X_train),axis=1)
         data_test = np.concatenate((X_test,X_test_img),axis=1)
 
-        model = Sequential()
-        model.add(Dense(12,input_shape=[786456,],activation="relu"))
-        model.add(Dense(8,activation="relu"))
-        model.add(Dense(1,activation="sigmoid"))
+        print(data.shape)
+        print(data_test.shape)
 
-        model.compile(loss='binary_crossentropy',optimizer='adam',metrics=["accuracy"])
+        input = keras.layers.Input(shape=(786456,))
+        x = Dense(1000, activation='relu')(input)
+        x = Dense(500, activation='relu')(x)
+        x = Dense(100, activation='relu')(x)
+        x = Dense(50, activation='relu')(x)
+        x = Dense(25, activation='relu')(x)
+        x = Dense(10, activation='relu')(x)
+        output = Dense(1,activation='sigmoid')(x)
+        model = keras.Model(input,output)
 
-        model.fit(data,y_train,epochs=50,batch_size=5)
+        model.compile(optimizer='adam',loss='binary_crossentropy',
+                      metrics=['accuracy'])
+
+        model.fit(data,y_train,epochs=30,batch_size=5)
 
         print(model.predict(data_test))
         print(y_test)
-
 
     model(adapted_dataset,img_array,target_var)
 
