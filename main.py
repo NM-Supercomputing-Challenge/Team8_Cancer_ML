@@ -47,6 +47,9 @@ save_dir = "D:\\Cancer_Project\\converted_img"
 # number of images to use from each patient
 num_patient_imgs = 1
 
+# if true, attempt will be made to convert dicom files to jpg or png
+convert_imgs = False
+
 #if true, converted dicom images will be deleted after use
 del_converted_imgs = False
 
@@ -85,8 +88,9 @@ def convert_img(png_boolean,dcm_folder_path,save_path, num_imgs_patient):
             image = image.replace(".dcm",".png")
         cv2.imwrite(os.path.join(save_path,ds.PatientID+"_"+image),pixel_array_numpy)
 
-#for dirs in load_dirs:
-#    convert_img(png, dirs,save_dir, num_patient_imgs)
+if convert_imgs == True:
+    for dirs in load_dirs:
+        convert_img(png, dirs,save_dir, num_patient_imgs)
 
 def combine_data(data_file_1,data_file_2):
     file_1 = pd.read_csv(data_file_1)
@@ -287,6 +291,10 @@ def image_model(save_loc,data_file,test_file,target_var):
         data = np.concatenate((X_train_img,X_train),axis=1)
         data_test = np.concatenate((X_test,X_test_img),axis=1)
 
+        data = tf.convert_to_tensor(data)
+        data_test = tf.convert_to_tensor(data_test)
+        y_train = tf.convert_to_tensor(y_train)
+
         print(data.shape)
         print(data_test.shape)
 
@@ -329,4 +337,3 @@ if del_converted_imgs == True:
                 shutil.rmtree(file_path)
         except Exception as e:
             print('Failed to delete %s. Reason: %s' % (file_path, e))
-
