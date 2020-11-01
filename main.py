@@ -290,8 +290,10 @@ def image_model(save_loc,data_file,test_file,target_var):
         print(data.shape)
         print(data_test.shape)
 
-        input = keras.layers.Input(shape=(786456,))
+        input = keras.layers.Input(shape=(data.shape[1],))
         x = Dense(1000, activation='relu')(input)
+        x = Dense(1000, activation='relu')(x)
+        x = Dense(750, activation='relu')(x)
         x = Dense(500, activation='relu')(x)
         x = Dense(100, activation='relu')(x)
         x = Dense(50, activation='relu')(x)
@@ -300,7 +302,8 @@ def image_model(save_loc,data_file,test_file,target_var):
         output = Dense(1,activation='sigmoid')(x)
         model = keras.Model(input,output)
 
-        model.compile(optimizer='adam',loss='binary_crossentropy',
+        model.compile(optimizer='adam',
+                      loss='binary_crossentropy',
                       metrics=['accuracy'])
 
         model.fit(data,y_train,epochs=30,batch_size=5)
