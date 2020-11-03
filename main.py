@@ -12,15 +12,10 @@ import os
 import shutil
 import cv2
 from keras.preprocessing.image import load_img
-import warnings
 from keras.preprocessing.image import img_to_array
-from keras.preprocessing.image import array_to_img
 import numpy as np
 import matplotlib.pyplot as plt
-import time
 import os
-import copy
-from PIL import Image
 
 #pd.set_option('display.max_rows', None)
 #pd.set_option('display.max_columns', None)
@@ -53,6 +48,9 @@ convert_imgs = False
 #if true, converted dicom images will be deleted after use
 del_converted_imgs = False
 
+# if true, image model will be ran instead of clinical only model
+run_img_model = True
+
 def collect_img_dirs(data_folder):
     img_directories = []
 
@@ -68,7 +66,7 @@ def collect_img_dirs(data_folder):
 
 load_dirs = collect_img_dirs(load_dir)
 
-num_epochs = 80
+num_epochs = 120
 
 def convert_img(png_boolean,dcm_folder_path,save_path, num_imgs_patient):
     png = png_boolean
@@ -123,6 +121,7 @@ def combine_data(data_file_1,data_file_2):
     return combined_dataset
 
 main_data = combine_data(main_data,sec_data)
+print(main_data)
 
 
 def model(data_file,test_file,target_variable,epochs_num):
@@ -141,7 +140,6 @@ def model(data_file,test_file,target_variable,epochs_num):
         #collect data for the variables from main dataset
         dataset = df[input_vars]
 
-
         # Append y data for target column into new dataset
         y_data = df[target_var]
         dataset = dataset.assign(target_variable=y_data)
@@ -151,7 +149,7 @@ def model(data_file,test_file,target_variable,epochs_num):
         return dataset
 
     adapted_dataset = format_data(data_file, test_file,target_variable)
-
+    print(adapted_dataset)
 
     def NN(data_file, target_var, epochs_num):
 
@@ -204,10 +202,12 @@ def model(data_file,test_file,target_variable,epochs_num):
             save_fitted_model(model,model_save_loc)
 
         print(model.predict(X_test, batch_size=1))
+        print(y_test)
 
     NN(adapted_dataset,target_variable,epochs_num)
 
-#model(main_data,test_file,target_variable,num_epochs)
+if run_img_model == False:
+    model(main_data,test_file,target_variable,num_epochs)
 
 def image_model(save_loc,data_file,test_file,target_var):
 
@@ -272,17 +272,10 @@ def image_model(save_loc,data_file,test_file,target_var):
         y = labels
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-
-        scaler = StandardScaler().fit(X_train)
-        X_train_clinical = scaler.transform(X_train)
-        X_test_clinical = scaler.transform(X_test)
-
         y_train = y_train.to_numpy()
         y_test = y_test.to_numpy()
         X_train = X_train.to_numpy()
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Image
-
-        img_data = input_imagery
 
         X_train_img, X_test_img = train_test_split(input_imagery,test_size=0.2,random_state=42)
 
@@ -291,21 +284,23 @@ def image_model(save_loc,data_file,test_file,target_var):
         data = np.concatenate((X_train_img,X_train),axis=1)
         data_test = np.concatenate((X_test,X_test_img),axis=1)
 
-        data = tf.convert_to_tensor(data)
-        data_test = tf.convert_to_tensor(data_test)
-        y_train = tf.convert_to_tensor(y_train)
-
-        print(data.shape)
-        print(data_test.shape)
+        scaler = StandardScaler().fit(data)
+        data = scaler.transform(data)
+        data_test = scaler.transform(data_test)
 
         # set input shape to dimension of data
         input = keras.layers.Input(shape=(data.shape[1],))
 
-        x = Dense(1000, activation='relu')(input)
+        x = Dense(1100, activation='relu')(input)
+        x = Dense(1000, activation='relu')(x)
         x = Dense(1000, activation='relu')(x)
         x = Dense(750, activation='relu')(x)
+        x = Dense(750,activation='relu')(x)
         x = Dense(500, activation='relu')(x)
+        x = Dense(500,activation='relu')(x)
         x = Dense(100, activation='relu')(x)
+        x = Dense(100, activation='relu')(x)
+        x = Dense(50, activation='relu')(x)
         x = Dense(50, activation='relu')(x)
         x = Dense(25, activation='relu')(x)
         x = Dense(10, activation='relu')(x)
@@ -316,14 +311,28 @@ def image_model(save_loc,data_file,test_file,target_var):
                       loss='binary_crossentropy',
                       metrics=['accuracy'])
 
-        model.fit(data,y_train,epochs=30,batch_size=5)
+        fit = model.fit(data,y_train,epochs=30,batch_size=5)
+
+        history = fit
+
+        def plot(model_history, metric, graph_title):
+            history = model_history
+            plt.plot(history.history[metric])
+            plt.title(graph_title)
+            plt.ylabel(metric)
+            plt.xlabel('epoch')
+            plt.show()
+
+        plot(history, 'accuracy', 'model accuracy')
+        plot(history, 'loss', 'model loss')
 
         print(model.predict(data_test))
         print(y_test)
 
     model(adapted_dataset,img_array,target_var)
 
-image_model(save_dir,main_data,test_file,target_variable)
+if run_img_model == True:
+    image_model(save_dir,main_data,test_file,target_variable)
 
 # delete converted dicom images after use if boolean is true
 if del_converted_imgs == True:
