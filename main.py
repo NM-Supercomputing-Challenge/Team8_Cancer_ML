@@ -22,10 +22,10 @@ import os
 save_fit = False
 model_save_loc = "saved_model"
 
-main_data = "Patient and Treatment Characteristics.csv"
+main_data = "clinical.cases_selection.2020-11-08.csv"
 sec_data = "HNSCC Clinical Data.csv"
 test_file = "test_2.csv"
-target_variable = "PostRT Skeletal Muscle status"
+target_variable = "demographic/vital_status"
 
 # if true, converted images will be in png format instead of jpg
 png = False
@@ -49,12 +49,18 @@ convert_imgs = False
 del_converted_imgs = False
 
 # if true, image model will be ran instead of clinical only model
-run_img_model = True
+run_img_model = False
+
+# if true, two data files will be expected for input
+two_datasets = False
+
+# if true, an additional file will be expected for testing
+use_additional_test_file = False
 
 def collect_img_dirs(data_folder):
     img_directories = []
 
-    datas = os.listdir(data_folder)[0]
+    datas = os.listdir(data_folder)[1]
     Patients = os.listdir(data_folder + "\\" + datas)
 
     for patients in Patients:
@@ -120,7 +126,10 @@ def combine_data(data_file_1,data_file_2):
 
     return combined_dataset
 
-main_data = combine_data(main_data,sec_data)
+if two_datasets == True:
+    main_data = combine_data(main_data,sec_data)
+elif two_datasets == False:
+    main_data = main_data
 print(main_data)
 
 
@@ -133,18 +142,21 @@ def model(data_file,test_file,target_variable,epochs_num):
         elif main_data[-4:] == ".csv":
             df = pd.read_csv(data_file)
 
-        #Recognizing what variables are in the input data
-        input_data = pd.read_csv(test_file)
-        input_vars = input_data.columns.tolist()
+        if use_additional_test_file == True:
+            #Recognizing what variables are in the test data
+            input_data = pd.read_csv(test_file)
+            input_vars = input_data.columns.tolist()
 
-        #collect data for the variables from main dataset
-        dataset = df[input_vars]
+            #collect data for the variables from main dataset
+            dataset = df[input_vars]
 
-        # Append y data for target column into new dataset
-        y_data = df[target_var]
-        dataset = dataset.assign(target_variable=y_data)
-        target_name = str(target_var)
-        dataset.rename(columns={'target_variable':target_name},inplace=True)
+            # Append y data for target column into new dataset
+            y_data = df[target_var]
+            dataset = dataset.assign(target_variable=y_data)
+            target_name = str(target_var)
+            dataset = dataset.rename(columns={'target_variable':target_name},inplace=True)
+        elif use_additional_test_file == False:
+            dataset = df
 
         return dataset
 
@@ -163,7 +175,7 @@ def model(data_file,test_file,target_variable,epochs_num):
 
         X = features
         y = labels
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
 
         scaler = StandardScaler().fit(X_train)
         X_train = scaler.transform(X_train)
@@ -295,23 +307,23 @@ def image_model(save_loc,data_file,test_file,target_var):
         x = Dense(1000, activation='relu')(x)
         x = Dense(1000, activation='relu')(x)
         x = Dense(750, activation='relu')(x)
-        x = Dense(750,activation='relu')(x)
+        x = Dense(750, activation='relu')(x)
         x = Dense(500, activation='relu')(x)
-        x = Dense(500,activation='relu')(x)
+        x = Dense(500, activation='relu')(x)
         x = Dense(100, activation='relu')(x)
         x = Dense(100, activation='relu')(x)
         x = Dense(50, activation='relu')(x)
         x = Dense(50, activation='relu')(x)
         x = Dense(25, activation='relu')(x)
         x = Dense(10, activation='relu')(x)
-        output = Dense(1,activation='sigmoid')(x)
-        model = keras.Model(input,output)
+        output = Dense(1, activation='linear')(x)
+        model = keras.Model(input, output)
 
-        model.compile(optimizer='adam',
-                      loss='binary_crossentropy',
-                      metrics=['accuracy'])
+        model.compile(optimizer=keras.optimizers.SGD(momentum=0.8,learning_rate=0.01),
+                          loss='mean_squared_error',
+                          metrics=['accuracy'])
 
-        fit = model.fit(data,y_train,epochs=30,batch_size=5)
+        fit = model.fit(data,y_train,epochs=10,batch_size=5)
 
         history = fit
 
@@ -328,6 +340,12 @@ def image_model(save_loc,data_file,test_file,target_var):
 
         print(model.predict(data_test))
         print(y_test)
+
+        def save_fitted_model(model, save_location):
+            model.save(save_location)
+
+        if save_fit == True:
+            save_fitted_model(model, model_save_loc)
 
     model(adapted_dataset,img_array,target_var)
 
