@@ -17,21 +17,21 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
-pd.set_option('display.max_rows', None)
-pd.set_option('display.max_columns', None)
+#pd.set_option('display.max_rows', None)
+#pd.set_option('display.max_columns', None)
 save_fit = False
 model_save_loc = "saved_model"
 
-main_data = "clinical.cases_selection.2020-11-08.csv"
-sec_data = "HNSCC Clinical Data.csv"
+main_data = "MDPA Patient Data Final (Demographics).csv"
+sec_data = "MDPA Patient Data Final (Weight).csv"
 test_file = "test_2.csv"
-target_variable = "demographic/vital_status"
+target_variable = "Weight Net Loss (lbs)"
 
 # if true, converted images will be in png format instead of jpg
 png = False
 
 # list of names for duplicate columns
-var_blacklist = ["Gender","Age at Diag"]
+var_blacklist = ["Unnamed: 5"]
 
 # folder containing Cancer Imagery
 load_dir = "Cancer Imagery"
@@ -49,10 +49,10 @@ convert_imgs = False
 del_converted_imgs = False
 
 # if true, image model will be ran instead of clinical only model
-run_img_model = True
+run_img_model = False
 
 # if true, two data files will be expected for input
-two_datasets = False
+two_datasets = True
 
 # if true, an additional file will be expected for testing
 use_additional_test_file = False
@@ -62,7 +62,7 @@ use_additional_test_file = False
 img_id_name_loc = (4,9)
 
 # Column of IDs in dataset. Acceptable values include "index" or a column name.
-ID_dataset_col = "demographic/submitter_id"
+ID_dataset_col = "HN_P"
 
 def collect_img_dirs(data_folder):
     img_directories = []
@@ -119,14 +119,21 @@ def combine_data(data_file_1,data_file_2):
     elif ids_1.shape[0] < ids_2.shape[0]:
         longest_ids = ids_2.values.tolist()
         shortest_ids = ids_1.values.tolist()
+    elif ids_1.shape[0] == ids_2.shape[0]:
+        longest_ids = ids_1.values.tolist()
+        shortest_ids = ids_2.values.tolist()
 
     for i in longest_ids:
         for z in shortest_ids:
             if i == z:
                 common_ids.append(i)
 
-    adapted_1 = file_1.iloc[common_ids]
-    adapted_2 = file_2.iloc[common_ids]
+    if ID_dataset_col != "index":
+        file_1 = file_1.set_index(ID_dataset_col)
+        file_2 = file_2.set_index(ID_dataset_col)
+
+    adapted_1 = file_1.loc[common_ids]
+    adapted_2 = file_2.loc[common_ids]
     combined_dataset = adapted_1.join(adapted_2)
 
     for i in var_blacklist:
@@ -138,8 +145,6 @@ if two_datasets == True:
     main_data = combine_data(main_data,sec_data)
 elif two_datasets == False:
     main_data = main_data
-print(main_data)
-
 
 def model(data_file,test_file,target_variable,epochs_num):
 
@@ -169,7 +174,6 @@ def model(data_file,test_file,target_variable,epochs_num):
         return dataset
 
     adapted_dataset = format_data(data_file, test_file,target_variable)
-    print(adapted_dataset)
 
     def NN(data_file, target_var, epochs_num):
 
@@ -384,3 +388,5 @@ if del_converted_imgs == True:
                 shutil.rmtree(file_path)
         except Exception as e:
             print('Failed to delete %s. Reason: %s' % (file_path, e))
+
+# Next, implement new dataset into model
