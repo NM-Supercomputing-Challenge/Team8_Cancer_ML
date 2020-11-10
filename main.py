@@ -17,8 +17,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
-#pd.set_option('display.max_rows', None)
-#pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
 save_fit = False
 model_save_loc = "saved_model"
 
@@ -49,7 +49,7 @@ convert_imgs = False
 del_converted_imgs = False
 
 # if true, image model will be ran instead of clinical only model
-run_img_model = False
+run_img_model = True
 
 # if true, two data files will be expected for input
 two_datasets = False
@@ -57,9 +57,17 @@ two_datasets = False
 # if true, an additional file will be expected for testing
 use_additional_test_file = False
 
+# where image id is located in image names (start,end)
+# only applies if using image model
+img_id_name_loc = (4,9)
+
+# Column of IDs in dataset. Acceptable values include "index" or a column name.
+ID_dataset_col = "demographic/submitter_id"
+
 def collect_img_dirs(data_folder):
     img_directories = []
 
+    # use second folder in specified load directory
     datas = os.listdir(data_folder)[1]
     Patients = os.listdir(data_folder + "\\" + datas)
 
@@ -230,18 +238,21 @@ def image_model(save_loc,data_file,test_file,target_var):
         elif main_data[-4:] == ".csv":
             df = pd.read_csv(data_file)
 
-        #Recognizing what variables are in the input data
-        input_data = pd.read_csv(test_file)
-        input_vars = input_data.columns.tolist()
+        if use_additional_test_file == True:
+            #Recognizing what variables are in the input data
+            input_data = pd.read_csv(test_file)
+            input_vars = input_data.columns.tolist()
 
-        #collect data for the variables from main dataset
-        dataset = df[input_vars]
+            #collect data for the variables from main dataset
+            dataset = df[input_vars]
 
-        # Append y data for target column into new dataset
-        y_data = df[target_var]
-        dataset = dataset.assign(target_variable=y_data)
-        target_name = str(target_var)
-        dataset.rename(columns={'target_variable':target_name},inplace=True)
+            # Append y data for target column into new dataset
+            y_data = df[target_var]
+            dataset = dataset.assign(target_variable=y_data)
+            target_name = str(target_var)
+            dataset.rename(columns={'target_variable':target_name},inplace=True)
+        elif use_additional_test_file == False:
+            dataset = df
 
         return dataset
 
@@ -252,14 +263,23 @@ def image_model(save_loc,data_file,test_file,target_var):
     matching_ids = []
     img_list = os.listdir(save_loc)
     for imgs in img_list:
-        for ids in adapted_dataset.index:
-            ids = int(ids)
-            if ids == int(imgs[9:13]):
-                matching_ids.append(ids)
-                matching_ids = list(dict.fromkeys(matching_ids))
+        if ID_dataset_col == "index":
+            for ids in adapted_dataset.index:
+                ids = int(ids)
+                if ids == int(imgs[img_id_name_loc[0]:img_id_name_loc[1]]):
+                    matching_ids.append(ids)
+                    matching_ids = list(dict.fromkeys(matching_ids))
+        else:
+            for ids in adapted_dataset[ID_dataset_col]:
+                ids = int(ids)
+                if ids == int(imgs[img_id_name_loc[0]:img_id_name_loc[1]]):
+                    matching_ids.append(ids)
+
+                    # remove duplicate IDs
+                    matching_ids = list(dict.fromkeys(matching_ids))
 
                 for ids in matching_ids:
-                    if ids == int(imgs[9:13]):
+                    if ids == int(imgs[img_id_name_loc[0]:img_id_name_loc[1]]):
                         img = load_img(os.path.join(save_loc, imgs))
                         img_numpy_array = img_to_array(img)
                         img_array = np.append(img_array,img_numpy_array)
