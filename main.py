@@ -402,5 +402,3 @@ if del_converted_imgs == True:
                 shutil.rmtree(file_path)
         except Exception as e:
             print('Failed to delete %s. Reason: %s' % (file_path, e))
-
-# Next, write code to choose activation function from wether there are negative numbers or not
