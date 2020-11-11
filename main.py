@@ -307,7 +307,19 @@ def image_model(save_loc,data_file,test_file,target_var):
 
     adapted_dataset = adapted_dataset.loc[matching_ids]
 
-    def model(pd_data,input_imagery,target_var):
+    # determine activation function (relu or tanh) from if there are negative numbers in target variable
+    df_values = adapted_dataset.values
+    df_values = df_values.flatten()
+    for val in df_values:
+        if val < 0:
+            negative_vals = True
+
+    if negative_vals == True:
+        act_func = "tanh"
+    else:
+        act_func = 'relu'
+
+    def model(pd_data,input_imagery,target_var,activation_function):
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Clinical
         # Get data
@@ -341,19 +353,19 @@ def image_model(save_loc,data_file,test_file,target_var):
         # set input shape to dimension of data
         input = keras.layers.Input(shape=(data.shape[1],))
 
-        x = Dense(1100, activation='relu')(input)
-        x = Dense(1000, activation='relu')(x)
-        x = Dense(1000, activation='relu')(x)
-        x = Dense(750, activation='relu')(x)
-        x = Dense(750, activation='relu')(x)
-        x = Dense(500, activation='relu')(x)
-        x = Dense(500, activation='relu')(x)
-        x = Dense(100, activation='relu')(x)
-        x = Dense(100, activation='relu')(x)
-        x = Dense(50, activation='relu')(x)
-        x = Dense(50, activation='relu')(x)
-        x = Dense(25, activation='relu')(x)
-        x = Dense(10, activation='relu')(x)
+        x = Dense(1100, activation=activation_function)(input)
+        x = Dense(1000, activation=activation_function)(x)
+        x = Dense(1000, activation=activation_function)(x)
+        x = Dense(750, activation=activation_function)(x)
+        x = Dense(750, activation=activation_function)(x)
+        x = Dense(500, activation=activation_function)(x)
+        x = Dense(500, activation=activation_function)(x)
+        x = Dense(100, activation=activation_function)(x)
+        x = Dense(100, activation=activation_function)(x)
+        x = Dense(50, activation=activation_function)(x)
+        x = Dense(50, activation=activation_function)(x)
+        x = Dense(25, activation=activation_function)(x)
+        x = Dense(10, activation=activation_function)(x)
         output = Dense(1, activation='linear')(x)
         model = keras.Model(input, output)
 
@@ -385,7 +397,7 @@ def image_model(save_loc,data_file,test_file,target_var):
         if save_fit == True:
             save_fitted_model(model, model_save_loc)
 
-    model(adapted_dataset,img_array,target_var)
+    model(adapted_dataset,img_array,target_var,act_func)
 
 if run_img_model == True:
     image_model(save_dir,main_data,test_file,target_variable)
