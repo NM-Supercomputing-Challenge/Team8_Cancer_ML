@@ -22,8 +22,8 @@ import os
 save_fit = False
 model_save_loc = "saved_model"
 
-main_data = "MDPA Patient Data Final (Demographics).csv"
-sec_data = "MDPA Patient Data Final (Weight).csv"
+main_data = "HNSCC-3DCT\\MDPA Patient Data Final (Demographics).csv"
+sec_data = "HNSCC-3DCT\\MDPA Patient Data Final (Weight).csv"
 test_file = "test_2.csv"
 target_variable = "Weight Net Loss (lbs)"
 
@@ -109,8 +109,12 @@ def combine_data(data_file_1,data_file_2):
     file_2 = pd.read_csv(data_file_2)
     common_ids = []
 
-    ids_1 = file_1.iloc[:,0]
-    ids_2 = file_2.iloc[:,0]
+    if ID_dataset_col != "index":
+        file_1 = file_1.set_index(ID_dataset_col)
+        file_2 = file_2.set_index(ID_dataset_col)
+
+    ids_1 = file_1.index
+    ids_2 = file_2.index
 
     # determine the largest dataset to put first in the for statement
     if ids_1.shape[0] > ids_2.shape[0]:
@@ -125,12 +129,8 @@ def combine_data(data_file_1,data_file_2):
 
     for i in longest_ids:
         for z in shortest_ids:
-            if i == z:
+            if int(i) == int(z):
                 common_ids.append(i)
-
-    if ID_dataset_col != "index":
-        file_1 = file_1.set_index(ID_dataset_col)
-        file_2 = file_2.set_index(ID_dataset_col)
 
     adapted_1 = file_1.loc[common_ids]
     adapted_2 = file_2.loc[common_ids]
@@ -145,6 +145,8 @@ if two_datasets == True:
     main_data = combine_data(main_data,sec_data)
 elif two_datasets == False:
     main_data = main_data
+
+print(main_data)
 
 def model(data_file,test_file,target_variable,epochs_num):
 
@@ -175,7 +177,19 @@ def model(data_file,test_file,target_variable,epochs_num):
 
     adapted_dataset = format_data(data_file, test_file,target_variable)
 
-    def NN(data_file, target_var, epochs_num):
+    # determine activation function (relu or tanh) from if there are negative numbers in target variable
+    df_values = adapted_dataset.values
+    df_values = df_values.flatten()
+    for val in df_values:
+        if val < 0:
+            negative_vals = True
+
+    if negative_vals == True:
+        act_func = "tanh"
+    else:
+        act_func = 'relu'
+
+    def NN(data_file, target_var, epochs_num,activation_function):
 
         # Get data. Data must already be in a Pandas Dataframe
         df = data_file
@@ -194,10 +208,10 @@ def model(data_file,test_file,target_variable,epochs_num):
         X_test = scaler.transform(X_test)
 
         model = Sequential([tf.keras.layers.Flatten()])
-        model.add(Dense(24, activation='relu'))
-        model.add(Dense(24, activation='relu'))
-        model.add(Dense(24, activation='relu'))
-        model.add(Dense(10, activation='relu'))
+        model.add(Dense(24, activation=activation_function))
+        model.add(Dense(24, activation=activation_function))
+        model.add(Dense(24, activation=activation_function))
+        model.add(Dense(10, activation=activation_function))
         model.add(Dense(1, activation='linear'))
         model.compile(loss='mean_squared_error',
                       optimizer=keras.optimizers.SGD(lr=0.001, momentum=0.8),
@@ -228,7 +242,7 @@ def model(data_file,test_file,target_variable,epochs_num):
         print(model.predict(X_test, batch_size=1))
         print(y_test)
 
-    NN(adapted_dataset,target_variable,epochs_num)
+    NN(adapted_dataset,target_variable,epochs_num,act_func)
 
 if run_img_model == False:
     model(main_data,test_file,target_variable,num_epochs)
@@ -389,4 +403,4 @@ if del_converted_imgs == True:
         except Exception as e:
             print('Failed to delete %s. Reason: %s' % (file_path, e))
 
-# Next, implement new dataset into model
+# Next, write code to choose activation function from wether there are negative numbers or not
