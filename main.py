@@ -177,7 +177,7 @@ def model(data_file,test_file,target_variable,epochs_num):
 
     adapted_dataset = format_data(data_file, test_file,target_variable)
 
-    # determine activation function (relu or tanh) from if there are negative numbers in target variable
+    # determine activation function (relu or tanh) from if there are negative numbers in dataset
     df_values = adapted_dataset.values
     df_values = df_values.flatten()
     for val in df_values:
@@ -307,7 +307,7 @@ def image_model(save_loc,data_file,test_file,target_var):
 
     adapted_dataset = adapted_dataset.loc[matching_ids]
 
-    # determine activation function (relu or tanh) from if there are negative numbers in target variable
+    # determine activation function (relu or tanh) from if there are negative numbers in dataset
     df_values = adapted_dataset.values
     df_values = df_values.flatten()
     for val in df_values:
