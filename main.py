@@ -22,10 +22,10 @@ import os
 save_fit = False
 model_save_loc = "saved_model"
 
-main_data = "HNSCC-3DCT\\MDPA Patient Data Final (Demographics).csv"
+main_data = "HNSCC-HN1\\Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020.csv"
 sec_data = "HNSCC-3DCT\\MDPA Patient Data Final (Weight).csv"
 test_file = "test_2.csv"
-target_variable = "Weight Net Loss (lbs)"
+target_variable = "event_overall_survival"
 
 # if true, converted images will be in png format instead of jpg
 png = False
@@ -34,7 +34,7 @@ png = False
 var_blacklist = ["Unnamed: 5"]
 
 # folder containing Cancer Imagery
-load_dir = "Cancer Imagery"
+load_dir = "D:\Cancer_Project\\Cancer Imagery\\HEAD-NECK-RADIOMICS-HN1"
 
 # directory to save data such as converted images
 save_dir = "D:\\Cancer_Project\\converted_img"
@@ -49,36 +49,38 @@ convert_imgs = False
 del_converted_imgs = False
 
 # if true, image model will be ran instead of clinical only model
-run_img_model = False
+run_img_model = True
 
 # if true, two data files will be expected for input
-two_datasets = True
+two_datasets = False
 
 # if true, an additional file will be expected for testing
 use_additional_test_file = False
 
 # where image id is located in image names (start,end)
 # only applies if using image model
-img_id_name_loc = (4,9)
+img_id_name_loc = (2,6)
 
 # Column of IDs in dataset. Acceptable values include "index" or a column name.
-ID_dataset_col = "HN_P"
+ID_dataset_col = "id"
+
+# tuple with dimension of imagery. All images must equal this dimension
+img_dimensions = (512, 512, 3)
 
 def collect_img_dirs(data_folder):
     img_directories = []
 
-    # use second folder in specified load directory
-    datas = os.listdir(data_folder)[1]
-    Patients = os.listdir(data_folder + "\\" + datas)
+    Patients = os.listdir(data_folder)
 
     for patients in Patients:
-        data = os.listdir(data_folder + "\\" + datas + "\\" + patients)[0]
-        data2 = os.listdir(data_folder + "\\" + datas + "\\" + patients + "\\" + data)[0]
-        img_directories.append(data_folder + "\\" + datas + "\\" + patients + "\\" + data + "\\" + data2)
+        data = os.listdir(data_folder + "\\" + patients)[0]
+        data2 = os.listdir(data_folder + "\\" + patients + "\\" + data)[2]
+        img_directories.append(data_folder + "\\" + patients + "\\" + data + "\\" + data2)
 
     return img_directories
 
-load_dirs = collect_img_dirs(load_dir)
+if convert_imgs == True:
+    load_dirs = collect_img_dirs(load_dir)
 
 num_epochs = 120
 
@@ -90,63 +92,68 @@ def convert_img(png_boolean,dcm_folder_path,save_path, num_imgs_patient):
     print(dcm_folder_path)
     print(images_path)
 
-    for n, image in enumerate(images_path):
-        ds = dicom.dcmread(os.path.join(dcm_folder_path,image),force=True)
-        pixel_array_numpy = ds.pixel_array
+    # filter out wrong type of image
+    if images_path != ["1-1.dcm"]:
 
-        if png == False:
-            image = image.replace(".dcm",".jpg")
-        elif png == True:
-            image = image.replace(".dcm",".png")
-        cv2.imwrite(os.path.join(save_path,ds.PatientID+"_"+image),pixel_array_numpy)
+        for n, image in enumerate(images_path):
+            ds = dicom.dcmread(os.path.join(dcm_folder_path,image),force=True)
+            pixel_array_numpy = ds.pixel_array
+
+            if png == False:
+                image = image.replace(".dcm",".jpg")
+            elif png == True:
+                image = image.replace(".dcm",".png")
+            cv2.imwrite(os.path.join(save_path,ds.PatientID+"_"+image),pixel_array_numpy)
 
 if convert_imgs == True:
     for dirs in load_dirs:
         convert_img(png, dirs,save_dir, num_patient_imgs)
 
-def combine_data(data_file_1,data_file_2):
+def prep_data(data_file_1,data_file_2):
     file_1 = pd.read_csv(data_file_1)
-    file_2 = pd.read_csv(data_file_2)
     common_ids = []
 
     if ID_dataset_col != "index":
         file_1 = file_1.set_index(ID_dataset_col)
-        file_2 = file_2.set_index(ID_dataset_col)
 
     ids_1 = file_1.index
-    ids_2 = file_2.index
 
-    # determine the largest dataset to put first in the for statement
-    if ids_1.shape[0] > ids_2.shape[0]:
-        longest_ids = ids_1.values.tolist()
-        shortest_ids = ids_2.values.tolist()
-    elif ids_1.shape[0] < ids_2.shape[0]:
-        longest_ids = ids_2.values.tolist()
-        shortest_ids = ids_1.values.tolist()
-    elif ids_1.shape[0] == ids_2.shape[0]:
-        longest_ids = ids_1.values.tolist()
-        shortest_ids = ids_2.values.tolist()
+    if two_datasets == True:
+        file_2 = pd.read_csv(data_file_2)
+        file_2 = file_2.set_index(ID_dataset_col)
+        ids_2 = file_2.index
+        # determine the largest dataset to put first in the for statement
+        if ids_1.shape[0] > ids_2.shape[0]:
+            longest_ids = ids_1.values.tolist()
+            shortest_ids = ids_2.values.tolist()
+        elif ids_1.shape[0] < ids_2.shape[0]:
+            longest_ids = ids_2.values.tolist()
+            shortest_ids = ids_1.values.tolist()
+        elif ids_1.shape[0] == ids_2.shape[0]:
+            longest_ids = ids_1.values.tolist()
+            shortest_ids = ids_2.values.tolist()
 
-    for i in longest_ids:
-        for z in shortest_ids:
-            if int(i) == int(z):
-                common_ids.append(i)
+        for i in longest_ids:
+            for z in shortest_ids:
+                if int(i) == int(z):
+                    common_ids.append(i)
 
-    adapted_1 = file_1.loc[common_ids]
-    adapted_2 = file_2.loc[common_ids]
-    combined_dataset = adapted_1.join(adapted_2)
+        adapted_1 = file_1.loc[common_ids]
+        adapted_2 = file_2.loc[common_ids]
+        combined_dataset = adapted_1.join(adapted_2)
 
-    for i in var_blacklist:
-        combined_dataset = combined_dataset.drop(i,axis=1)
+        for i in var_blacklist:
+            combined_dataset = combined_dataset.drop(i,axis=1)
+        data = combined_dataset
+    else:
+        data = file_1
 
-    return combined_dataset
+    return data
 
 if two_datasets == True:
-    main_data = combine_data(main_data,sec_data)
+    main_data = prep_data(main_data,sec_data)
 elif two_datasets == False:
-    main_data = main_data
-
-print(main_data)
+    main_data = prep_data(main_data,None)
 
 def model(data_file,test_file,target_variable,epochs_num):
 
@@ -177,12 +184,14 @@ def model(data_file,test_file,target_variable,epochs_num):
 
     adapted_dataset = format_data(data_file, test_file,target_variable)
 
-    # determine activation function (relu or tanh) from if there are negative numbers in dataset
+    # determine activation function (relu or tanh) from if there are negative numbers in target variable
     df_values = adapted_dataset.values
     df_values = df_values.flatten()
     for val in df_values:
         if val < 0:
             negative_vals = True
+        else:
+            negative_vals = False
 
     if negative_vals == True:
         act_func = "tanh"
@@ -280,39 +289,41 @@ def image_model(save_loc,data_file,test_file,target_var):
     img_array = np.array([])
     matching_ids = []
     img_list = os.listdir(save_loc)
+
+    # number of images that match proper resolution
+    num_usable_img = 0
+
     for imgs in img_list:
-        if ID_dataset_col == "index":
-            for ids in adapted_dataset.index:
-                ids = int(ids)
-                if ids == int(imgs[img_id_name_loc[0]:img_id_name_loc[1]]):
-                    matching_ids.append(ids)
-                    matching_ids = list(dict.fromkeys(matching_ids))
-        else:
-            for ids in adapted_dataset[ID_dataset_col]:
-                ids = int(ids)
-                if ids == int(imgs[img_id_name_loc[0]:img_id_name_loc[1]]):
-                    matching_ids.append(ids)
 
-                    # remove duplicate IDs
-                    matching_ids = list(dict.fromkeys(matching_ids))
+        for ids in adapted_dataset.index:
+            ids = int(ids)
+            if ids == int(imgs[img_id_name_loc[0]:img_id_name_loc[1]]):
+                matching_ids.append(ids)
+                matching_ids = list(dict.fromkeys(matching_ids))
 
-                for ids in matching_ids:
-                    if ids == int(imgs[img_id_name_loc[0]:img_id_name_loc[1]]):
-                        img = load_img(os.path.join(save_loc, imgs))
-                        img_numpy_array = img_to_array(img)
-                        img_array = np.append(img_array,img_numpy_array)
+        for ids in matching_ids:
+            if ids == int(imgs[img_id_name_loc[0]:img_id_name_loc[1]]):
+                img = load_img(os.path.join(save_loc, imgs))
+                img_numpy_array = img_to_array(img)
+                if img_numpy_array.shape == img_dimensions:
+                    img_numpy_array = img_numpy_array.flatten()
+                    num_usable_img = num_usable_img + 1
+                    img_array = np.append(img_array,img_numpy_array)
+                else:
+                    matching_ids.remove(ids)
 
-    # reshape flattened array into proper (legal) dimensions
-    img_array = np.reshape(img_array,(len(matching_ids),int(img_array.size/len(matching_ids))))
+    # reshape into legal dimensions
+    img_array = np.reshape(img_array,(num_usable_img,int(img_array.size/num_usable_img)))
 
     adapted_dataset = adapted_dataset.loc[matching_ids]
 
-    # determine activation function (relu or tanh) from if there are negative numbers in dataset
+    # determine activation function (relu or tanh) from if there are negative numbers in target variable
     df_values = adapted_dataset.values
     df_values = df_values.flatten()
     for val in df_values:
         if val < 0:
             negative_vals = True
+        else: negative_vals = False
 
     if negative_vals == True:
         act_func = "tanh"
@@ -343,12 +354,16 @@ def image_model(save_loc,data_file,test_file,target_var):
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+        print(X_train_img.shape)
+        print(X_train.shape)
         data = np.concatenate((X_train_img,X_train),axis=1)
         data_test = np.concatenate((X_test,X_test_img),axis=1)
 
         scaler = StandardScaler().fit(data)
         data = scaler.transform(data)
         data_test = scaler.transform(data_test)
+
+        print(activation_function)
 
         # set input shape to dimension of data
         input = keras.layers.Input(shape=(data.shape[1],))
