@@ -39,9 +39,6 @@ load_dir = "D:\Cancer_Project\\Cancer Imagery\\HEAD-NECK-RADIOMICS-HN1"
 # directory to save data such as converted images
 save_dir = "D:\\Cancer_Project\\converted_img"
 
-# number of images to use from each patient
-num_patient_imgs = 1
-
 # if true, attempt will be made to convert dicom files to jpg or png
 convert_imgs = False
 
@@ -70,12 +67,10 @@ img_dimensions = (512, 512, 3)
 def collect_img_dirs(data_folder):
     img_directories = []
 
-    Patients = os.listdir(data_folder)
-
-    for patients in Patients:
-        data = os.listdir(data_folder + "\\" + patients)[0]
-        data2 = os.listdir(data_folder + "\\" + patients + "\\" + data)[2]
-        img_directories.append(data_folder + "\\" + patients + "\\" + data + "\\" + data2)
+    for root, dirs, files, in os.walk(data_folder):
+        for name in files:
+            dir = os.path.join(root,name)
+            img_directories.append(dir)
 
     return img_directories
 
@@ -84,30 +79,33 @@ if convert_imgs == True:
 
 num_epochs = 120
 
-def convert_img(png_boolean,dcm_folder_path,save_path, num_imgs_patient):
+def convert_img(png_boolean,dirs_list,save_path):
     png = png_boolean
 
-    # get elements in dicom path as list
-    images_path = os.listdir(dcm_folder_path)[:num_imgs_patient]
-    print(dcm_folder_path)
-    print(images_path)
+    print("starting image conversion process")
+    num_converted_img = 0
+    for image in dirs_list:
 
-    # filter out wrong type of image
-    if images_path != ["1-1.dcm"]:
-
-        for n, image in enumerate(images_path):
-            ds = dicom.dcmread(os.path.join(dcm_folder_path,image),force=True)
+        # filter out incompatible images
+        if os.path.basename(image) != "1-1.dcm":
+            ds = dicom.dcmread(image)
             pixel_array_numpy = ds.pixel_array
 
             if png == False:
                 image = image.replace(".dcm",".jpg")
             elif png == True:
                 image = image.replace(".dcm",".png")
-            cv2.imwrite(os.path.join(save_path,ds.PatientID+"_"+image),pixel_array_numpy)
+
+            cv2.imwrite(os.path.join(save_path,ds.PatientID+"_"+os.path.basename(image)),pixel_array_numpy)
+
+            ## Loading info
+            num_imgs = len(dirs_list)
+            num_converted_img = num_converted_img + 1
+            percentage_done = (num_converted_img/num_imgs) * 100
+            print(str(percentage_done) + " percent completed")
 
 if convert_imgs == True:
-    for dirs in load_dirs:
-        convert_img(png, dirs,save_dir, num_patient_imgs)
+    convert_img(png, load_dirs,save_dir)
 
 def prep_data(data_file_1,data_file_2):
     file_1 = pd.read_csv(data_file_1)
@@ -257,6 +255,7 @@ if run_img_model == False:
     model(main_data,test_file,target_variable,num_epochs)
 
 def image_model(save_loc,data_file,test_file,target_var):
+    print("starting image model")
 
     def format_data(data_file, test_file, target_var):
 
@@ -293,6 +292,10 @@ def image_model(save_loc,data_file,test_file,target_var):
     # number of images that match proper resolution
     num_usable_img = 0
 
+    # used for loading info
+    imgs_processed = 0
+
+    print("starting data preparation process")
     for imgs in img_list:
 
         for ids in adapted_dataset.index:
@@ -309,8 +312,15 @@ def image_model(save_loc,data_file,test_file,target_var):
                     img_numpy_array = img_numpy_array.flatten()
                     num_usable_img = num_usable_img + 1
                     img_array = np.append(img_array,img_numpy_array)
+                    imgs_processed = imgs_processed + 1
+
                 else:
                     matching_ids.remove(ids)
+
+            ## loading info
+            total_img = len(img_list)
+            percent_conv = (imgs_processed / total_img) * 100
+            print(str(percent_conv) + " percent converted")
 
     # reshape into legal dimensions
     img_array = np.reshape(img_array,(num_usable_img,int(img_array.size/num_usable_img)))
