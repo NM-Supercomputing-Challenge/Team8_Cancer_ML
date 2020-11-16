@@ -64,6 +64,10 @@ ID_dataset_col = "id"
 # tuple with dimension of imagery. All images must equal this dimension
 img_dimensions = (512, 512, 3)
 
+# percentage value. Percentage of images that will be used.
+# Prevents memory overload
+image_model_timeout = 0.01
+
 def collect_img_dirs(data_folder):
     img_directories = []
 
@@ -289,10 +293,6 @@ def image_model(save_loc,data_file,test_file,target_var):
     matching_ids = []
     img_list = os.listdir(save_loc)
 
-    # number of images that match proper resolution
-    num_usable_img = 0
-
-    # used for loading info
     imgs_processed = 0
 
     print("starting data preparation process")
@@ -304,26 +304,25 @@ def image_model(save_loc,data_file,test_file,target_var):
                 matching_ids.append(ids)
                 matching_ids = list(dict.fromkeys(matching_ids))
 
-        for ids in matching_ids:
-            if ids == int(imgs[img_id_name_loc[0]:img_id_name_loc[1]]):
-                img = load_img(os.path.join(save_loc, imgs))
-                img_numpy_array = img_to_array(img)
-                if img_numpy_array.shape == img_dimensions:
-                    img_numpy_array = img_numpy_array.flatten()
-                    num_usable_img = num_usable_img + 1
-                    img_array = np.append(img_array,img_numpy_array)
-                    imgs_processed = imgs_processed + 1
+                total_img = len(img_list)
+                timeout_val = int(total_img * image_model_timeout)
+                if imgs_processed != timeout_val:
+                    img = load_img(os.path.join(save_loc, imgs))
+                    img_numpy_array = img_to_array(img)
 
-                else:
-                    matching_ids.remove(ids)
+                    if img_numpy_array.shape == img_dimensions:
+                        img_numpy_array = img_numpy_array.flatten()
+                        img_array = np.append(img_array,img_numpy_array)
+                        imgs_processed = imgs_processed + 1
 
-            ## loading info
-            total_img = len(img_list)
-            percent_conv = (imgs_processed / total_img) * 100
-            print(str(percent_conv) + " percent converted")
+                        ## loading info
+                        percent_conv = (imgs_processed / timeout_val) * 100
+                        print(str(percent_conv) + " percent converted to pixel array")
+                elif imgs_processed == timeout_val:
+                    break
 
     # reshape into legal dimensions
-    img_array = np.reshape(img_array,(num_usable_img,int(img_array.size/num_usable_img)))
+    img_array = np.reshape(img_array,(imgs_processed,int(img_array.size/imgs_processed)))
 
     adapted_dataset = adapted_dataset.loc[matching_ids]
 
