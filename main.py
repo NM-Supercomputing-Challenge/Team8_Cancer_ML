@@ -295,8 +295,11 @@ def image_model(save_loc,data_file,test_file,target_var):
 
     imgs_processed = 0
 
+    # number of images used from each patient.
+    num_img = 20
+
     print("starting data preparation process")
-    for imgs in img_list:
+    for imgs in img_list[:num_img]:
 
         for ids in adapted_dataset.index:
             ids = int(ids)
@@ -304,7 +307,7 @@ def image_model(save_loc,data_file,test_file,target_var):
                 matching_ids.append(ids)
                 matching_ids = list(dict.fromkeys(matching_ids))
 
-                total_img = len(img_list)
+                total_img = len(img_list[:num_img])
                 timeout_val = int(total_img * image_model_timeout)
                 if imgs_processed != timeout_val:
                     img = load_img(os.path.join(save_loc, imgs))
@@ -312,12 +315,13 @@ def image_model(save_loc,data_file,test_file,target_var):
 
                     if img_numpy_array.shape == img_dimensions:
                         img_numpy_array = img_numpy_array.flatten()
-                        img_array = np.append(img_array,img_numpy_array)
+                        img_array = np.insert(img_array,len(img_array),img_numpy_array,axis=1)
                         imgs_processed = imgs_processed + 1
 
                         ## loading info
                         percent_conv = (imgs_processed / timeout_val) * 100
                         print(str(percent_conv) + " percent converted to pixel array")
+
                 elif imgs_processed == timeout_val:
                     break
 
