@@ -307,9 +307,28 @@ def image_model(save_loc,data_file,test_file,target_var):
 
     if load_numpy_img == True:
         img_array = np.load(os.path.join(img_array_save,os.listdir(img_array_save)[0]))
-        flat_res = int(img_dimensions[0]*img_dimensions[1]*img_dimensions[2])
-        num_patients = int(img_array.shape[0]/flat_res)
-        img_array = np.reshape(img_array,(num_patients,flat_res))
+        flat_res = int((img_dimensions[0]*img_dimensions[1]*img_dimensions[2])+1)
+        num_img = int(img_array.shape[0]/flat_res)
+        img_array = np.reshape(img_array,(num_img,flat_res))
+
+        ## retrieving ids
+        img_df = pd.DataFrame(data=img_array)
+        cols = list(img_df.columns)
+        id_col = img_df[cols[-1]].tolist()
+        dataset_id = adapted_dataset.index.tolist()
+
+        # determine what to put first in loop
+        if len(id_col) >= len(dataset_id):
+            longest = id_col
+            shortest = dataset_id
+        elif len(dataset_id) > len(id_col):
+            longest = dataset_id
+            shortest = id_col
+
+        for id in longest:
+            for id2 in shortest:
+                if int(id) == int(id2):
+                    matching_ids.append(id)
 
     elif load_numpy_img == False:
 
@@ -408,18 +427,15 @@ def image_model(save_loc,data_file,test_file,target_var):
         # set input shape to dimension of data
         input = keras.layers.Input(shape=(data.shape[1],))
 
-        x = Dense(1100, activation=activation_function)(input)
-        x = Dense(1000, activation=activation_function)(x)
-        x = Dense(1000, activation=activation_function)(x)
-        x = Dense(750, activation=activation_function)(x)
-        x = Dense(750, activation=activation_function)(x)
+        x = Dense(500, activation=activation_function)(input)
         x = Dense(500, activation=activation_function)(x)
-        x = Dense(500, activation=activation_function)(x)
+        x = Dense(400, activation=activation_function)(x)
+        x = Dense(400, activation=activation_function)(x)
+        x = Dense(215, activation=activation_function)(x)
+        x = Dense(215, activation=activation_function)(x)
         x = Dense(100, activation=activation_function)(x)
         x = Dense(100, activation=activation_function)(x)
         x = Dense(50, activation=activation_function)(x)
-        x = Dense(50, activation=activation_function)(x)
-        x = Dense(25, activation=activation_function)(x)
         x = Dense(10, activation=activation_function)(x)
         output = Dense(1, activation='linear')(x)
         model = keras.Model(input, output)
@@ -469,3 +485,5 @@ if del_converted_imgs == True:
                 shutil.rmtree(file_path)
         except Exception as e:
             print('Failed to delete %s. Reason: %s' % (file_path, e))
+
+# Next, find method to reshape loaded array into format that preserves ID info
