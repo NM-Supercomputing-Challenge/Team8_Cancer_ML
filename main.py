@@ -8,7 +8,6 @@ from sklearn.preprocessing import StandardScaler
 import keras
 import matplotlib.pyplot as plt
 import pydicom as dicom
-import os
 import shutil
 import cv2
 from keras.preprocessing.image import load_img
@@ -16,9 +15,14 @@ from keras.preprocessing.image import img_to_array
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+import psutil
+import sys
 
 #pd.set_option('display.max_rows', None)
 #pd.set_option('display.max_columns', None)
+
+#np.set_printoptions(threshold=sys.maxsize)
+
 save_fit = False
 model_save_loc = "saved_model"
 
@@ -38,6 +42,12 @@ load_dir = "D:\Cancer_Project\\Cancer Imagery\\HEAD-NECK-RADIOMICS-HN1"
 
 # directory to save data such as converted images
 save_dir = "D:\\Cancer_Project\\converted_img"
+
+# directory to save imagery array
+img_array_save = "img_arrays"
+
+# if true, numpy image array will be searched for in img_array_save
+load_numpy_img = True
 
 # if true, attempt will be made to convert dicom files to jpg or png
 convert_imgs = False
@@ -295,35 +305,73 @@ def image_model(save_loc,data_file,test_file,target_var):
     # used for loading info
     imgs_processed = 0
 
-    print("starting data preparation process")
-    for imgs in img_list:
+    if load_numpy_img == True:
+        img_array = np.load(os.path.join(img_array_save,os.listdir(img_array_save)[0]))
+        flat_res = int((img_dimensions[0]*img_dimensions[1]*img_dimensions[2])+1)
+        num_img = int(img_array.shape[0]/flat_res)
+        img_array = np.reshape(img_array,(num_img,flat_res))
 
-        for ids in adapted_dataset.index:
-            ids = int(ids)
-            if ids == int(imgs[img_id_name_loc[0]:img_id_name_loc[1]]):
-                matching_ids.append(ids)
-                matching_ids = list(dict.fromkeys(matching_ids))
+        ## retrieving ids
+        img_df = pd.DataFrame(data=img_array)
+        cols = list(img_df.columns)
+        id_col = img_df[cols[-1]].tolist()
+        dataset_id = adapted_dataset.index.tolist()
 
-        for ids in matching_ids:
-            if ids == int(imgs[img_id_name_loc[0]:img_id_name_loc[1]]):
-                img = load_img(os.path.join(save_loc, imgs))
-                img_numpy_array = img_to_array(img)
-                if img_numpy_array.shape == img_dimensions:
-                    img_numpy_array = img_numpy_array.flatten()
-                    num_usable_img = num_usable_img + 1
-                    img_array = np.append(img_array,img_numpy_array)
-                    imgs_processed = imgs_processed + 1
+        # determine what to put first in loop
+        if len(id_col) >= len(dataset_id):
+            longest = id_col
+            shortest = dataset_id
+        elif len(dataset_id) > len(id_col):
+            longest = dataset_id
+            shortest = id_col
 
-                else:
-                    matching_ids.remove(ids)
+        for id in longest:
+            for id2 in shortest:
+                if int(id) == int(id2):
+                    matching_ids.append(id)
 
-            ## loading info
-            total_img = len(img_list)
-            percent_conv = (imgs_processed / total_img) * 100
-            print(str(percent_conv) + " percent converted")
+    elif load_numpy_img == False:
 
-    # reshape into legal dimensions
-    img_array = np.reshape(img_array,(num_usable_img,int(img_array.size/num_usable_img)))
+        for imgs in img_list:
+
+            # find matching ids
+            for ids in adapted_dataset.index:
+                ids = int(ids)
+                if ids == int(imgs[img_id_name_loc[0]:img_id_name_loc[1]]):
+                    matching_ids.append(ids)
+                    matching_ids = list(dict.fromkeys(matching_ids))
+
+            # Collect/convert corresponding imagery
+            print("starting data preparation process")
+            for ids in matching_ids:
+                if ids == int(imgs[img_id_name_loc[0]:img_id_name_loc[1]]):
+                    img = load_img(os.path.join(save_loc, imgs))
+                    img_numpy_array = img_to_array(img)
+                    if img_numpy_array.shape == img_dimensions:
+                        img_numpy_array = img_numpy_array.flatten()
+                        img_numpy_array = np.insert(img_numpy_array,len(img_numpy_array),ids)
+                        num_usable_img = num_usable_img + 1
+                        img_array = np.append(img_array,img_numpy_array,axis=0)
+                        imgs_processed = imgs_processed + 1
+
+                    else:
+                        matching_ids.remove(ids)
+
+                ## Memory optimization
+                if psutil.virtual_memory().percent >= 50:
+                    break
+
+                ## loading info
+                total_img = len(img_list)
+                percent_conv = (imgs_processed / total_img) * 100
+                print(str(percent_conv) + " percent converted")
+                print(str(psutil.virtual_memory()))
+
+        # save the array
+        np.save(os.path.join(img_array_save, "img_array"), img_array)
+
+        # reshape into legal dimensions
+        img_array = np.reshape(img_array,(num_usable_img,int(img_array.size/num_usable_img)))
 
     adapted_dataset = adapted_dataset.loc[matching_ids]
 
@@ -333,7 +381,8 @@ def image_model(save_loc,data_file,test_file,target_var):
     for val in df_values:
         if val < 0:
             negative_vals = True
-        else: negative_vals = False
+        else:
+            negative_vals = False
 
     if negative_vals == True:
         act_func = "tanh"
@@ -378,18 +427,15 @@ def image_model(save_loc,data_file,test_file,target_var):
         # set input shape to dimension of data
         input = keras.layers.Input(shape=(data.shape[1],))
 
-        x = Dense(1100, activation=activation_function)(input)
-        x = Dense(1000, activation=activation_function)(x)
-        x = Dense(1000, activation=activation_function)(x)
-        x = Dense(750, activation=activation_function)(x)
-        x = Dense(750, activation=activation_function)(x)
+        x = Dense(500, activation=activation_function)(input)
         x = Dense(500, activation=activation_function)(x)
-        x = Dense(500, activation=activation_function)(x)
+        x = Dense(400, activation=activation_function)(x)
+        x = Dense(400, activation=activation_function)(x)
+        x = Dense(215, activation=activation_function)(x)
+        x = Dense(215, activation=activation_function)(x)
         x = Dense(100, activation=activation_function)(x)
         x = Dense(100, activation=activation_function)(x)
         x = Dense(50, activation=activation_function)(x)
-        x = Dense(50, activation=activation_function)(x)
-        x = Dense(25, activation=activation_function)(x)
         x = Dense(10, activation=activation_function)(x)
         output = Dense(1, activation='linear')(x)
         model = keras.Model(input, output)
@@ -439,3 +485,5 @@ if del_converted_imgs == True:
                 shutil.rmtree(file_path)
         except Exception as e:
             print('Failed to delete %s. Reason: %s' % (file_path, e))
+
+# Next, find method to reshape loaded array into format that preserves ID info
