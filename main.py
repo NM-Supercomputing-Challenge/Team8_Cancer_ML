@@ -485,5 +485,3 @@ if del_converted_imgs == True:
                 shutil.rmtree(file_path)
         except Exception as e:
             print('Failed to delete %s. Reason: %s' % (file_path, e))
-
-# Next, find method to reshape loaded array into format that preserves ID info
