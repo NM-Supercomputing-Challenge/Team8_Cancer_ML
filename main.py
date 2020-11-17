@@ -8,7 +8,6 @@ from sklearn.preprocessing import StandardScaler
 import keras
 import matplotlib.pyplot as plt
 import pydicom as dicom
-import os
 import shutil
 import cv2
 from keras.preprocessing.image import load_img
@@ -17,9 +16,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 import psutil
+import sys
 
 #pd.set_option('display.max_rows', None)
 #pd.set_option('display.max_columns', None)
+
+#np.set_printoptions(threshold=sys.maxsize)
+
 save_fit = False
 model_save_loc = "saved_model"
 
@@ -39,6 +42,12 @@ load_dir = "D:\Cancer_Project\\Cancer Imagery\\HEAD-NECK-RADIOMICS-HN1"
 
 # directory to save data such as converted images
 save_dir = "D:\\Cancer_Project\\converted_img"
+
+# directory to save imagery array
+img_array_save = "img_arrays"
+
+# if true, numpy image array will be searched for in img_array_save
+load_numpy_img = True
 
 # if true, attempt will be made to convert dicom files to jpg or png
 convert_imgs = False
@@ -296,40 +305,54 @@ def image_model(save_loc,data_file,test_file,target_var):
     # used for loading info
     imgs_processed = 0
 
-    print("starting data preparation process")
-    for imgs in img_list:
+    if load_numpy_img == True:
+        img_array = np.load(os.path.join(img_array_save,os.listdir(img_array_save)[0]))
+        flat_res = int(img_dimensions[0]*img_dimensions[1]*img_dimensions[2])
+        num_patients = int(img_array.shape[0]/flat_res)
+        img_array = np.reshape(img_array,(num_patients,flat_res))
 
-        for ids in adapted_dataset.index:
-            ids = int(ids)
-            if ids == int(imgs[img_id_name_loc[0]:img_id_name_loc[1]]):
-                matching_ids.append(ids)
-                matching_ids = list(dict.fromkeys(matching_ids))
+    elif load_numpy_img == False:
 
-        for ids in matching_ids:
-            if ids == int(imgs[img_id_name_loc[0]:img_id_name_loc[1]]):
-                img = load_img(os.path.join(save_loc, imgs))
-                img_numpy_array = img_to_array(img)
-                if img_numpy_array.shape == img_dimensions:
-                    img_numpy_array = img_numpy_array.flatten()
-                    num_usable_img = num_usable_img + 1
-                    img_array = np.append(img_array,img_numpy_array)
-                    imgs_processed = imgs_processed + 1
+        for imgs in img_list:
 
-                else:
-                    matching_ids.remove(ids)
+            # find matching ids
+            for ids in adapted_dataset.index:
+                ids = int(ids)
+                if ids == int(imgs[img_id_name_loc[0]:img_id_name_loc[1]]):
+                    matching_ids.append(ids)
+                    matching_ids = list(dict.fromkeys(matching_ids))
 
-            ## Memory optimization
-            if psutil.virtual_memory().percent >= 98:
-                break
+            # Collect/convert corresponding imagery
+            print("starting data preparation process")
+            for ids in matching_ids:
+                if ids == int(imgs[img_id_name_loc[0]:img_id_name_loc[1]]):
+                    img = load_img(os.path.join(save_loc, imgs))
+                    img_numpy_array = img_to_array(img)
+                    if img_numpy_array.shape == img_dimensions:
+                        img_numpy_array = img_numpy_array.flatten()
+                        img_numpy_array = np.insert(img_numpy_array,len(img_numpy_array),ids)
+                        num_usable_img = num_usable_img + 1
+                        img_array = np.append(img_array,img_numpy_array,axis=0)
+                        imgs_processed = imgs_processed + 1
 
-            ## loading info
-            total_img = len(img_list)
-            percent_conv = (imgs_processed / total_img) * 100
-            print(str(percent_conv) + " percent converted")
-            print(str(psutil.virtual_memory()))
+                    else:
+                        matching_ids.remove(ids)
 
-    # reshape into legal dimensions
-    img_array = np.reshape(img_array,(num_usable_img,int(img_array.size/num_usable_img)))
+                ## Memory optimization
+                if psutil.virtual_memory().percent >= 50:
+                    break
+
+                ## loading info
+                total_img = len(img_list)
+                percent_conv = (imgs_processed / total_img) * 100
+                print(str(percent_conv) + " percent converted")
+                print(str(psutil.virtual_memory()))
+
+        # save the array
+        np.save(os.path.join(img_array_save, "img_array"), img_array)
+
+        # reshape into legal dimensions
+        img_array = np.reshape(img_array,(num_usable_img,int(img_array.size/num_usable_img)))
 
     adapted_dataset = adapted_dataset.loc[matching_ids]
 
@@ -339,7 +362,8 @@ def image_model(save_loc,data_file,test_file,target_var):
     for val in df_values:
         if val < 0:
             negative_vals = True
-        else: negative_vals = False
+        else:
+            negative_vals = False
 
     if negative_vals == True:
         act_func = "tanh"
