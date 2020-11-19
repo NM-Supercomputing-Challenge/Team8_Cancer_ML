@@ -18,9 +18,11 @@ import os
 import psutil
 import sys
 
+# un-comment to show all of pandas dataframe
 #pd.set_option('display.max_rows', None)
 #pd.set_option('display.max_columns', None)
 
+# un-comment to show all of numpy array
 #np.set_printoptions(threshold=sys.maxsize)
 
 save_fit = False
@@ -29,7 +31,7 @@ model_save_loc = "saved_model"
 main_data = "HNSCC-HN1\\Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020.csv"
 sec_data = "HNSCC-3DCT\\MDPA Patient Data Final (Weight).csv"
 test_file = "test_2.csv"
-target_variable = "event_overall_survival"
+target_variable = "clin_t"
 
 # if true, converted images will be in png format instead of jpg
 png = False
@@ -427,20 +429,20 @@ def image_model(save_loc,data_file,test_file,target_var):
         # set input shape to dimension of data
         input = keras.layers.Input(shape=(data.shape[1],))
 
-        x = Dense(500, activation=activation_function)(input)
-        x = Dense(500, activation=activation_function)(x)
-        x = Dense(400, activation=activation_function)(x)
-        x = Dense(400, activation=activation_function)(x)
-        x = Dense(215, activation=activation_function)(x)
-        x = Dense(215, activation=activation_function)(x)
+        x = Dense(150, activation=activation_function)(input)
+        x = Dense(150, activation=activation_function)(x)
+        x = Dense(150, activation=activation_function)(x)
+        x = Dense(120, activation=activation_function)(x)
+        x = Dense(120, activation=activation_function)(x)
         x = Dense(100, activation=activation_function)(x)
         x = Dense(100, activation=activation_function)(x)
-        x = Dense(50, activation=activation_function)(x)
-        x = Dense(10, activation=activation_function)(x)
+        x = Dense(80, activation=activation_function)(x)
+        x = Dense(80, activation=activation_function)(x)
+        x = Dense(45, activation=activation_function)(x)
         output = Dense(1, activation='linear')(x)
         model = keras.Model(input, output)
 
-        model.compile(optimizer=keras.optimizers.SGD(momentum=0.8,learning_rate=0.01),
+        model.compile(optimizer='adam',
                           loss='mean_squared_error',
                           metrics=['accuracy'])
 
