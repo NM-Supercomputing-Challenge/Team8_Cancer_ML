@@ -58,7 +58,7 @@ convert_imgs = False
 del_converted_imgs = False
 
 # if true, image model will be ran instead of clinical only model
-run_img_model = True
+run_img_model = False
 
 # if true, two data files will be expected for input
 two_datasets = False
@@ -75,6 +75,18 @@ ID_dataset_col = "id"
 
 # tuple with dimension of imagery. All images must equal this dimension
 img_dimensions = (512, 512, 3)
+
+# if true, every column in data will be inputted for target variable
+target_all = True
+
+# save location for data/graphs
+data_save_loc = "result_graphs"
+
+# if true, graphs will be shown after training model
+show_figs = False
+
+# if true, graphs will be saved after training model
+save_figs = True
 
 def collect_img_dirs(data_folder):
     img_directories = []
@@ -247,7 +259,13 @@ def model(data_file,test_file,target_variable,epochs_num):
             plt.title(graph_title)
             plt.ylabel(metric)
             plt.xlabel('epoch')
-            plt.show()
+            if save_figs == True:
+                plt.savefig(os.path.join(data_save_loc, target_var + " " + metric + ".jpg"))
+
+            if show_figs == True:
+                plt.show()
+            else:
+                plt.clf()
 
         plot(history,'accuracy','model accuracy')
         plot(history,'loss','model loss')
@@ -263,8 +281,13 @@ def model(data_file,test_file,target_variable,epochs_num):
 
     NN(adapted_dataset,target_variable,epochs_num,act_func)
 
-if run_img_model == False:
+if run_img_model == False and target_all == False:
     model(main_data,test_file,target_variable,num_epochs)
+elif run_img_model == False and target_all == True:
+    # collect columns in data
+    cols = list(main_data.columns)
+    for column in cols:
+        model(main_data,test_file,column,num_epochs)
 
 def image_model(save_loc,data_file,test_file,target_var):
     print("starting image model")
