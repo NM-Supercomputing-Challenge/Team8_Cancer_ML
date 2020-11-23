@@ -18,6 +18,7 @@ import os
 import psutil
 import sys
 
+
 # un-comment to show all of pandas dataframe
 #pd.set_option('display.max_rows', None)
 #pd.set_option('display.max_columns', None)
@@ -58,7 +59,7 @@ convert_imgs = False
 del_converted_imgs = False
 
 # if true, image model will be ran instead of clinical only model
-run_img_model = False
+run_img_model = True
 
 # if true, two data files will be expected for input
 two_datasets = False
@@ -479,7 +480,13 @@ def image_model(save_loc,data_file,test_file,target_var):
             plt.title(graph_title)
             plt.ylabel(metric)
             plt.xlabel('epoch')
-            plt.show()
+            if save_figs == True:
+                plt.savefig(os.path.join(data_save_loc, target_var + " " + metric + ".jpg"))
+
+            if show_figs == True:
+                plt.show()
+            else:
+                plt.clf()
 
         plot(history, 'accuracy', 'model accuracy')
         plot(history, 'loss', 'model loss')
@@ -495,8 +502,13 @@ def image_model(save_loc,data_file,test_file,target_var):
 
     model(adapted_dataset,img_array,target_var,act_func)
 
-if run_img_model == True:
+if run_img_model == True and target_all == False:
     image_model(save_dir,main_data,test_file,target_variable)
+elif run_img_model == True and target_all == True:
+    # collect columns in data
+    cols = list(main_data.columns)
+    for column in cols:
+        image_model(save_dir,main_data,test_file,target_variable)
 
 # delete converted dicom images after use if boolean is true
 if del_converted_imgs == True:
