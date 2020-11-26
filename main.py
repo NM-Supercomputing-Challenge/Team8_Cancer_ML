@@ -245,14 +245,23 @@ def model(data_file,test_file,target_variables,epochs_num):
         input = keras.Input(shape=X_train.shape)
 
         def add_target(Input):
-            x = layers.Dense(12,activation='relu')(Input)
-            x = layers.Dense(12,activation='relu')(x)
+            x = layers.Dense(40,activation='relu')(Input)
+            x = layers.Dense(40,activation='relu')(x)
+            x = layers.Dense(35,activation='relu')(x)
+            x = layers.Dense(35,activation='relu')(x)
             return x
 
         output_list = []
-        for vars in target_vars:
+        for vars in range(len(target_vars)):
             x = add_target(input)
             output_list.append(x)
+
+        x = layers.Concatenate()(output_list)
+        output_list.clear()
+        x = layers.Dense(12,activation='relu')(x)
+        for vars in range(len(target_vars)):
+            y = layers.Dense(1,activation='linear')(x)
+            output_list.append(y)
 
         model = keras.Model(inputs=input,outputs=output_list)
 
@@ -286,8 +295,7 @@ def model(data_file,test_file,target_variables,epochs_num):
             else:
                 plt.clf()
 
-        plot(history,'dense_3_accuracy','model accuracy')
-        plot(history,'dense_3_loss','model loss')
+        plot(history,'loss','model accuracy')
 
         def save_fitted_model(model,save_location):
             model.save(save_location)
@@ -297,6 +305,10 @@ def model(data_file,test_file,target_variables,epochs_num):
 
         print(model.predict(X_test, batch_size=1))
         print(y_test)
+
+        eval = model.evaluate(X_test)
+        results = dict(zip(model.metrics_names, eval))
+        print(results)
 
     NN(adapted_dataset,target_variables,epochs_num,act_func)
 
