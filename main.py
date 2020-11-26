@@ -245,10 +245,10 @@ def model(data_file,test_file,target_variables,epochs_num):
         input = keras.Input(shape=X_train.shape)
 
         def add_target(Input):
-            x = layers.Dense(40,activation='relu')(Input)
-            x = layers.Dense(40,activation='relu')(x)
-            x = layers.Dense(35,activation='relu')(x)
-            x = layers.Dense(35,activation='relu')(x)
+            x = layers.Dense(40,activation=activation_function)(Input)
+            x = layers.Dense(40,activation=activation_function)(x)
+            x = layers.Dense(35,activation=activation_function)(x)
+            x = layers.Dense(35,activation=activation_function)(x)
             return x
 
         output_list = []
