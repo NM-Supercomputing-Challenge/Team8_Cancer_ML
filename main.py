@@ -12,6 +12,7 @@ import shutil
 import cv2
 from keras.preprocessing.image import load_img
 from keras.preprocessing.image import img_to_array
+from keras import layers
 import numpy as np
 import matplotlib.pyplot as plt
 import os
@@ -29,10 +30,12 @@ import sys
 save_fit = False
 model_save_loc = "saved_model"
 
-main_data = "HNSCC-HN1\\Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020.csv"
-sec_data = "HNSCC-3DCT\\MDPA Patient Data Final (Weight).csv"
+main_data = "D:\\Cancer_Project\\HNSCC-HN1\\Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020.csv"
+sec_data = "D:\\Cancer_Project\\HNSCC-3DCT\\MDPA Patient Data Final (Weight).csv"
 test_file = "test_2.csv"
-target_variable = "clin_t"
+
+# list with strings or a single string may be inputted
+target_variables = ["event_overall_survival","chemotherapy_given"]
 
 # if true, converted images will be in png format instead of jpg
 png = False
@@ -47,7 +50,7 @@ load_dir = "D:\Cancer_Project\\Cancer Imagery\\HEAD-NECK-RADIOMICS-HN1"
 save_dir = "D:\\Cancer_Project\\converted_img"
 
 # directory to save imagery array
-img_array_save = "img_arrays"
+img_array_save = "D:\Cancer_Project\img_arrays"
 
 # if true, numpy image array will be searched for in img_array_save
 load_numpy_img = True
@@ -59,7 +62,7 @@ convert_imgs = False
 del_converted_imgs = False
 
 # if true, image model will be ran instead of clinical only model
-run_img_model = True
+run_img_model = False
 
 # if true, two data files will be expected for input
 two_datasets = False
@@ -78,13 +81,13 @@ ID_dataset_col = "id"
 img_dimensions = (512, 512, 3)
 
 # if true, every column in data will be inputted for target variable
-target_all = True
+target_all = False
 
 # save location for data/graphs
-data_save_loc = "result_graphs"
+data_save_loc = "D://Cancer_Project//result_graphs"
 
 # if true, graphs will be shown after training model
-show_figs = False
+show_figs = True
 
 # if true, graphs will be saved after training model
 save_figs = True
@@ -178,7 +181,7 @@ if two_datasets == True:
 elif two_datasets == False:
     main_data = prep_data(main_data,None)
 
-def model(data_file,test_file,target_variable,epochs_num):
+def model(data_file,test_file,target_variables,epochs_num):
 
     def format_data(data_file, test_file, target_var):
 
@@ -197,15 +200,15 @@ def model(data_file,test_file,target_variable,epochs_num):
 
             # Append y data for target column into new dataset
             y_data = df[target_var]
-            dataset = dataset.assign(target_variable=y_data)
+            dataset = dataset.assign(target_variables=y_data)
             target_name = str(target_var)
-            dataset = dataset.rename(columns={'target_variable':target_name},inplace=True)
+            dataset = dataset.rename(columns={'target_variables':target_name},inplace=True)
         elif use_additional_test_file == False:
             dataset = df
 
         return dataset
 
-    adapted_dataset = format_data(data_file, test_file,target_variable)
+    adapted_dataset = format_data(data_file, test_file,target_variables)
 
     # determine activation function (relu or tanh) from if there are negative numbers in target variable
     df_values = adapted_dataset.values
@@ -221,15 +224,15 @@ def model(data_file,test_file,target_variable,epochs_num):
     else:
         act_func = 'relu'
 
-    def NN(data_file, target_var, epochs_num,activation_function):
+    def NN(data_file, target_vars, epochs_num,activation_function):
 
         # Get data. Data must already be in a Pandas Dataframe
         df = data_file
 
         #y data
-        labels = df[target_var]
+        labels = df.loc[:,target_vars]
         #x data
-        features = df.drop(columns=[target_var])
+        features = df.drop(target_vars,axis=1)
 
         X = features
         y = labels
@@ -239,17 +242,32 @@ def model(data_file,test_file,target_variable,epochs_num):
         X_train = scaler.transform(X_train)
         X_test = scaler.transform(X_test)
 
-        model = Sequential([tf.keras.layers.Flatten()])
-        model.add(Dense(24, activation=activation_function))
-        model.add(Dense(24, activation=activation_function))
-        model.add(Dense(24, activation=activation_function))
-        model.add(Dense(10, activation=activation_function))
-        model.add(Dense(1, activation='linear'))
-        model.compile(loss='mean_squared_error',
-                      optimizer=keras.optimizers.SGD(lr=0.001, momentum=0.8),
+        input = keras.Input(shape=X_train.shape)
+
+        def add_target(Input):
+            x = layers.Dense(12,activation='relu')(Input)
+            x = layers.Dense(12,activation='relu')(x)
+            return x
+
+        output_list = []
+        for vars in target_vars:
+            x = add_target(input)
+            output_list.append(x)
+
+        model = keras.Model(inputs=input,outputs=output_list)
+
+        model.compile(optimizer='adam',
+                      loss='mean_squared_error',
                       metrics=['accuracy'])
 
-        fit = model.fit(X_train, y_train, epochs=epochs_num, batch_size=5)
+        # divide y_train's columns into seperate dataframes and store them in a list
+        list_y_train = []
+        y_cols = list(y_train.columns)
+        for col in y_cols:
+            var_col = y_train[col]
+            list_y_train.append(var_col)
+
+        fit = model.fit(X_train, list_y_train, epochs=epochs_num, batch_size=5)
 
         # plotting
         history = fit
@@ -261,15 +279,15 @@ def model(data_file,test_file,target_variable,epochs_num):
             plt.ylabel(metric)
             plt.xlabel('epoch')
             if save_figs == True:
-                plt.savefig(os.path.join(data_save_loc, target_var + " " + metric + ".jpg"))
+                plt.savefig(os.path.join(data_save_loc, str(target_vars) + " " + metric + ".jpg"))
 
             if show_figs == True:
                 plt.show()
             else:
                 plt.clf()
 
-        plot(history,'accuracy','model accuracy')
-        plot(history,'loss','model loss')
+        plot(history,'dense_3_accuracy','model accuracy')
+        plot(history,'dense_3_loss','model loss')
 
         def save_fitted_model(model,save_location):
             model.save(save_location)
@@ -280,10 +298,10 @@ def model(data_file,test_file,target_variable,epochs_num):
         print(model.predict(X_test, batch_size=1))
         print(y_test)
 
-    NN(adapted_dataset,target_variable,epochs_num,act_func)
+    NN(adapted_dataset,target_variables,epochs_num,act_func)
 
 if run_img_model == False and target_all == False:
-    model(main_data,test_file,target_variable,num_epochs)
+    model(main_data,test_file,target_variables,num_epochs)
 elif run_img_model == False and target_all == True:
     # collect columns in data
     cols = list(main_data.columns)
@@ -310,9 +328,9 @@ def image_model(save_loc,data_file,test_file,target_var):
 
             # Append y data for target column into new dataset
             y_data = df[target_var]
-            dataset = dataset.assign(target_variable=y_data)
+            dataset = dataset.assign(target_variables=y_data)
             target_name = str(target_var)
-            dataset.rename(columns={'target_variable':target_name},inplace=True)
+            dataset.rename(columns={'target_variables':target_name},inplace=True)
         elif use_additional_test_file == False:
             dataset = df
 
@@ -503,12 +521,12 @@ def image_model(save_loc,data_file,test_file,target_var):
     model(adapted_dataset,img_array,target_var,act_func)
 
 if run_img_model == True and target_all == False:
-    image_model(save_dir,main_data,test_file,target_variable)
+    image_model(save_dir,main_data,test_file,target_variables)
 elif run_img_model == True and target_all == True:
     # collect columns in data
     cols = list(main_data.columns)
     for column in cols:
-        image_model(save_dir,main_data,test_file,target_variable)
+        image_model(save_dir,main_data,test_file,target_variables)
 
 # delete converted dicom images after use if boolean is true
 if del_converted_imgs == True:
