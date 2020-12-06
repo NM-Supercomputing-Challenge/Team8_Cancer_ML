@@ -18,6 +18,9 @@ import matplotlib.pyplot as plt
 import os
 import psutil
 import sys
+import tkinter as tk
+import tkinter.font as tkFont
+import random
 
 
 # un-comment to show all of pandas dataframe
@@ -91,6 +94,69 @@ show_figs = True
 
 # if true, graphs will be saved after training model
 save_figs = True
+
+
+def GUI_varConnector(dataset1, dataset2):
+
+    if str(type(dataset1)) == "<class 'str'>":
+        dataset1 = pd.read_csv(dataset1)
+
+    if str(type(dataset2)) == "<class 'str'>":
+        dataset2 = pd.read_csv(dataset2)
+
+    vars1 = list(dataset1.columns)
+    vars2 = list(dataset2.columns)
+
+    # list of colors for buttons to choose from
+    colors = ["red", "blue", "purple", "orange", "green", "gray",
+              "gainsboro", "dark salmon", "LemonChiffon2", "ivory3",
+              "SteelBlue1", "DarkOliveGreen3", "gold2", "plum1"]
+
+    window = tk.Tk()
+
+    font = tkFont.Font(family="Georgia", size=20)
+    title = tk.Label(text="Select matching variables", font=font)
+    title.grid(row=0, column=0)
+
+    button = None
+
+    pressedVars = []
+    buttonList = []
+
+    def makeButtons(var_name, x, y):
+        var = var_name
+
+        def trackVars():
+            pressedVars.append(var)
+            button.config(bg=random.choice(colors))
+
+        button = tk.Button(text=var_name, fg="white", bg="black", width=5, height=3,
+                           command=trackVars)
+        button.grid(column=x, row=y)
+        buttonList.append(button)
+
+    y = 2
+    for var in vars1:
+        makeButtons(var, 0, y)
+        y = y + 1
+
+    y = 2
+    for var2 in vars2:
+        makeButtons(var2, 2, y)
+        y = y + 1
+
+    window.mainloop()
+
+    # function used to convert list to dictionary
+    def Convert(lst):
+        res_dct = {lst[i]: lst[i + 1] for i in range(0, len(lst), 2)}
+        return res_dct
+
+    pressedVars_dict = Convert(pressedVars)
+    return pressedVars_dict
+
+varMatches = GUI_varConnector(main_data,sec_data)
+print(varMatches)
 
 def collect_img_dirs(data_folder):
     img_directories = []
@@ -608,3 +674,4 @@ if del_converted_imgs == True:
                 shutil.rmtree(file_path)
         except Exception as e:
             print('Failed to delete %s. Reason: %s' % (file_path, e))
+
