@@ -145,6 +145,10 @@ def GUI_varConnector(dataset1, dataset2):
         makeButtons(var2, 0.50, y)
         y = y + 0.03
 
+    noneButton = tk.Button(text="There are no matching variables",fg="white",bg="orange",width=30,height=3,
+                           command=None)
+    noneButton.place(relx=0.8,rely=0.85)
+
     window.mainloop()
 
     # function used to convert list to dictionary
