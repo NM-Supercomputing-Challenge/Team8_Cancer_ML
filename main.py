@@ -116,7 +116,7 @@ def GUI_varConnector(dataset1, dataset2):
 
     font = tkFont.Font(family="Georgia", size=20)
     title = tk.Label(text="Select matching variables", font=font)
-    title.grid(row=0, column=0)
+    title.place(relx=0.4,rely=0)
 
     button = None
 
@@ -130,20 +130,20 @@ def GUI_varConnector(dataset1, dataset2):
             pressedVars.append(var)
             button.config(bg=random.choice(colors))
 
-        button = tk.Button(text=var_name, fg="white", bg="black", width=5, height=3,
+        button = tk.Button(text=var_name, fg="white", bg="black", width=40, height=1,
                            command=trackVars)
-        button.grid(column=x, row=y)
+        button.place(relx=x,rely=y)
         buttonList.append(button)
 
-    y = 2
+    y = 0.1
     for var in vars1:
-        makeButtons(var, 0, y)
-        y = y + 1
+        makeButtons(var, 0.25, y)
+        y = y + 0.03
 
-    y = 2
+    y = 0.1
     for var2 in vars2:
-        makeButtons(var2, 2, y)
-        y = y + 1
+        makeButtons(var2, 0.50, y)
+        y = y + 0.03
 
     window.mainloop()
 
@@ -674,4 +674,3 @@ if del_converted_imgs == True:
                 shutil.rmtree(file_path)
         except Exception as e:
             print('Failed to delete %s. Reason: %s' % (file_path, e))
-
