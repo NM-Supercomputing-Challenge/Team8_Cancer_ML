@@ -34,7 +34,7 @@ save_fit = False
 model_save_loc = "saved_model"
 
 main_data = "D:\\Cancer_Project\\HNSCC-HN1\\Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020.csv"
-sec_data = "D:\\Cancer_Project\\HNSCC-3DCT\\MDPA Patient Data Final (Weight).csv"
+sec_data = "D:\\Cancer_Project\\HNSCC-3DCT\\MDPA Patient Data Final (Demographics).csv"
 test_file = "test_2.csv"
 
 # list with strings or a single string may be inputted
@@ -146,7 +146,7 @@ def GUI_varConnector(dataset1, dataset2):
         y = y + 0.03
 
     noneButton = tk.Button(text="There are no matching variables",fg="white",bg="orange",width=30,height=3,
-                           command=None)
+                           command=window.destroy)
     noneButton.place(relx=0.8,rely=0.85)
 
     window.mainloop()
