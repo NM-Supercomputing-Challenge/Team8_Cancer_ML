@@ -22,7 +22,6 @@ import tkinter as tk
 import tkinter.font as tkFont
 import random
 
-
 # un-comment to show all of pandas dataframe
 #pd.set_option('display.max_rows', None)
 #pd.set_option('display.max_columns', None)
@@ -33,18 +32,18 @@ import random
 save_fit = False
 model_save_loc = "saved_model"
 
-main_data = "D:\\Cancer_Project\\HNSCC-3DCT\\MDPA Patient Data Final (Dose Fx).csv"
-sec_data = "D:\\Cancer_Project\\HNSCC-3DCT\\MDPA Patient Data Final (Demographics).csv"
+main_data = "D:\\Cancer_Project\\Team8_Cancer_ML\\HNSCC\\HNSCC Clinical Data.csv"
+sec_data = "D:\\Cancer_Project\\Team8_Cancer_ML\\HNSCC\\Patient and Treatment Characteristics.csv"
 test_file = "test_2.csv"
 
 # list with strings or a single string may be inputted
-target_variables = ["Total Dose (GY)","Energy (MV)"]
+target_variables = ["chemotherapy_given","ajcc_stage"]
 
 # if true, converted images will be in png format instead of jpg
 png = False
 
 # folder containing Cancer Imagery
-load_dir = "D:\Cancer_Project\\Cancer Imagery\\HEAD-NECK-RADIOMICS-HN1"
+load_dir = "D:\Cancer_Project\\Cancer Imagery\\HNSCC"
 
 # directory to save data such as converted images
 save_dir = "D:\\Cancer_Project\\converted_img"
@@ -53,29 +52,29 @@ save_dir = "D:\\Cancer_Project\\converted_img"
 img_array_save = "D:\Cancer_Project\img_arrays"
 
 # if true, numpy image array will be searched for in img_array_save
-load_numpy_img = True
+load_numpy_img = False
 
 # if true, attempt will be made to convert dicom files to jpg or png
-convert_imgs = False
+convert_imgs = True
 
 #if true, converted dicom images will be deleted after use
 del_converted_imgs = False
 
 # if true, image model will be ran instead of clinical only model
-run_img_model = False
+run_img_model = True
 
 # if true, two data files will be expected for input
-two_datasets = False
+two_datasets = True
 
 # if true, an additional file will be expected for testing
 use_additional_test_file = False
 
 # where image id is located in image names (start,end)
 # only applies if using image model
-img_id_name_loc = (2,6)
+img_id_name_loc = (9,12)
 
 # Column of IDs in dataset. Acceptable values include "index" or a column name.
-ID_dataset_col = "HN_P"
+ID_dataset_col = "TCIA ID"
 
 # tuple with dimension of imagery. All images must equal this dimension
 img_dimensions = (512, 512, 3)
@@ -84,13 +83,13 @@ img_dimensions = (512, 512, 3)
 target_all = False
 
 # save location for data/graphs
-data_save_loc = "D://Cancer_Project//result_graphs"
+data_save_loc = "D://Cancer_Project//Team8_Cancer_ML//result_graphs"
 
 # if true, graphs will be shown after training model
-show_figs = True
+show_figs = False
 
 # if true, graphs will be saved after training model
-save_figs = True
+save_figs = False
 
 def GUI_varConnector(dataset1, dataset2):
 
@@ -158,8 +157,9 @@ def GUI_varConnector(dataset1, dataset2):
     pressedVars_dict = Convert(pressedVars)
     return pressedVars_dict
 
-varMatches = GUI_varConnector(main_data,sec_data)
-print(varMatches)
+if two_datasets == True:
+    varMatches = GUI_varConnector(main_data,sec_data)
+    print(varMatches)
 
 def collect_img_dirs(data_folder):
     img_directories = []
