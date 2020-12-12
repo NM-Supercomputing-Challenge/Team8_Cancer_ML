@@ -21,6 +21,7 @@ import sys
 import tkinter as tk
 import tkinter.font as tkFont
 import random
+from tkinter import ttk
 
 # un-comment to show all of pandas dataframe
 #pd.set_option('display.max_rows', None)
@@ -32,12 +33,12 @@ import random
 save_fit = False
 model_save_loc = "saved_model"
 
-main_data = "D:\\Cancer_Project\\Team8_Cancer_ML\\HNSCC\\HNSCC Clinical Data.csv"
-sec_data = "D:\\Cancer_Project\\Team8_Cancer_ML\\HNSCC\\Patient and Treatment Characteristics.csv"
+main_data = "D:\\Cancer_Project\\Team8_Cancer_ML\\HNSCC-3DCT\\MDPA Patient Data Final (Demographics).csv"
+sec_data = "D:\\Cancer_Project\\Team8_Cancer_ML\\HNSCC-3DCT\\MDPA Patient Data Final (Dose Fx).csv"
 test_file = "test_2.csv"
 
 # list with strings or a single string may be inputted
-target_variables = ["chemotherapy_given","ajcc_stage"]
+target_variables = ["ChemotherapyMedication","Cancer Staging"]
 
 # if true, converted images will be in png format instead of jpg
 png = False
@@ -55,13 +56,13 @@ img_array_save = "D:\Cancer_Project\img_arrays"
 load_numpy_img = False
 
 # if true, attempt will be made to convert dicom files to jpg or png
-convert_imgs = True
+convert_imgs = False
 
 #if true, converted dicom images will be deleted after use
 del_converted_imgs = False
 
 # if true, image model will be ran instead of clinical only model
-run_img_model = True
+run_img_model = False
 
 # if true, two data files will be expected for input
 two_datasets = True
@@ -71,10 +72,10 @@ use_additional_test_file = False
 
 # where image id is located in image names (start,end)
 # only applies if using image model
-img_id_name_loc = (9,12)
+img_id_name_loc = (3,6)
 
 # Column of IDs in dataset. Acceptable values include "index" or a column name.
-ID_dataset_col = "TCIA ID"
+ID_dataset_col = "HN_P"
 
 # tuple with dimension of imagery. All images must equal this dimension
 img_dimensions = (512, 512, 3)
@@ -105,6 +106,12 @@ def GUI_varConnector(dataset1, dataset2):
     vars1.remove(ID_dataset_col)
     vars2.remove(ID_dataset_col)
 
+    for element in target_variables:
+        if element in vars1:
+            vars1.remove(element)
+        if element in vars2:
+            vars2.remove(element)
+
     # list of colors for buttons to choose from
     colors = ["red", "blue", "purple", "orange", "green", "gray",
               "gainsboro", "dark salmon", "LemonChiffon2", "ivory3",
@@ -112,9 +119,31 @@ def GUI_varConnector(dataset1, dataset2):
 
     window = tk.Tk()
 
-    font = tkFont.Font(family="Georgia", size=20)
-    title = tk.Label(text="Select matching variables", font=font)
-    title.place(relx=0.4,rely=0)
+    main_frame = tk.Frame(window)
+    main_frame.pack(fill=tk.BOTH,expand=1)
+
+    canvas = tk.Canvas(main_frame)
+    canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
+
+    # Add a scrollbars to the canvas
+    scrollbar = ttk.Scrollbar(main_frame, orient=tk.VERTICAL, command=canvas.yview)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    scrollbar_x = ttk.Scrollbar(main_frame,orient=tk.HORIZONTAL, command=canvas.xview)
+    scrollbar_x.pack(side=tk.BOTTOM, fill=tk.X)
+
+    # Configure the canvas
+    canvas.configure(xscrollcommand=scrollbar_x.set)
+    canvas.configure(yscrollcommand=scrollbar.set)
+    canvas.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+
+    second_frame = tk.Frame(canvas)
+    canvas.create_window((0,0), window=second_frame, anchor="nw")
+
+    buttonFont = tkFont.Font(family="Georgia", size=20)
+    font = tkFont.Font(family="Georgia",size=25)
+    title = tk.Label(text="Select matching variables", font=font, fg="#0352fc")
+    title.place(relx=0.2,rely=0)
 
     button = None
 
@@ -128,24 +157,24 @@ def GUI_varConnector(dataset1, dataset2):
             pressedVars.append(var)
             button.config(bg=random.choice(colors))
 
-        button = tk.Button(text=var_name, fg="white", bg="black", width=40, height=1,
-                           command=trackVars)
-        button.place(relx=x,rely=y)
+        button = tk.Button(master=second_frame,text=var_name, fg="white", bg="black", width=15, height=1,
+                           command=trackVars,font=buttonFont)
+        button.grid(column=x,row=y,padx=105,pady=50)
         buttonList.append(button)
 
-    y = 0.1
+    y = 1
     for var in vars1:
-        makeButtons(var, 0.25, y)
-        y = y + 0.03
+        makeButtons(var, 10, y)
+        y = y + 10
 
-    y = 0.1
+    y = 1
     for var2 in vars2:
-        makeButtons(var2, 0.50, y)
-        y = y + 0.03
+        makeButtons(var2, 20, y)
+        y = y + 10
 
-    noneButton = tk.Button(text="There are no matching variables",fg="white",bg="orange",width=30,height=3,
+    noneButton = tk.Button(master=second_frame,text="There are no matching variables",fg="white",bg="orange",width=30,height=3,
                            command=window.destroy)
-    noneButton.place(relx=0.8,rely=0.85)
+    noneButton.grid(row=100,column=100)
 
     window.mainloop()
 
