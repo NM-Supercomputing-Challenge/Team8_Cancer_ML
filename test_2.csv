@@ -1,0 +1,2 @@
+Sex,Age,Diag,Site,Histology,Grade,T,N,M,Stage,Alive or Dead,Current Smoker,Received Feeding Tube (Y/N),BW Start tx (kg),BW stop treat (kg),Height (m),BMI start treat (kg/m2),BMI stop treat (kg/m2),Total RT treatment time (days),Pre-RT L3 Skeletal Muscle Cross Sectional Area (cm2),Post-RT L3 Skeletal Muscle Cross Sectional Area (cm2),Pre-RT L3 Adipose Tissue Cross Sectional Area (cm2),Post-RT L3 Adipose Tissue Cross Sectional Area (cm2),PreRT Skeletal Muscle status
+1,50,14,1,0,0,3,10,0,3,0,1,1,82.1,82.1,1.817,24.87,24.87,43,257.54,177.66,173.91,101.87,0
