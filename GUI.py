@@ -26,6 +26,10 @@ label2.place(relx=0.1, rely=0.2)
 entryBox2 = Entry()
 entryBox2.place(relx=0.1,rely=0.25)
 
+label3 = Label(text="Enter a string or list with target variable(s)",font=font)
+label3.place(relx=0.1,rely=0.3)
+
+entryBox3 = Entry()
+entryBox3.place(relx=0.1,rely=0.35)
+
 window.mainloop()
-
-
