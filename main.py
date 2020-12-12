@@ -33,18 +33,15 @@ import random
 save_fit = False
 model_save_loc = "saved_model"
 
-main_data = "D:\\Cancer_Project\\HNSCC-HN1\\Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020.csv"
+main_data = "D:\\Cancer_Project\\HNSCC-3DCT\\MDPA Patient Data Final (Dose Fx).csv"
 sec_data = "D:\\Cancer_Project\\HNSCC-3DCT\\MDPA Patient Data Final (Demographics).csv"
 test_file = "test_2.csv"
 
 # list with strings or a single string may be inputted
-target_variables = ["chemotherapy_given","event_overall_survival"]
+target_variables = ["Total Dose (GY)","Energy (MV)"]
 
 # if true, converted images will be in png format instead of jpg
 png = False
-
-# list of names for duplicate columns
-var_blacklist = ["Unnamed: 5"]
 
 # folder containing Cancer Imagery
 load_dir = "D:\Cancer_Project\\Cancer Imagery\\HEAD-NECK-RADIOMICS-HN1"
@@ -65,7 +62,7 @@ convert_imgs = False
 del_converted_imgs = False
 
 # if true, image model will be ran instead of clinical only model
-run_img_model = True
+run_img_model = False
 
 # if true, two data files will be expected for input
 two_datasets = False
@@ -78,7 +75,7 @@ use_additional_test_file = False
 img_id_name_loc = (2,6)
 
 # Column of IDs in dataset. Acceptable values include "index" or a column name.
-ID_dataset_col = "id"
+ID_dataset_col = "HN_P"
 
 # tuple with dimension of imagery. All images must equal this dimension
 img_dimensions = (512, 512, 3)
@@ -95,7 +92,6 @@ show_figs = True
 # if true, graphs will be saved after training model
 save_figs = True
 
-
 def GUI_varConnector(dataset1, dataset2):
 
     if str(type(dataset1)) == "<class 'str'>":
@@ -106,6 +102,9 @@ def GUI_varConnector(dataset1, dataset2):
 
     vars1 = list(dataset1.columns)
     vars2 = list(dataset2.columns)
+
+    vars1.remove(ID_dataset_col)
+    vars2.remove(ID_dataset_col)
 
     # list of colors for buttons to choose from
     colors = ["red", "blue", "purple", "orange", "green", "gray",
@@ -238,7 +237,8 @@ def prep_data(data_file_1,data_file_2):
         adapted_2 = file_2.loc[common_ids]
         combined_dataset = adapted_1.join(adapted_2)
 
-        for i in var_blacklist:
+        # eliminate duplicate variables
+        for i in varMatches.values():
             combined_dataset = combined_dataset.drop(i,axis=1)
         data = combined_dataset
     else:
