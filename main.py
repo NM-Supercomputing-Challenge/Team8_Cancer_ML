@@ -24,8 +24,8 @@ import random
 from tkinter import ttk
 
 # un-comment to show all of pandas dataframe
-#pd.set_option('display.max_rows', None)
-#pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
 
 # un-comment to show all of numpy array
 #np.set_printoptions(threshold=sys.maxsize)
@@ -33,12 +33,12 @@ from tkinter import ttk
 save_fit = False
 model_save_loc = "saved_model"
 
-main_data = "D:\\Cancer_Project\\Team8_Cancer_ML\\HNSCC-3DCT\\MDPA Patient Data Final (Demographics).csv"
-sec_data = "D:\\Cancer_Project\\Team8_Cancer_ML\\HNSCC-3DCT\\MDPA Patient Data Final (Dose Fx).csv"
+main_data = "D:\Cancer_Project\Team8_Cancer_ML\HNSCC-HN1\\Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020.csv"
+sec_data = ""
 test_file = "test_2.csv"
 
 # list with strings or a single string may be inputted
-target_variables = ["ChemotherapyMedication","Cancer Staging"]
+target_variables = ["chemotherapy_given","ajcc_stage"]
 
 # if true, converted images will be in png format instead of jpg
 png = False
@@ -65,7 +65,7 @@ del_converted_imgs = False
 run_img_model = False
 
 # if true, two data files will be expected for input
-two_datasets = True
+two_datasets = False
 
 # if true, an additional file will be expected for testing
 use_additional_test_file = False
@@ -75,7 +75,7 @@ use_additional_test_file = False
 img_id_name_loc = (3,6)
 
 # Column of IDs in dataset. Acceptable values include "index" or a column name.
-ID_dataset_col = "HN_P"
+ID_dataset_col = "id"
 
 # tuple with dimension of imagery. All images must equal this dimension
 img_dimensions = (512, 512, 3)
@@ -91,6 +91,9 @@ show_figs = False
 
 # if true, graphs will be saved after training model
 save_figs = False
+
+# number of epochs in model
+num_epochs = 20
 
 def GUI_varConnector(dataset1, dataset2):
 
@@ -157,7 +160,7 @@ def GUI_varConnector(dataset1, dataset2):
             pressedVars.append(var)
             button.config(bg=random.choice(colors))
 
-        button = tk.Button(master=second_frame,text=var_name, fg="white", bg="black", width=15, height=1,
+        button = tk.Button(master=second_frame,text=var_name, fg="white", bg="black", width=30, height=1,
                            command=trackVars,font=buttonFont)
         button.grid(column=x,row=y,padx=105,pady=50)
         buttonList.append(button)
@@ -172,9 +175,9 @@ def GUI_varConnector(dataset1, dataset2):
         makeButtons(var2, 20, y)
         y = y + 10
 
-    noneButton = tk.Button(master=second_frame,text="There are no matching variables",fg="white",bg="orange",width=30,height=3,
+    exitButton = tk.Button(master=second_frame,text="Done",fg="white",bg="orange",width=30,height=3,
                            command=window.destroy)
-    noneButton.grid(row=100,column=100)
+    exitButton.grid(row=1,column=100)
 
     window.mainloop()
 
@@ -202,8 +205,6 @@ def collect_img_dirs(data_folder):
 
 if convert_imgs == True:
     load_dirs = collect_img_dirs(load_dir)
-
-num_epochs = 10
 
 def convert_img(png_boolean,dirs_list,save_path):
     png = png_boolean
@@ -309,24 +310,31 @@ def model(data_file, test_file, target_vars, epochs_num):
 
     adapted_dataset = format_data(data_file, test_file, target_vars)
 
+    # initiate negative_vals as False
+    negative_vals = False
+
     # determine activation function (relu or tanh) from if there are negative numbers in target variable
     df_values = adapted_dataset.values
     df_values = df_values.flatten()
     for val in df_values:
+        val = float(val)
         if val < 0:
             negative_vals = True
-        else:
-            negative_vals = False
 
     if negative_vals == True:
         act_func = "tanh"
     else:
         act_func = 'relu'
 
+    print(act_func)
+
     def NN(data_file, target_vars, epochs_num,activation_function):
 
         # Get data. Data must already be in a Pandas Dataframe
         df = data_file
+
+        # round all values in dataset to 3rd decimal place
+        df = df.astype("float").round(3)
 
         #y data
         labels = df.loc[:,target_vars]
@@ -341,7 +349,17 @@ def model(data_file, test_file, target_vars, epochs_num):
         X_train = scaler.transform(X_train)
         X_test = scaler.transform(X_test)
 
-        if len(target_vars) > 1:
+        # divide y_train's columns into separate dataframes and store them in a list
+        list_y_train = []
+        y_cols = list(y_train.columns)
+        for col in y_cols:
+            var_col = y_train[col]
+            list_y_train.append(var_col)
+
+        y_train = y_train.to_numpy()
+        y_test = y_test.to_numpy()
+
+        if str(type(target_vars))=="<class 'list'>" and len(target_vars) > 1:
             input = keras.Input(shape=X_train.shape)
 
             def add_target(Input):
@@ -369,29 +387,22 @@ def model(data_file, test_file, target_vars, epochs_num):
                           loss='mean_squared_error',
                           metrics=['accuracy'])
 
-            # divide y_train's columns into seperate dataframes and store them in a list
-            list_y_train = []
-            y_cols = list(y_train.columns)
-            for col in y_cols:
-                var_col = y_train[col]
-                list_y_train.append(var_col)
-
             fit = model.fit(X_train, list_y_train, epochs=epochs_num, batch_size=5)
 
         else:
             # set input shape to dimension of data
             input = keras.layers.Input(shape=(X_train.shape[1],))
 
-            x = Dense(150, activation=activation_function)(input)
-            x = Dense(150, activation=activation_function)(x)
-            x = Dense(150, activation=activation_function)(x)
-            x = Dense(120, activation=activation_function)(x)
-            x = Dense(120, activation=activation_function)(x)
-            x = Dense(100, activation=activation_function)(x)
-            x = Dense(100, activation=activation_function)(x)
-            x = Dense(80, activation=activation_function)(x)
-            x = Dense(80, activation=activation_function)(x)
-            x = Dense(45, activation=activation_function)(x)
+            x = Dense(30, activation=activation_function)(input)
+            x = Dense(30, activation=activation_function)(x)
+            x = Dense(30, activation=activation_function)(x)
+            x = Dense(25, activation=activation_function)(x)
+            x = Dense(25, activation=activation_function)(x)
+            x = Dense(25, activation=activation_function)(x)
+            x = Dense(20, activation=activation_function)(x)
+            x = Dense(20, activation=activation_function)(x)
+            x = Dense(15, activation=activation_function)(x)
+            x = Dense(10, activation=activation_function)(x)
             output = Dense(1, activation='linear')(x)
             model = keras.Model(input, output)
 
@@ -399,7 +410,7 @@ def model(data_file, test_file, target_vars, epochs_num):
                           loss='mean_squared_error',
                           metrics=['accuracy'])
 
-            fit = model.fit(X_train, y_train, epochs=epochs_num, batch_size=5)
+            fit = model.fit(X_train, y_train, epochs=epochs_num, batch_size=15)
 
         # plotting
         history = fit
