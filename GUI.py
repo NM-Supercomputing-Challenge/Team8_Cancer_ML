@@ -5,8 +5,6 @@ from tkinter import ttk
 with open("project_variables.txt","r") as projectVars:
     vars=projectVars.readlines()
 
-print(vars)
-
 window = Tk()
 
 main_frame = Frame(window)
@@ -15,7 +13,7 @@ main_frame.pack(fill=BOTH,expand=1)
 canvas = Canvas(main_frame)
 canvas.pack(side=LEFT, fill=BOTH, expand=1)
 
-# Add a scrollbars to the canvas
+# Add scrollbars to the canvas
 scrollbar = ttk.Scrollbar(main_frame, orient=VERTICAL, command=canvas.yview)
 scrollbar.pack(side=RIGHT, fill=Y)
 
@@ -30,22 +28,32 @@ canvas.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("
 second_frame = Frame(canvas)
 canvas.create_window((0,0), window=second_frame, anchor="nw")
 
+# make font for title
+fontTitle = tkFont.Font(family="Georgia",size=20)
+
+# make font for variable labels
+varFont = tkFont.Font(family="Berlin Sans FB",size=12)
+
+# make title
+title = Label(second_frame,text="Data Page",font=fontTitle)
+title.grid()
+
 def makeButton(name):
-    label = Label(second_frame,text=name)
-    label.pack()
+    label = Label(second_frame,text=name,font=varFont,fg="#6e7372")
+    label.grid(pady=40)
 
-    button = Button(second_frame,text="True")
-    button.pack()
+    button = Button(second_frame,text="True",width=20,height=2)
+    button.grid()
 
-    button = Button(second_frame,text="False")
-    button.pack()
+    button = Button(second_frame,text="False",width=20,height=2)
+    button.grid()
 
 def makeEntry(name):
-    label = Label(second_frame,text=name)
-    label.pack()
+    label = Label(second_frame,text=name,font=varFont,fg="#6e7372")
+    label.grid(pady=40)
 
     entry = Entry(second_frame)
-    entry.pack()
+    entry.grid()
 
 for var in vars:
     var = str(var)
@@ -67,7 +75,4 @@ for var in vars:
     else:
         makeEntry(var[:-1])
 
-
 window.mainloop()
-
-
