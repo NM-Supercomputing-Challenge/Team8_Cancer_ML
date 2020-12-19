@@ -24,8 +24,8 @@ import random
 from tkinter import ttk
 
 # un-comment to show all of pandas dataframe
-pd.set_option('display.max_rows', None)
-pd.set_option('display.max_columns', None)
+#pd.set_option('display.max_rows', None)
+#pd.set_option('display.max_columns', None)
 
 # un-comment to show all of numpy array
 #np.set_printoptions(threshold=sys.maxsize)
@@ -33,7 +33,7 @@ pd.set_option('display.max_columns', None)
 save_fit = False
 model_save_loc = "saved_model"
 
-main_data = "D:\Cancer_Project\Team8_Cancer_ML\HNSCC-HN1\\Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020.csv"
+main_data = "D:\\Cancer_Project\\Team8_Cancer_ML\HNSCC-HN1\\Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020.csv"
 sec_data = ""
 test_file = "test_2.csv"
 
@@ -93,7 +93,9 @@ show_figs = False
 save_figs = False
 
 # number of epochs in model
-num_epochs = 20
+num_epochs = 50
+
+# END VARIABLES - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def GUI_varConnector(dataset1, dataset2):
 
@@ -437,7 +439,14 @@ def model(data_file, test_file, target_vars, epochs_num):
         if save_fit == True:
             save_fitted_model(model,model_save_loc)
 
-        print(model.predict(X_test, batch_size=1))
+        prediction = model.predict(X_test, batch_size=1)
+        roundedPred = np.around(prediction,0)
+
+        print("- - - - - - - - - - - - - Unrounded Prediction - - - - - - - - - - - - -")
+        print(prediction)
+        print("- - - - - - - - - - - - - Rounded Prediction - - - - - - - - - - - - -")
+        print(roundedPred)
+        print("- - - - - - - - - - - - - y test - - - - - - - - - - - - -")
         print(y_test)
 
         eval = model.evaluate(X_test)
@@ -687,14 +696,25 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
 
         plot(history, 'loss', 'model loss')
 
-        print(model.predict(data_test))
-        print(y_test)
-
         def save_fitted_model(model, save_location):
             model.save(save_location)
 
         if save_fit == True:
             save_fitted_model(model, model_save_loc)
+
+        prediction = model.predict(X_test, batch_size=1)
+        roundedPred = np.around(prediction,0)
+
+        print("- - - - - - - - - - - - - Unrounded Prediction - - - - - - - - - - - - -")
+        print(prediction)
+        print("- - - - - - - - - - - - - Rounded Prediction - - - - - - - - - - - - -")
+        print(roundedPred)
+        print("- - - - - - - - - - - - - y test - - - - - - - - - - - - -")
+        print(y_test)
+
+        eval = model.evaluate(X_test)
+        results = dict(zip(model.metrics_names, eval))
+        print(results)
 
     model(adapted_dataset,img_array,target_vars,act_func)
 
