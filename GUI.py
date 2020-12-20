@@ -28,6 +28,10 @@ canvas.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("
 second_frame = Frame(canvas)
 canvas.create_window((0,0), window=second_frame, anchor="nw")
 
+# get screen dimensions
+screenHeight = second_frame.winfo_screenheight()
+screenWidth = second_frame.winfo_screenwidth()
+
 # make font for title
 fontTitle = tkFont.Font(family="Georgia",size=20)
 
@@ -36,7 +40,7 @@ varFont = tkFont.Font(family="Berlin Sans FB",size=12)
 
 # make title
 title = Label(second_frame,text="Data Page",font=fontTitle)
-title.grid()
+title.grid(padx=screenWidth/2,pady=20)
 
 def makeButton(name):
     label = Label(second_frame,text=name,font=varFont,fg="#6e7372")
