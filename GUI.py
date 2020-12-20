@@ -42,14 +42,28 @@ varFont = tkFont.Font(family="Berlin Sans FB",size=12)
 title = Label(second_frame,text="Data Page",font=fontTitle)
 title.grid(column=1)
 
+boolList = []
+
+def true():
+    global boolList
+
+    bool = "True"
+    boolList.append(bool)
+
+def false():
+    global boolList
+
+    bool = "False"
+    boolList.append(bool)
+
 def makeButton(name):
     label = Label(second_frame,text=name,font=varFont,fg="#6e7372")
     label.grid(column=1,pady=40)
 
-    button = Button(second_frame,text="True",width=20,height=2)
+    button = Button(second_frame,text="True",width=20,height=2,command=true)
     button.grid(column=1)
 
-    button = Button(second_frame,text="False",width=20,height=2)
+    button = Button(second_frame,text="False",width=20,height=2,command=false)
     button.grid(column=1)
 
 def makeEntry(name):
@@ -91,6 +105,9 @@ def Continue():
         txtEntry = entries.get()
         print(txtEntry)
         entries.set("")
+
+    for bools in boolList:
+        print(bools)
 
 # make continue button
 contButton = Button(second_frame,text="Continue",bg="orange",command=Continue,font=varFont)
