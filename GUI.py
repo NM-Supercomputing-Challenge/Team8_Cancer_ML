@@ -40,24 +40,30 @@ varFont = tkFont.Font(family="Berlin Sans FB",size=12)
 
 # make title
 title = Label(second_frame,text="Data Page",font=fontTitle)
-title.grid(padx=screenWidth/2,pady=20)
+title.grid(column=1)
 
 def makeButton(name):
     label = Label(second_frame,text=name,font=varFont,fg="#6e7372")
-    label.grid(pady=40)
+    label.grid(column=1,pady=40)
 
     button = Button(second_frame,text="True",width=20,height=2)
-    button.grid()
+    button.grid(column=1)
 
     button = Button(second_frame,text="False",width=20,height=2)
-    button.grid()
+    button.grid(column=1)
 
 def makeEntry(name):
-    label = Label(second_frame,text=name,font=varFont,fg="#6e7372")
-    label.grid(pady=40)
+    entryText = StringVar()
 
-    entry = Entry(second_frame)
-    entry.grid()
+    label = Label(second_frame,text=name,font=varFont,fg="#6e7372")
+    label.grid(column=1,pady=40)
+
+    entry = Entry(second_frame,textvariable=entryText)
+    entry.grid(column=1)
+    return entryText
+
+# initialize list for entryText vars
+entryText_list = []
 
 for var in vars:
     var = str(var)
@@ -77,6 +83,17 @@ for var in vars:
     if i == -1 and t == -1 and t2 == -1 and n == False:
         makeButton(var[:-1])
     else:
-        makeEntry(var[:-1])
+        entryText = makeEntry(var[:-1])
+        entryText_list.append(entryText)
+
+def Continue():
+    for entries in entryText_list:
+        txtEntry = entries.get()
+        print(txtEntry)
+        entries.set("")
+
+# make continue button
+contButton = Button(second_frame,text="Continue",bg="orange",command=Continue,font=varFont)
+contButton.grid(column=2,padx=screenWidth/1.3)
 
 window.mainloop()
