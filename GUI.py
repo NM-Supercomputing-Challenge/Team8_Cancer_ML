@@ -36,7 +36,13 @@ screenWidth = second_frame.winfo_screenwidth()
 fontTitle = tkFont.Font(family="Georgia",size=20)
 
 # make font for variable labels
-varFont = tkFont.Font(family="Berlin Sans FB",size=12)
+varFont = tkFont.Font(family="Times New Roman",size=16)
+
+# color for variable labels
+varColor = "#262121"
+
+# make font for entry boxes
+inputFont = tkFont.Font(family="Georgia",size=12)
 
 # make title
 title = Label(second_frame,text="Data Page",font=fontTitle)
@@ -57,22 +63,22 @@ def false():
     boolList.append(bool)
 
 def makeButton(name):
-    label = Label(second_frame,text=name,font=varFont,fg="#6e7372")
+    label = Label(second_frame,text=name,font=varFont,fg=varColor)
     label.grid(column=1,pady=40)
 
-    button = Button(second_frame,text="True",width=20,height=2,command=true)
+    button = Button(second_frame,text="True",width=25,height=3,font=inputFont,command=true)
     button.grid(column=1)
 
-    button = Button(second_frame,text="False",width=20,height=2,command=false)
+    button = Button(second_frame,text="False",width=25,height=3,font=inputFont,command=false)
     button.grid(column=1)
 
 def makeEntry(name):
     entryText = StringVar()
 
-    label = Label(second_frame,text=name,font=varFont,fg="#6e7372")
+    label = Label(second_frame,text=name,font=varFont,fg=varColor)
     label.grid(column=1,pady=40)
 
-    entry = Entry(second_frame,textvariable=entryText)
+    entry = Entry(second_frame,textvariable=entryText,font=inputFont,width=25)
     entry.grid(column=1)
     return entryText
 
@@ -121,7 +127,6 @@ def Continue():
 
 # make continue button
 contButton = Button(second_frame,text="Continue",bg="orange",command=Continue,font=varFont)
-contButton.grid(column=2,padx=screenWidth/1.3)
-
+contButton.grid(column=2,padx=screenWidth/1.4)
 
 window.mainloop()
