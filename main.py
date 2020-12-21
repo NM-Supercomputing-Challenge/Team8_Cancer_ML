@@ -22,6 +22,7 @@ import tkinter as tk
 import tkinter.font as tkFont
 import random
 from tkinter import ttk
+import GUI
 
 # un-comment to show all of pandas dataframe
 #pd.set_option('display.max_rows', None)
@@ -30,72 +31,160 @@ from tkinter import ttk
 # un-comment to show all of numpy array
 #np.set_printoptions(threshold=sys.maxsize)
 
-save_fit = False
-model_save_loc = "saved_model"
+# if true, main GUI will be used to specify other varibles
+useFront = True
 
-main_data = "D:\\Cancer_Project\\Team8_Cancer_ML\HNSCC-HN1\\Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020.csv"
-sec_data = ""
-test_file = "test_2.csv"
+if useFront == False:
+    # SPECIFY VARIABLES HERE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-# list with strings or a single string may be inputted
-target_variables = ["chemotherapy_given","ajcc_stage"]
+    save_fit = False
+    model_save_loc = "saved_model"
 
-# if true, converted images will be in png format instead of jpg
-png = False
+    main_data = "D:\\Cancer_Project\\Team8_Cancer_ML\HNSCC-HN1\\Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020.csv"
+    sec_data = ""
+    test_file = "test_2.csv"
 
-# folder containing Cancer Imagery
-load_dir = "D:\Cancer_Project\\Cancer Imagery\\HNSCC"
+    # list with strings or a single string may be inputted
+    target_variables = ['chemotherapy_given','ajcc_stage']
 
-# directory to save data such as converted images
-save_dir = "D:\\Cancer_Project\\converted_img"
+    # if true, converted images will be in png format instead of jpg
+    png = False
 
-# directory to save imagery array
-img_array_save = "D:\Cancer_Project\img_arrays"
+    # folder containing Cancer Imagery
+    load_dir = "D:\Cancer_Project\\Cancer Imagery\\HNSCC"
 
-# if true, numpy image array will be searched for in img_array_save
-load_numpy_img = False
+    # directory to save data such as converted images
+    save_dir = "D:\\Cancer_Project\\converted_img"
 
-# if true, attempt will be made to convert dicom files to jpg or png
-convert_imgs = False
+    # directory to save imagery array
+    img_array_save = "D:\Cancer_Project\img_arrays"
 
-#if true, converted dicom images will be deleted after use
-del_converted_imgs = False
+    # if true, numpy image array will be searched for in img_array_save
+    load_numpy_img = False
 
-# if true, image model will be ran instead of clinical only model
-run_img_model = False
+    # if true, attempt will be made to convert dicom files to jpg or png
+    convert_imgs = False
 
-# if true, two data files will be expected for input
-two_datasets = False
+    #if true, converted dicom images will be deleted after use
+    del_converted_imgs = False
 
-# if true, an additional file will be expected for testing
-use_additional_test_file = False
+    # if true, image model will be ran instead of clinical only model
+    run_img_model = False
 
-# where image id is located in image names (start,end)
-# only applies if using image model
-img_id_name_loc = (3,6)
+    # if true, two data files will be expected for input
+    two_datasets = False
 
-# Column of IDs in dataset. Acceptable values include "index" or a column name.
-ID_dataset_col = "id"
+    # if true, an additional file will be expected for testing
+    use_additional_test_file = False
 
-# tuple with dimension of imagery. All images must equal this dimension
-img_dimensions = (512, 512, 3)
+    # where image id is located in image names (start,end)
+    # only applies if using image model
+    img_id_name_loc = (3,6)
 
-# if true, every column in data will be inputted for target variable
-target_all = False
+    # Column of IDs in dataset. Acceptable values include "index" or a column name.
+    ID_dataset_col = "id"
 
-# save location for data/graphs
-data_save_loc = "D://Cancer_Project//Team8_Cancer_ML//result_graphs"
+    # tuple with dimension of imagery. All images must equal this dimension
+    img_dimensions = (512, 512, 3)
 
-# if true, graphs will be shown after training model
-show_figs = False
+    # if true, every column in data will be inputted for target variable
+    target_all = False
 
-# if true, graphs will be saved after training model
-save_figs = False
+    # save location for data/graphs
+    data_save_loc = "D://Cancer_Project//Team8_Cancer_ML//result_graphs"
 
-# number of epochs in model
-num_epochs = 50
+    # if true, graphs will be shown after training model
+    show_figs = False
 
-# END VARIABLES - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # if true, graphs will be saved after training model
+    save_figs = False
+
+    # number of epochs in model
+    num_epochs = 50
+
+    # END VARIABLES - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+elif useFront == True:
+
+    boolList = GUI.boolList
+
+    # convert every element in boolList to a proper boolean
+    [bool(b) for b in boolList]
+
+    dictTxt = dict(zip(GUI.varList_txt,GUI.txtEntry_list))
+    dictBool = dict(zip(GUI.varList_bool,boolList))
+
+    save_fit = dictBool["save_fit "]
+    model_save_loc = dictTxt["model_save_loc "]
+
+    main_data = dictTxt["main_data "]
+    sec_data = dictTxt["sec_data "]
+    test_file = dictTxt["test_file "]
+
+    # list with strings or a single string may be inputted
+    # check if string is list. Find returns -1 if value cannot be found
+    if dictTxt["target_variables "].find("[") != -1 and dictTxt["target_variables "].find(",") != -1:
+        target_variables = list(dictTxt["target_variables "][1:-1].split(","))
+
+        # remove excess quotes
+        target_variables = ([v.strip("'") for v in target_variables])
+        target_variables = ([v.replace("'",'') for v in target_variables])
+    else:
+        target_variables = dictTxt["target_variables "]
+
+    # if true, converted images will be in png format instead of jpg
+    png = dictBool["png "]
+
+    # folder containing Cancer Imagery
+    load_dir = dictTxt["load_dir "]
+
+    # directory to save data such as converted images
+    save_dir = dictTxt["save_dir "]
+
+    # directory to save imagery array
+    img_array_save = dictTxt["img_array_save "]
+
+    # if true, numpy image array will be searched for in img_array_save
+    load_numpy_img = dictBool["load_numpy_img "]
+
+    # if true, attempt will be made to convert dicom files to jpg or png
+    convert_imgs = dictBool["convert_imgs "]
+
+    #if true, converted dicom images will be deleted after use
+    del_converted_imgs = dictBool["del_converted_imgs "]
+
+    # if true, image model will be ran instead of clinical only model
+    run_img_model = dictBool["run_img_model "]
+
+    # if true, two data files will be expected for input
+    two_datasets = dictBool["two_datasets "]
+
+    # if true, an additional file will be expected for testing
+    use_additional_test_file = dictBool["use_additional_test_file "]
+
+    # where image id is located in image names (start,end)
+    # only applies if using image model
+    img_id_name_loc = dictTxt["img_id_name_loc "]
+
+    # Column of IDs in dataset. Acceptable values include "index" or a column name.
+    ID_dataset_col = dictTxt["ID_dataset_col "]
+
+    # tuple with dimension of imagery. All images must equal this dimension
+    img_dimensions = dictTxt["img_dimensions "]
+
+    # if true, every column in data will be inputted for target variable
+    target_all = dictBool["target_all "]
+
+    # save location for data/graphs
+    data_save_loc = dictTxt["data_save_loc "]
+
+    # if true, graphs will be shown after training model
+    show_figs = dictBool["show_figs "]
+
+    # if true, graphs will be saved after training model
+    save_figs = dictBool["save_figs "]
+
+    # number of epochs in model
+    num_epochs = int(dictTxt["num_epochs "])
 
 def GUI_varConnector(dataset1, dataset2):
 

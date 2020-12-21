@@ -47,13 +47,13 @@ boolList = []
 def true():
     global boolList
 
-    bool = "True"
+    bool = True
     boolList.append(bool)
 
 def false():
     global boolList
 
-    bool = "False"
+    bool = False
     boolList.append(bool)
 
 def makeButton(name):
@@ -79,6 +79,10 @@ def makeEntry(name):
 # initialize list for entryText vars
 entryText_list = []
 
+# initialize lists for var names
+varList_txt = []
+varList_bool = []
+
 for var in vars:
     var = str(var)
     # checking if variable is a string
@@ -96,21 +100,28 @@ for var in vars:
 
     if i == -1 and t == -1 and t2 == -1 and n == False:
         makeButton(var[:-1])
+        varList_bool.append(var)
     else:
         entryText = makeEntry(var[:-1])
         entryText_list.append(entryText)
+        varList_txt.append(var)
+
+# make new list for converted tkinter objects
+txtEntry_list = []
 
 def Continue():
+    global txtEntry_list
+
     for entries in entryText_list:
         txtEntry = entries.get()
-        print(txtEntry)
         entries.set("")
+        txtEntry_list.append(txtEntry)
 
-    for bools in boolList:
-        print(bools)
+    window.quit()
 
 # make continue button
 contButton = Button(second_frame,text="Continue",bg="orange",command=Continue,font=varFont)
 contButton.grid(column=2,padx=screenWidth/1.3)
+
 
 window.mainloop()
