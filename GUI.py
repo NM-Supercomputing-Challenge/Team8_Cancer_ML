@@ -7,6 +7,10 @@ with open("project_variables.txt","r") as projectVars:
 
 window = Tk()
 
+window.title("Cancer ML")
+
+window.iconbitmap("cancer_icon.ico")
+
 main_frame = Frame(window)
 main_frame.pack(fill=BOTH,expand=1)
 
