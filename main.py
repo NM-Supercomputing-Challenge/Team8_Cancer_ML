@@ -32,7 +32,7 @@ import GUI
 #np.set_printoptions(threshold=sys.maxsize)
 
 # if true, main GUI will be used to specify other varibles
-useFront = True
+useFront = False
 
 if useFront == False:
     # SPECIFY VARIABLES HERE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -372,6 +372,8 @@ if two_datasets == True:
 elif two_datasets == False:
     main_data = prep_data(main_data,None)
 
+resultList = []
+
 def model(data_file, test_file, target_vars, epochs_num):
 
     def format_data(data_file, test_file, target_var):
@@ -420,6 +422,7 @@ def model(data_file, test_file, target_vars, epochs_num):
     print(act_func)
 
     def NN(data_file, target_vars, epochs_num,activation_function):
+        global resultList
 
         # Get data. Data must already be in a Pandas Dataframe
         df = data_file
@@ -541,6 +544,10 @@ def model(data_file, test_file, target_vars, epochs_num):
         eval = model.evaluate(X_test)
         results = dict(zip(model.metrics_names, eval))
         print(results)
+
+        resultList.append(str(prediction))
+        resultList.append(str(roundedPred))
+        resultList.append(str(y_test))
 
     NN(adapted_dataset, target_vars, epochs_num, act_func)
 
@@ -678,6 +685,7 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
         act_func = 'relu'
 
     def model(pd_data,input_imagery,target_vars,activation_function):
+        global resultList
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Clinical
         # Get data
@@ -805,6 +813,10 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
         results = dict(zip(model.metrics_names, eval))
         print(results)
 
+        resultList.append(str(prediction))
+        resultList.append(str(roundedPred))
+        resultList.append(str(y_test))
+
     model(adapted_dataset,img_array,target_vars,act_func)
 
 if run_img_model == True and target_all == False:
@@ -814,6 +826,68 @@ elif run_img_model == True and target_all == True:
     cols = list(main_data.columns)
     for column in cols:
         image_model(save_dir,main_data,test_file,target_variables,num_epochs)
+
+def resultPage():
+    root = tk.Tk()
+
+    root.title("Results")
+    root.iconbitmap("cancer_icon.ico")
+
+    # MAKE SCROLLBAR
+    main_frame = tk.Frame(root)
+    main_frame.pack(fill=tk.BOTH, expand=1)
+
+    canvas = tk.Canvas(main_frame)
+    canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
+
+    # Add a scrollbars to the canvas
+    scrollbar = ttk.Scrollbar(main_frame, orient=tk.VERTICAL, command=canvas.yview)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    scrollbar_x = ttk.Scrollbar(main_frame, orient=tk.HORIZONTAL, command=canvas.xview)
+    scrollbar_x.pack(side=tk.BOTTOM, fill=tk.X)
+
+    # Configure the canvas
+    canvas.configure(xscrollcommand=scrollbar_x.set)
+    canvas.configure(yscrollcommand=scrollbar.set)
+    canvas.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+
+    second_frame = tk.Frame(canvas)
+    canvas.create_window((0, 0), window=second_frame, anchor="nw")
+
+    # define fonts
+    titleFont = tkFont.Font(family="Georgia",size=20)
+    titleColor = "#f29c2c"
+
+    resultFont = tkFont.Font(family="Consolas",size=16)
+
+    # ADD WIDGETS
+    prediction = resultList[0]
+    roundedPred = resultList[1]
+    y_test = resultList[2]
+
+    def placeResults(txt):
+        result = tk.Label(second_frame,text=txt,font=resultFont,bg='black',fg='white')
+        result.grid(pady=40)
+
+    resultTitle = tk.Label(second_frame,text="Prediction",font=titleFont,fg=titleColor)
+    resultTitle.grid()
+
+    placeResults(prediction)
+
+    resultTitle = tk.Label(second_frame,text="Rounded Prediction",font=titleFont,fg=titleColor)
+    resultTitle.grid()
+
+    placeResults(roundedPred)
+
+    resultTitle = tk.Label(second_frame,text="y_test",font=titleFont,fg=titleColor)
+    resultTitle.grid()
+
+    placeResults(y_test)
+
+    root.mainloop()
+
+resultPage()
 
 # delete converted dicom images after use if boolean is true
 if del_converted_imgs == True:
