@@ -23,6 +23,7 @@ import tkinter.font as tkFont
 import random
 from tkinter import ttk
 import GUI
+from statistics import mean
 
 # un-comment to show all of pandas dataframe
 #pd.set_option('display.max_rows', None)
@@ -373,6 +374,7 @@ elif two_datasets == False:
     main_data = prep_data(main_data,None)
 
 resultList = []
+prediction = []
 
 def model(data_file, test_file, target_vars, epochs_num):
 
@@ -423,6 +425,7 @@ def model(data_file, test_file, target_vars, epochs_num):
 
     def NN(data_file, target_vars, epochs_num,activation_function):
         global resultList
+        global prediction
 
         # Get data. Data must already be in a Pandas Dataframe
         df = data_file
@@ -686,6 +689,7 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
 
     def model(pd_data,input_imagery,target_vars,activation_function):
         global resultList
+        global prediction
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Clinical
         # Get data
@@ -870,6 +874,9 @@ def resultPage():
         result = tk.Label(second_frame,text=txt,font=resultFont,bg='black',fg='white')
         result.grid(pady=40)
 
+    def destroy():
+        root.quit()
+
     resultTitle = tk.Label(second_frame,text="Prediction",font=titleFont,fg=titleColor)
     resultTitle.grid()
 
@@ -884,6 +891,9 @@ def resultPage():
     resultTitle.grid()
 
     placeResults(y_test)
+
+    exitButton = tk.Button(second_frame,text="Exit",font=titleFont,fg=titleColor,command=destroy)
+    exitButton.grid()
 
     root.mainloop()
 
