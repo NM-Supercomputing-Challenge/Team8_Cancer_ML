@@ -26,8 +26,8 @@ import GUI
 from statistics import mean
 
 # un-comment to show all of pandas dataframe
-#pd.set_option('display.max_rows', None)
-#pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
 
 # un-comment to show all of numpy array
 #np.set_printoptions(threshold=sys.maxsize)
@@ -41,7 +41,7 @@ if useFront == False:
     save_fit = False
     model_save_loc = "saved_model"
 
-    main_data = "D:\\Cancer_Project\\Team8_Cancer_ML\HNSCC-HN1\\Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020.csv"
+    main_data = "D:\\Cancer_Project\\Team8_Cancer_ML\HNSCC-HN1\\Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020 (original).csv"
     sec_data = ""
     test_file = "test_2.csv"
 
@@ -186,6 +186,47 @@ elif useFront == True:
 
     # number of epochs in model
     num_epochs = int(dictTxt["num_epochs "])
+
+def encodeText(dataset):
+
+    if str(type(dataset)) == "<class 'str'>":
+        dataset = pd.read_csv(dataset)
+
+    dShape = dataset.shape
+    axis1 = dShape[0]
+    axis2 = dShape[1]
+
+    if axis1 >= axis2:
+        longestAxis = axis1
+        shortestAxis = axis2
+    else:
+        longestAxis = axis2
+        shortestAxis = axis1
+
+    for i in range(longestAxis):
+        for n in range(shortestAxis):
+            if longestAxis == axis1:
+                data = dataset.iloc[i,n]
+            else:
+                data = dataset.iloc[n,i]
+
+            if str(type(data)) == "<class 'str'>":
+                strData = ""
+                for c in data:
+                    cInt = ord(c)
+                    strData = strData + str(cInt)
+
+                strData = int(strData)
+
+                if longestAxis == axis1:
+                    dataset.iloc[i,n] = strData
+                else:
+                    dataset.iloc[n,i] = strData
+
+    return dataset
+
+encodedDataset = encodeText(main_data)
+print(encodedDataset)
 
 def GUI_varConnector(dataset1, dataset2):
 
@@ -555,7 +596,7 @@ def model(data_file, test_file, target_vars, epochs_num):
     NN(adapted_dataset, target_vars, epochs_num, act_func)
 
 if run_img_model == False and target_all == False:
-    model(main_data,test_file,target_variables,num_epochs)
+    model(encodedDataset,test_file,target_variables,num_epochs)
 elif run_img_model == False and target_all == True:
     # collect columns in data
     cols = list(main_data.columns)
