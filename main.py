@@ -212,11 +212,18 @@ def encodeText(dataset):
 
             if str(type(data)) == "<class 'str'>":
                 strData = ""
+
                 for c in data:
                     cInt = ord(c)
+                    cLen = len(str(cInt))
                     strData = strData + str(cInt)
 
                 strData = int(strData)
+
+                # turn values into decimals to scale down
+                lenData = len(str(strData))
+                divisor = 10**lenData
+                strData = strData/divisor
 
                 if longestAxis == axis1:
                     dataset.iloc[i,n] = strData
@@ -226,6 +233,7 @@ def encodeText(dataset):
     return dataset
 
 encodedDataset = encodeText(main_data)
+print(encodedDataset)
 
 def GUI_varConnector(dataset1, dataset2):
 
@@ -568,8 +576,8 @@ def model(data_file, test_file, target_vars, epochs_num):
             # set input shape to dimension of data
             input = keras.layers.Input(shape=(X_train.shape[1],))
 
-            x = Dense(30, activation=activation_function)(input)
-            x = Dense(30, activation=activation_function)(x)
+            x = Dense(100, activation=activation_function)(input)
+            x = Dense(65, activation=activation_function)(x)
             x = Dense(30, activation=activation_function)(x)
             x = Dense(25, activation=activation_function)(x)
             x = Dense(25, activation=activation_function)(x)
@@ -581,11 +589,11 @@ def model(data_file, test_file, target_vars, epochs_num):
             output = Dense(1, activation='linear')(x)
             model = keras.Model(input, output)
 
-            model.compile(optimizer='SGD',
+            model.compile(optimizer='adam',
                           loss='mean_absolute_error',
                           metrics=['accuracy'])
 
-            fit = model.fit(X_train, y_train, epochs=epochs_num, batch_size=512)
+            fit = model.fit(X_train, y_train, epochs=epochs_num, batch_size=1024)
 
         # plotting
         history = fit
