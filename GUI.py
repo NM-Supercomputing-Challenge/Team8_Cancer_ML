@@ -2,14 +2,14 @@ from tkinter import *
 import tkinter.font as tkFont
 from tkinter import ttk
 
-with open("project_variables.txt","r") as projectVars:
+with open("D:\Cancer_Project\Team8_Cancer_ML\project_variables.txt","r") as projectVars:
     vars=projectVars.readlines()
 
 window = Tk()
 
 window.title("Cancer ML")
 
-window.iconbitmap("cancer_icon.ico")
+window.iconbitmap("D:\Cancer_Project\Team8_Cancer_ML\cancer_icon.ico")
 
 main_frame = Frame(window)
 main_frame.pack(fill=BOTH,expand=1)

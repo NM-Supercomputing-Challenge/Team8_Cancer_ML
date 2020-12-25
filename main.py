@@ -26,8 +26,8 @@ import GUI
 from statistics import mean
 
 # un-comment to show all of pandas dataframe
-pd.set_option('display.max_rows', None)
-pd.set_option('display.max_columns', None)
+#pd.set_option('display.max_rows', None)
+#pd.set_option('display.max_columns', None)
 
 # un-comment to show all of numpy array
 #np.set_printoptions(threshold=sys.maxsize)
@@ -46,7 +46,7 @@ if useFront == False:
     test_file = "test_2.csv"
 
     # list with strings or a single string may be inputted
-    target_variables = ['chemotherapy_given','ajcc_stage']
+    target_variables = 'chemotherapy_given'
 
     # if true, converted images will be in png format instead of jpg
     png = False
@@ -226,7 +226,6 @@ def encodeText(dataset):
     return dataset
 
 encodedDataset = encodeText(main_data)
-print(encodedDataset)
 
 def GUI_varConnector(dataset1, dataset2):
 
@@ -487,15 +486,51 @@ def model(data_file, test_file, target_vars, epochs_num):
         X_train = scaler.transform(X_train)
         X_test = scaler.transform(X_test)
 
-        # divide y_train's columns into separate dataframes and store them in a list
-        list_y_train = []
-        y_cols = list(y_train.columns)
-        for col in y_cols:
-            var_col = y_train[col]
-            list_y_train.append(var_col)
+        if str(type(target_vars)) == "<class 'list'>" and len(target_vars) > 1:
+            # divide y_train's columns into separate dataframes and store them in a list
+            list_y_train = []
+            y_cols = list(y_train.columns)
+            for col in y_cols:
+                var_col = y_train[col]
+                list_y_train.append(var_col)
 
         y_train = y_train.to_numpy()
         y_test = y_test.to_numpy()
+
+        # check data for nans/non-compatible objects
+        def hasNan(array):
+            nan = np.isnan(array)
+            for arr in nan:
+                if array.ndim == 2: 
+                    for bool in arr:
+                        if bool: 
+                            containsNan = True
+                        else: 
+                            containsNan = False
+                elif array.ndim == 1: 
+                    if arr: 
+                        containsNan = True
+                    else: 
+                        containsNan = False
+
+            # check that all data is floats or integers 
+            if array.ndim == 1: 
+                typeList = []
+                for vals in array: 
+                    valType = str(type(vals))
+                    typeList.append(valType)
+
+                print(containsNan)
+                for types in typeList: 
+                    if types != "<class 'numpy.float64'>" and types != "<class 'numpy.int64'>": 
+                        containsNan = True
+
+            if containsNan: 
+                print("Data contains nan values")
+            else: 
+                print("Data does not contain nan values")
+
+        hasNan(y_train)
 
         if str(type(target_vars))=="<class 'list'>" and len(target_vars) > 1:
             input = keras.Input(shape=X_train.shape)
@@ -521,9 +556,11 @@ def model(data_file, test_file, target_vars, epochs_num):
 
             model = keras.Model(inputs=input,outputs=output_list)
 
-            model.compile(optimizer='adam',
-                          loss='mean_squared_error',
+            model.compile(optimizer='SGD',
+                          loss='mean_absolute_error',
                           metrics=['accuracy'])
+
+            print(list_y_train)
 
             fit = model.fit(X_train, list_y_train, epochs=epochs_num, batch_size=5)
 
@@ -544,11 +581,11 @@ def model(data_file, test_file, target_vars, epochs_num):
             output = Dense(1, activation='linear')(x)
             model = keras.Model(input, output)
 
-            model.compile(optimizer='adam',
-                          loss='mean_squared_error',
+            model.compile(optimizer='SGD',
+                          loss='mean_absolute_error',
                           metrics=['accuracy'])
 
-            fit = model.fit(X_train, y_train, epochs=epochs_num, batch_size=15)
+            fit = model.fit(X_train, y_train, epochs=epochs_num, batch_size=512)
 
         # plotting
         history = fit
@@ -876,7 +913,7 @@ def resultPage():
     root = tk.Tk()
 
     root.title("Results")
-    root.iconbitmap("cancer_icon.ico")
+    root.iconbitmap("D:\Cancer_Project\Team8_Cancer_ML\cancer_icon.ico")
 
     # MAKE SCROLLBAR
     main_frame = tk.Frame(root)
