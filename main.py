@@ -203,6 +203,8 @@ def encodeText(dataset):
         longestAxis = axis2
         shortestAxis = axis1
 
+    # intialize dictionary for storing meaning of derived nums
+    textConversion = {}
     for i in range(longestAxis):
         for n in range(shortestAxis):
             if longestAxis == axis1:
@@ -225,11 +227,13 @@ def encodeText(dataset):
                 divisor = 10**lenData
                 strData = strData/divisor
 
+                textConversion[str(data)]=strData
+
                 if longestAxis == axis1:
                     dataset.iloc[i,n] = strData
                 else:
                     dataset.iloc[n,i] = strData
-
+    
     return dataset
 
 encodedDataset = encodeText(main_data)
@@ -478,8 +482,8 @@ def model(data_file, test_file, target_vars, epochs_num):
         # Get data. Data must already be in a Pandas Dataframe
         df = data_file
 
-        # round all values in dataset to 3rd decimal place
-        df = df.astype("float").round(3)
+        # round all values in dataset to 6th decimal place
+        df = df.astype("float").round(6)
 
         #y data
         labels = df.loc[:,target_vars]
