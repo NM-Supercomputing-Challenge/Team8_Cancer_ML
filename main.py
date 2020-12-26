@@ -187,7 +187,14 @@ elif useFront == True:
     # number of epochs in model
     num_epochs = int(dictTxt["num_epochs "])
 
+# The standard number of decimals to round numbers to 
+# for encoding/decoding
+decimalRound = 6
+
+# intialize dictionary for storing meaning of derived nums
+textConversion = {}
 def encodeText(dataset):
+    global textConversion
 
     if str(type(dataset)) == "<class 'str'>":
         dataset = pd.read_csv(dataset)
@@ -203,8 +210,6 @@ def encodeText(dataset):
         longestAxis = axis2
         shortestAxis = axis1
 
-    # intialize dictionary for storing meaning of derived nums
-    textConversion = {}
     for i in range(longestAxis):
         for n in range(shortestAxis):
             if longestAxis == axis1:
@@ -225,9 +230,9 @@ def encodeText(dataset):
                 # turn values into decimals to scale down
                 lenData = len(str(strData))
                 divisor = 10**lenData
-                strData = strData/divisor
+                strData = strData/divisor 
 
-                textConversion[str(data)]=strData
+                textConversion[strData]=str(data)
 
                 if longestAxis == axis1:
                     dataset.iloc[i,n] = strData
@@ -237,7 +242,24 @@ def encodeText(dataset):
     return dataset
 
 encodedDataset = encodeText(main_data)
-print(encodedDataset)
+
+def decodeText(num_iterable,conversion_dict):
+    keys = list(conversion_dict.keys())
+    values = list(conversion_dict.values())
+    keyList = []
+    for key in keys: 
+        key = round(key,decimalRound)
+        keyList.append(key)
+
+    newDict = dict(zip(keyList,values))
+    convIter = []
+    for i in num_iterable: 
+        textDef = newDict[i]
+        convIter.append(textDef)
+
+    print(newDict)
+
+    return convIter
 
 def GUI_varConnector(dataset1, dataset2):
 
@@ -482,8 +504,8 @@ def model(data_file, test_file, target_vars, epochs_num):
         # Get data. Data must already be in a Pandas Dataframe
         df = data_file
 
-        # round all values in dataset to 6th decimal place
-        df = df.astype("float").round(6)
+        # round all values in dataset to the standardized decimal place
+        df = df.astype("float").round(decimalRound)
 
         #y data
         labels = df.loc[:,target_vars]
@@ -626,6 +648,9 @@ def model(data_file, test_file, target_vars, epochs_num):
 
         prediction = model.predict(X_test, batch_size=1)
         roundedPred = np.around(prediction,0)
+
+        # decode values
+        y_test = decodeText(y_test,textConversion)
 
         print("- - - - - - - - - - - - - Unrounded Prediction - - - - - - - - - - - - -")
         print(prediction)
