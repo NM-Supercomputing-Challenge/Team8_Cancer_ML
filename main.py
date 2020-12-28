@@ -257,9 +257,6 @@ def percentageAccuracy(iterable1,iterable2):
     rounded1 = roundList(iterable1)
     rounded2 = roundList(iterable2)
 
-    print(rounded1)
-    print(rounded2)
-
     numCorrect = len([i for i, j in zip(rounded1, rounded2) if i == j])
 
     listLen = len(rounded1)
@@ -678,6 +675,7 @@ def model(data_file, test_file, target_vars, epochs_num):
         resultList.append(str(prediction))
         resultList.append(str(roundedPred))
         resultList.append(str(y_test))
+        resultList.append(str(percentAcc))
 
     NN(adapted_dataset, target_vars, epochs_num, act_func)
 
@@ -973,6 +971,7 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
         resultList.append(str(prediction))
         resultList.append(str(roundedPred))
         resultList.append(str(y_test))
+        resultList.append(str(percentAcc))
 
     model(adapted_dataset,img_array,target_vars,act_func)
 
@@ -1022,6 +1021,7 @@ def resultPage():
     prediction = resultList[0]
     roundedPred = resultList[1]
     y_test = resultList[2]
+    percentAcc = resultList[3]
 
     def placeResults(txt):
         result = tk.Label(second_frame,text=txt,font=resultFont,bg='black',fg='white')
@@ -1044,6 +1044,11 @@ def resultPage():
     resultTitle.grid()
 
     placeResults(y_test)
+
+    resultTitle = tk.Label(second_frame,text="Percentage Accuracy",font=titleFont,fg=titleColor)
+    resultTitle.grid()
+
+    placeResults(percentAcc)
 
     exitButton = tk.Button(second_frame,text="Exit",font=titleFont,fg=titleColor,command=destroy)
     exitButton.grid()
