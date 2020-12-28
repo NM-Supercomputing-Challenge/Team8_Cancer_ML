@@ -233,7 +233,40 @@ def encodeText(dataset):
     return dataset
 
 encodedDataset = encodeText(main_data)
-print(encodedDataset)
+
+def percentageAccuracy(iterable1,iterable2):
+    
+    def roundList(iterable): 
+        roundVals = []
+        if int(iterable.ndim) == 1:
+            for i in iterable: 
+                i = round(i,0)
+                roundVals.append(i)
+        
+        elif int(iterable.ndim) == 2: 
+            for arr in iterable: 
+                for i in arr: 
+                    i = round(i,0)
+                    roundVals.append(i)
+
+        return roundVals
+
+    rounded1 = roundList(iterable1)
+    rounded2 = roundList(iterable2)
+
+    print(rounded1)
+    print(rounded2)
+
+    numCorrect = len([i for i, j in zip(rounded1, rounded2) if i == j])
+
+    listLen = len(rounded1)
+
+    percentCorr = numCorrect/listLen
+    percentCorr = percentCorr * 100
+
+    percentCorr = round(percentCorr,2)
+
+    return percentCorr
 
 def GUI_varConnector(dataset1, dataset2):
 
@@ -630,6 +663,11 @@ def model(data_file, test_file, target_vars, epochs_num):
         print("- - - - - - - - - - - - - y test - - - - - - - - - - - - -")
         print(y_test)
 
+        percentAcc = percentageAccuracy(prediction,y_test)
+        
+        print("- - - - - - - - - - - - - Percentage Accuracy - - - - - - - - - - - - -")
+        print(percentAcc)
+
         eval = model.evaluate(X_test)
         results = dict(zip(model.metrics_names, eval))
         print(results)
@@ -898,6 +936,11 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
         print(roundedPred)
         print("- - - - - - - - - - - - - y test - - - - - - - - - - - - -")
         print(y_test)
+
+        percentAcc = percentageAccuracy(prediction,y_test)
+        
+        print("- - - - - - - - - - - - - Percentage Accuracy - - - - - - - - - - - - -")
+        print(percentAcc)
 
         eval = model.evaluate(X_test)
         results = dict(zip(model.metrics_names, eval))
