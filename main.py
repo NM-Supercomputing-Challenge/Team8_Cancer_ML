@@ -52,16 +52,16 @@ if useFront == False:
     png = False
 
     # folder containing Cancer Imagery
-    load_dir = "D:\Cancer_Project\\Cancer Imagery\\HNSCC"
+    load_dir = "D:\Cancer_Project\\Cancer Imagery\\HEAD-NECK-RADIOMICS-HN1"
 
     # directory to save data such as converted images
     save_dir = "D:\\Cancer_Project\\converted_img"
 
     # directory to save imagery array
-    img_array_save = "D:\Cancer_Project\img_arrays"
+    img_array_save = "D:\\Cancer_Project\\Team8_Cancer_ML\\HNSCC-HN1\\img_array"
 
     # if true, numpy image array will be searched for in img_array_save
-    load_numpy_img = False
+    load_numpy_img = True
 
     # if true, attempt will be made to convert dicom files to jpg or png
     convert_imgs = False
@@ -236,7 +236,10 @@ encodedDataset = encodeText(main_data)
 
 def percentageAccuracy(iterable1,iterable2):
     
-    def roundList(iterable): 
+    def roundList(iterable):
+
+        if str(type(iterable)) == "<class 'tensorflow.python.framework.ops.EagerTensor'>":
+            iterable = iterable.numpy()
         roundVals = []
         if int(iterable.ndim) == 1:
             for i in iterable: 
@@ -402,7 +405,7 @@ def convert_img(png_boolean,dirs_list,save_path):
             num_imgs = len(dirs_list)
             num_converted_img = num_converted_img + 1
             percentage_done = (num_converted_img/num_imgs) * 100
-            print(str(percentage_done) + " percent completed")
+            print(str(round(percentage_done,2)) + " percent completed")
 
 if convert_imgs == True:
     convert_img(png, load_dirs,save_dir)
@@ -682,9 +685,9 @@ if run_img_model == False and target_all == False:
     model(encodedDataset,test_file,target_variables,num_epochs)
 elif run_img_model == False and target_all == True:
     # collect columns in data
-    cols = list(main_data.columns)
+    cols = list(encodedDataset.columns)
     for column in cols:
-        model(main_data,test_file,column,num_epochs)
+        model(encodedDataset,test_file,column,num_epochs)
 
 def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
     print("starting image model")
@@ -786,7 +789,7 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
                 ## loading info
                 total_img = len(img_list)
                 percent_conv = (imgs_processed / total_img) * 100
-                print(str(percent_conv) + " percent converted")
+                print(str(round(percent_conv,2)) + " percent converted")
                 print(str(psutil.virtual_memory()))
 
         # save the array
@@ -797,14 +800,16 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
 
     adapted_dataset = adapted_dataset.loc[matching_ids]
 
+    # initialize negative_vals as false
+    negative_vals = False
+
     # determine activation function (relu or tanh) from if there are negative numbers in target variable
     df_values = adapted_dataset.values
     df_values = df_values.flatten()
     for val in df_values:
+        val = float(val)
         if val < 0:
             negative_vals = True
-        else:
-            negative_vals = False
 
     if negative_vals == True:
         act_func = "tanh"
@@ -828,9 +833,20 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
         y = labels
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-        y_train = y_train.to_numpy()
         y_test = y_test.to_numpy()
+        y_train = y_train.to_numpy()
         X_train = X_train.to_numpy()
+        X_test = X_test.to_numpy()
+
+        y_test = np.asarray(y_test).astype(np.float32)
+        y_train = np.asarray(y_train).astype(np.float32)
+        X_train = np.asarray(X_train).astype(np.float32)
+        X_test = np.asarray(X_test).astype(np.float32)
+
+        y_test = tf.convert_to_tensor(y_test)
+        y_train = tf.convert_to_tensor(y_train)
+        X_train = tf.convert_to_tensor(X_train)
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Image
 
         X_train_img, X_test_img = train_test_split(input_imagery,test_size=0.2,random_state=42)
@@ -842,13 +858,21 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
         data = np.concatenate((X_train_img,X_train),axis=1)
         data_test = np.concatenate((X_test,X_test_img),axis=1)
 
+        if str(type(target_vars)) == "<class 'list'>" and len(target_vars) > 1:
+            # divide y_train's columns into separate dataframes and store them in a list
+            list_y_train = []
+            y_cols = list(y_train.columns)
+            for col in y_cols:
+                var_col = y_train[col]
+                list_y_train.append(var_col)
+
         scaler = StandardScaler().fit(data)
         data = scaler.transform(data)
         data_test = scaler.transform(data_test)
 
         print(activation_function)
 
-        if len(target_vars) == 1:
+        if str(type(target_vars))!="<class 'list'>" or len(target_vars) == 1:
             # set input shape to dimension of data
             input = keras.layers.Input(shape=(data.shape[1],))
 
@@ -869,7 +893,7 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
                               loss='mean_squared_error',
                               metrics=['accuracy'])
 
-            fit = model.fit(data,y_train,epochs=epochs_num,batch_size=5)
+            fit = model.fit(data,y_train,epochs=epochs_num,batch_size=64)
 
         else:
             input = keras.layers.Input(shape=(data.shape[1],))
@@ -900,7 +924,7 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
                           loss='mean_squared_error',
                           metrics=['accuracy'])
 
-            fit = model.fit(data,y_train,epochs=epochs_num,batch_size=5)
+            fit = model.fit(data,list_y_train,epochs=epochs_num,batch_size=5)
 
         #plotting
         history = fit
@@ -927,7 +951,7 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
         if save_fit == True:
             save_fitted_model(model, model_save_loc)
 
-        prediction = model.predict(X_test, batch_size=1)
+        prediction = model.predict(data_test, batch_size=1)
         roundedPred = np.around(prediction,0)
 
         print("- - - - - - - - - - - - - Unrounded Prediction - - - - - - - - - - - - -")
@@ -942,7 +966,7 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
         print("- - - - - - - - - - - - - Percentage Accuracy - - - - - - - - - - - - -")
         print(percentAcc)
 
-        eval = model.evaluate(X_test)
+        eval = model.evaluate(data_test)
         results = dict(zip(model.metrics_names, eval))
         print(results)
 
@@ -953,12 +977,12 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
     model(adapted_dataset,img_array,target_vars,act_func)
 
 if run_img_model == True and target_all == False:
-    image_model(save_dir,main_data,test_file,target_variables,num_epochs)
+    image_model(save_dir,encodedDataset,test_file,target_variables,num_epochs)
 elif run_img_model == True and target_all == True:
     # collect columns in data
-    cols = list(main_data.columns)
+    cols = list(encodedDataset.columns)
     for column in cols:
-        image_model(save_dir,main_data,test_file,target_variables,num_epochs)
+        image_model(save_dir,encodedDataset,test_file,target_variables,num_epochs)
 
 def resultPage():
     root = tk.Tk()
