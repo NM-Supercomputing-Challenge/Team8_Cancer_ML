@@ -1053,6 +1053,11 @@ def resultPage():
     exitButton = tk.Button(second_frame,text="Exit",font=titleFont,fg=titleColor,command=destroy)
     exitButton.grid()
 
+    def quit_window():
+        root.quit()
+        root.destroy()
+
+    root.protocol("WM_DELETE_WINDOW",quit_window)
     root.mainloop()
 
 resultPage()
