@@ -129,6 +129,17 @@ def Continue():
 
     window.quit()
 
+useDefaults = None
+def useDefault():
+    global useDefaults
+
+    useDefaults = True
+    window.quit()
+
+# make default button
+defaultButton = Button(second_frame,text="Use Defaults",bg="orange",command=useDefault,font=varFont)
+defaultButton.grid(column=2,padx=screenWidth/1.4)
+
 # make continue button
 contButton = Button(second_frame,text="Continue",bg="orange",command=Continue,font=varFont)
 contButton.grid(column=2,padx=screenWidth/1.4)

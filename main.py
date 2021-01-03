@@ -32,8 +32,10 @@ from statistics import mean
 # un-comment to show all of numpy array
 #np.set_printoptions(threshold=sys.maxsize)
 
-# if true, main GUI will be used to specify other varibles
-useFront = False
+useDefaults = GUI.useDefaults
+if useDefaults:
+    # if true, main GUI will be used to specify other variables
+    useFront = False
 
 if useFront == False:
     # SPECIFY VARIABLES HERE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
