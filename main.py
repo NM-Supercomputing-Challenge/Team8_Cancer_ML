@@ -4,7 +4,7 @@ from tensorflow.keras import Sequential
 from tensorflow.keras.layers import Dense, Dropout
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler,MinMaxScaler
 import keras
 import matplotlib.pyplot as plt
 import pydicom as dicom
@@ -48,7 +48,7 @@ if useFront == False:
     test_file = "test_2.csv"
 
     # list with strings or a single string may be inputted
-    target_variables = 'chemotherapy_given'
+    target_variables = ['chemotherapy_given','cancer_surgery_performed']
 
     # if true, converted images will be in png format instead of jpg
     png = False
@@ -253,6 +253,24 @@ def percentageAccuracy(iterable1,iterable2):
                 for i in arr: 
                     i = round(i,0)
                     roundVals.append(i)
+
+        elif int(iterable.ndim) == 3:
+            for dim in iterable:
+                for arr in dim:
+                    for i in arr:
+                        i = round(i,0)
+                        roundVals.append(i)
+
+        elif int(iterable.ndim) == 4:
+            for d in iterable:
+                for dim in d:
+                    for arr in dim:
+                        for i in arr:
+                            i = round(i,0)
+                            roundVals.append(i)
+
+        else:
+            print("Too many dimensions--ERROR")
 
         return roundVals
 
@@ -510,6 +528,12 @@ def model(data_file, test_file, target_vars, epochs_num):
         global resultList
         global prediction
 
+        # initialize bool as false
+        multiple_targets = False
+
+        if str(type(target_vars)) == "<class 'list'>" and len(target_vars) > 1:
+            multiple_targets = True
+
         # Get data. Data must already be in a Pandas Dataframe
         df = data_file
 
@@ -525,20 +549,25 @@ def model(data_file, test_file, target_vars, epochs_num):
         y = labels
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
 
+        # scale data
         scaler = StandardScaler().fit(X_train)
         X_train = scaler.transform(X_train)
         X_test = scaler.transform(X_test)
 
-        if str(type(target_vars)) == "<class 'list'>" and len(target_vars) > 1:
-            # divide y_train's columns into separate dataframes and store them in a list
-            list_y_train = []
-            y_cols = list(y_train.columns)
-            for col in y_cols:
-                var_col = y_train[col]
-                list_y_train.append(var_col)
+        # normalize data
+        min_max_scaler = MinMaxScaler()
+        X_train = min_max_scaler.fit_transform(X_train)
+        X_test = min_max_scaler.fit_transform(X_test)
 
-        y_train = y_train.to_numpy()
-        y_test = y_test.to_numpy()
+        if multiple_targets:
+            y_test = min_max_scaler.fit_transform(y_test)
+            y_train = min_max_scaler.fit_transform(y_train)
+
+        if str(type(y_train)) == "<class 'pandas.core.frame.DataFrame'>":
+            y_train = y_train.to_numpy()
+
+        if str(type(y_test)) == "<class 'pandas.core.frame.DataFrame'>":
+            y_test = y_test.to_numpy()
 
         # check data for nans/non-compatible objects
         def hasNan(array):
@@ -603,9 +632,7 @@ def model(data_file, test_file, target_vars, epochs_num):
                           loss='mean_absolute_error',
                           metrics=['accuracy'])
 
-            print(list_y_train)
-
-            fit = model.fit(X_train, list_y_train, epochs=epochs_num, batch_size=5)
+            fit = model.fit(X_train, y_train, epochs=epochs_num, batch_size=5)
 
         else:
             # set input shape to dimension of data
@@ -664,6 +691,9 @@ def model(data_file, test_file, target_vars, epochs_num):
         print(roundedPred)
         print("- - - - - - - - - - - - - y test - - - - - - - - - - - - -")
         print(y_test)
+
+        if str(type(prediction)) == "<class 'list'>":
+            prediction = np.array([prediction])
 
         percentAcc = percentageAccuracy(prediction,y_test)
         
@@ -820,6 +850,12 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
         global resultList
         global prediction
 
+        # initialize bool as false
+        multiple_targets = False
+
+        if str(type(target_vars)) == "<class 'list'>" and len(target_vars) > 1:
+            multiple_targets = True
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Clinical
         # Get data
         df = pd_data
@@ -869,6 +905,15 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
         scaler = StandardScaler().fit(data)
         data = scaler.transform(data)
         data_test = scaler.transform(data_test)
+
+        # normalize data
+        min_max_scaler = MinMaxScaler()
+        data = min_max_scaler.fit_transform(data)
+        data_test = min_max_scaler.fit_transform(data_test)
+
+        if multiple_targets:
+            y_test = min_max_scaler.fit_transform(y_test)
+            y_train = min_max_scaler.fit_transform(y_train)
 
         print(activation_function)
 
@@ -950,6 +995,9 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
 
         if save_fit == True:
             save_fitted_model(model, model_save_loc)
+
+        if str(type(prediction)) == "<class 'list'>":
+            prediction = np.array([prediction])
 
         prediction = model.predict(data_test, batch_size=1)
         roundedPred = np.around(prediction,0)
