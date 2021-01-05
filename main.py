@@ -26,11 +26,11 @@ import GUI
 from statistics import mean
 
 # un-comment to show all of pandas dataframe
-#pd.set_option('display.max_rows', None)
-#pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
 
 # un-comment to show all of numpy array
-np.set_printoptions(threshold=sys.maxsize)
+#np.set_printoptions(threshold=sys.maxsize)
 
 useDefaults = GUI.useDefaults
 if useDefaults:
@@ -48,7 +48,7 @@ if useFront == False:
     test_file = "test_2.csv"
 
     # list with strings or a single string may be inputted
-    target_variables = ['chemotherapy_given','cancer_surgery_performed']
+    target_variables = "chemotherapy_given"
 
     # if true, converted images will be in png format instead of jpg
     png = False
@@ -231,6 +231,11 @@ def encodeText(dataset):
                     dataset.iloc[i,n] = strData
                 else:
                     dataset.iloc[n,i] = strData
+
+    for cols in list(dataset.columns):
+        colType = str(dataset[cols].dtype)
+        if colType == "object":
+            dataset[cols] = dataset[cols].astype(float)
 
     return dataset
 
@@ -488,7 +493,47 @@ elif two_datasets == False:
 resultList = []
 prediction = []
 
+def feature_selection(pd_dataset,target_vars):
+
+    num_features = 10
+
+    # initialize bool as false
+    multiple_targets = False
+
+    if str(type(target_vars)) == "<class 'list'>" and len(target_vars) > 1:
+        multiple_targets = True
+
+    corr = pd_dataset.corr()
+
+    # get the top features with the highest correlation
+    if multiple_targets == False:
+        features = list(pd_dataset.corr().abs().nlargest(num_features,target_vars).index)
+    else:
+        features = []
+        for vars in target_vars:
+            f = pd_dataset.corr().abs().nlargest(num_features,vars).index
+            features.append(f)
+
+    # get the top correlation values
+    if multiple_targets:
+        corrVals=[]
+        for vars in target_vars:
+            c = pd_dataset.corr().abs().nlargest(num_features,vars).values[:,pd_dataset.shape[1]-1]
+            corrVals.append(c)
+    else:
+        corrVals = list(pd_dataset.corr().abs().nlargest(num_features,target_vars).values[:,pd_dataset.shape[1]-1])
+
+    # make a dictionary out of the two lists
+    featureDict = dict(zip(features,corrVals))
+
+    return featureDict
+
 def model(data_file, test_file, target_vars, epochs_num):
+
+    features = list(feature_selection(data_file,target_vars).keys())
+
+    # only use features determined by feature_selection
+    data_file = data_file[data_file.columns.intersection(features)]
 
     def format_data(data_file, test_file, target_var):
 
@@ -570,8 +615,6 @@ def model(data_file, test_file, target_vars, epochs_num):
         X_train = min_max_scaler.fit_transform(X_train)
         X_test = min_max_scaler.fit_transform(X_test)
 
-        print(X_train)
-
         if multiple_targets:
             y_test = min_max_scaler.fit_transform(y_test)
             y_train = min_max_scaler.fit_transform(y_train)
@@ -605,7 +648,6 @@ def model(data_file, test_file, target_vars, epochs_num):
                     valType = str(type(vals))
                     typeList.append(valType)
 
-                print(containsNan)
                 for types in typeList: 
                     if types != "<class 'numpy.float64'>" and types != "<class 'numpy.int64'>": 
                         containsNan = True
@@ -734,6 +776,11 @@ elif run_img_model == False and target_all == True:
 
 def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
     print("starting image model")
+
+    features = list(feature_selection(data_file, target_vars).keys())
+
+    # only use features determined by feature_selection
+    data_file = data_file[data_file.columns.intersection(features)]
 
     def format_data(data_file, test_file, target_vars):
 
