@@ -43,12 +43,12 @@ if useFront == False:
     save_fit = False
     model_save_loc = "saved_model"
 
-    main_data = "D:\\Cancer_Project\\Team8_Cancer_ML\\HNSCC\\HNSCC Clinical Data.csv"
-    sec_data = "D:\\Cancer_Project\\Team8_Cancer_ML\\HNSCC\\Patient and Treatment Characteristics.csv"
+    main_data = "D:\\Cancer_Project\\Team8_Cancer_ML\\HNSCC-HN1\\Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020 (original).csv"
+    sec_data = ""
     test_file = "test_2.csv"
 
     # list with strings or a single string may be inputted
-    target_variables = ['Alive or Dead','Smoking status']
+    target_variables = ['chemotherapy_given','cancer_surgery_performed']
 
     # if true, converted images will be in png format instead of jpg
     png = False
@@ -75,7 +75,7 @@ if useFront == False:
     run_img_model = False
 
     # if true, two data files will be expected for input
-    two_datasets = True
+    two_datasets = False
 
     # if true, an additional file will be expected for testing
     use_additional_test_file = False
@@ -85,7 +85,7 @@ if useFront == False:
     img_id_name_loc = (3,6)
 
     # Column of IDs in dataset. Acceptable values include "index" or a column name.
-    ID_dataset_col = "TCIA ID"
+    ID_dataset_col = "id"
 
     # tuple with dimension of imagery. All images must equal this dimension
     img_dimensions = (512, 512, 3)
