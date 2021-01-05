@@ -52,6 +52,7 @@ inputFont = tkFont.Font(family="Georgia",size=12)
 title = Label(second_frame,text="Data Page",font=fontTitle)
 title.grid(column=1)
 
+# initalize vars
 boolList = []
 
 def true():
@@ -70,10 +71,10 @@ def makeButton(name):
     label = Label(second_frame,text=name,font=varFont,fg=varColor)
     label.grid(column=1,pady=40)
 
-    button = Button(second_frame,text="True",width=25,height=3,font=inputFont,command=true)
+    button = Button(second_frame,text="True",width=25,height=3,font=inputFont,command=true,activebackground='orange')
     button.grid(column=1)
 
-    button = Button(second_frame,text="False",width=25,height=3,font=inputFont,command=false)
+    button = Button(second_frame,text="False",width=25,height=3,font=inputFont,command=false,activebackground='orange')
     button.grid(column=1)
 
 def makeEntry(name):
@@ -130,6 +131,7 @@ def Continue():
     window.quit()
 
 useDefaults = None
+
 def useDefault():
     global useDefaults
 
