@@ -30,7 +30,7 @@ from statistics import mean
 #pd.set_option('display.max_columns', None)
 
 # un-comment to show all of numpy array
-#np.set_printoptions(threshold=sys.maxsize)
+np.set_printoptions(threshold=sys.maxsize)
 
 useDefaults = GUI.useDefaults
 if useDefaults:
@@ -43,12 +43,12 @@ if useFront == False:
     save_fit = False
     model_save_loc = "saved_model"
 
-    main_data = "D:\\Cancer_Project\\Team8_Cancer_ML\HNSCC-HN1\\Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020 (original).csv"
-    sec_data = ""
+    main_data = "D:\\Cancer_Project\\Team8_Cancer_ML\\HNSCC\\HNSCC Clinical Data.csv"
+    sec_data = "D:\\Cancer_Project\\Team8_Cancer_ML\\HNSCC\\Patient and Treatment Characteristics.csv"
     test_file = "test_2.csv"
 
     # list with strings or a single string may be inputted
-    target_variables = ['chemotherapy_given','cancer_surgery_performed']
+    target_variables = ['Alive or Dead','Smoking status']
 
     # if true, converted images will be in png format instead of jpg
     png = False
@@ -75,7 +75,7 @@ if useFront == False:
     run_img_model = False
 
     # if true, two data files will be expected for input
-    two_datasets = False
+    two_datasets = True
 
     # if true, an additional file will be expected for testing
     use_additional_test_file = False
@@ -85,7 +85,7 @@ if useFront == False:
     img_id_name_loc = (3,6)
 
     # Column of IDs in dataset. Acceptable values include "index" or a column name.
-    ID_dataset_col = "id"
+    ID_dataset_col = "TCIA ID"
 
     # tuple with dimension of imagery. All images must equal this dimension
     img_dimensions = (512, 512, 3)
@@ -234,7 +234,7 @@ def encodeText(dataset):
 
     return dataset
 
-encodedDataset = encodeText(main_data)
+main_data = encodeText(main_data)
 
 def percentageAccuracy(iterable1,iterable2):
     
@@ -314,6 +314,9 @@ def GUI_varConnector(dataset1, dataset2):
               "SteelBlue1", "DarkOliveGreen3", "gold2", "plum1"]
 
     window = tk.Tk()
+
+    window.title("Variable Connector")
+    window.iconbitmap("D:\Cancer_Project\Team8_Cancer_ML\cancer_icon.ico")
 
     main_frame = tk.Frame(window)
     main_frame.pack(fill=tk.BOTH,expand=1)
@@ -428,7 +431,11 @@ if convert_imgs == True:
     convert_img(png, load_dirs,save_dir)
 
 def prep_data(data_file_1,data_file_2):
-    file_1 = pd.read_csv(data_file_1)
+    if str(type(data_file_1)) != "<class 'pandas.core.frame.DataFrame'>":
+        file_1 = pd.read_csv(data_file_1)
+    else:
+        file_1 = data_file_1
+
     common_ids = []
 
     if ID_dataset_col != "index":
@@ -437,7 +444,11 @@ def prep_data(data_file_1,data_file_2):
     ids_1 = file_1.index
 
     if two_datasets == True:
-        file_2 = pd.read_csv(data_file_2)
+        if str(type(data_file_2)) != "<class 'pandas.core.frame.DataFrame'>":
+            file_2 = pd.read_csv(data_file_2)
+        else:
+            file_2 = data_file_2
+
         file_2 = file_2.set_index(ID_dataset_col)
         ids_2 = file_2.index
         # determine the largest dataset to put first in the for statement
@@ -558,6 +569,8 @@ def model(data_file, test_file, target_vars, epochs_num):
         min_max_scaler = MinMaxScaler()
         X_train = min_max_scaler.fit_transform(X_train)
         X_test = min_max_scaler.fit_transform(X_test)
+
+        print(X_train)
 
         if multiple_targets:
             y_test = min_max_scaler.fit_transform(y_test)
@@ -712,12 +725,12 @@ def model(data_file, test_file, target_vars, epochs_num):
     NN(adapted_dataset, target_vars, epochs_num, act_func)
 
 if run_img_model == False and target_all == False:
-    model(encodedDataset,test_file,target_variables,num_epochs)
+    model(main_data,test_file,target_variables,num_epochs)
 elif run_img_model == False and target_all == True:
     # collect columns in data
-    cols = list(encodedDataset.columns)
+    cols = list(main_data.columns)
     for column in cols:
-        model(encodedDataset,test_file,column,num_epochs)
+        model(main_data,test_file,column,num_epochs)
 
 def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
     print("starting image model")
@@ -1026,12 +1039,12 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
     model(adapted_dataset,img_array,target_vars,act_func)
 
 if run_img_model == True and target_all == False:
-    image_model(save_dir,encodedDataset,test_file,target_variables,num_epochs)
+    image_model(save_dir,main_data,test_file,target_variables,num_epochs)
 elif run_img_model == True and target_all == True:
     # collect columns in data
-    cols = list(encodedDataset.columns)
+    cols = list(main_data.columns)
     for column in cols:
-        image_model(save_dir,encodedDataset,test_file,target_variables,num_epochs)
+        image_model(save_dir,main_data,test_file,target_variables,num_epochs)
 
 def resultPage():
     root = tk.Tk()
