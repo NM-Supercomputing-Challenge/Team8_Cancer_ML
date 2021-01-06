@@ -130,7 +130,8 @@ def Continue():
 
     window.quit()
 
-useDefaults = None
+# initialize bool
+useDefaults = False
 
 def useDefault():
     global useDefaults

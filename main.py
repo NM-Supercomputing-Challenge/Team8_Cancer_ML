@@ -36,6 +36,8 @@ useDefaults = GUI.useDefaults
 if useDefaults:
     # if true, main GUI will be used to specify other variables
     useFront = False
+else:
+    useFront = True
 
 if useFront == False:
     # SPECIFY VARIABLES HERE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -43,12 +45,12 @@ if useFront == False:
     save_fit = False
     model_save_loc = "saved_model"
 
-    main_data = "D:\\Cancer_Project\\Team8_Cancer_ML\\HNSCC-HN1\\Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020 (original).csv"
+    main_data = "D:\\Cancer_Project\\Team8_Cancer_ML\\METABRIC_RNA_Mutation\\METABRIC_RNA_Mutation.csv"
     sec_data = ""
     test_file = "test_2.csv"
 
     # list with strings or a single string may be inputted
-    target_variables = "chemotherapy_given"
+    target_variables = "chemotherapy"
 
     # if true, converted images will be in png format instead of jpg
     png = False
@@ -85,7 +87,7 @@ if useFront == False:
     img_id_name_loc = (3,6)
 
     # Column of IDs in dataset. Acceptable values include "index" or a column name.
-    ID_dataset_col = "id"
+    ID_dataset_col = "patient_id"
 
     # tuple with dimension of imagery. All images must equal this dimension
     img_dimensions = (512, 512, 3)
@@ -189,10 +191,16 @@ elif useFront == True:
     # number of epochs in model
     num_epochs = int(dictTxt["num_epochs "])
 
+def cleanData(pd_dataset):
+    df = pd_dataset.dropna()
+    return df
+
 def encodeText(dataset):
 
     if str(type(dataset)) == "<class 'str'>":
-        dataset = pd.read_csv(dataset)
+        dataset = pd.read_csv(dataset,low_memory=False)
+
+    dataset = cleanData(dataset)
 
     dShape = dataset.shape
     axis1 = dShape[0]
