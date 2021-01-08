@@ -249,6 +249,7 @@ def encodeText(dataset):
 
 main_data = encodeText(main_data)
 
+# function that returns percentage accuracy from rounded values
 def percentageAccuracy(iterable1,iterable2):
     
     def roundList(iterable):
@@ -289,6 +290,23 @@ def percentageAccuracy(iterable1,iterable2):
 
     rounded1 = roundList(iterable1)
     rounded2 = roundList(iterable2)
+
+    # remove negative zeros from lists
+    i = 0
+    for vals in rounded1:
+        if int(vals) == -0 or int(vals) == 0:
+            vals = abs(vals)
+            rounded1[i] = vals
+
+        i = i + 1
+
+    i = 0
+    for vals in rounded2:
+        if int(vals) == -0 or int(vals) == 0:
+            vals = abs(vals)
+            rounded2[i] = vals
+
+        i = i + 1
 
     numCorrect = len([i for i, j in zip(rounded1, rounded2) if i == j])
 
@@ -748,6 +766,14 @@ def model(data_file, test_file, target_vars, epochs_num):
         prediction = model.predict(X_test, batch_size=1)
         roundedPred = np.around(prediction,0)
 
+        i = 0
+        for vals in roundedPred:
+            if int(vals) == -0:
+                vals = abs(vals)
+                roundedPred[i] = vals
+
+            i = i + 1
+
         print("- - - - - - - - - - - - - Unrounded Prediction - - - - - - - - - - - - -")
         print(prediction)
         print("- - - - - - - - - - - - - Rounded Prediction - - - - - - - - - - - - -")
@@ -758,7 +784,7 @@ def model(data_file, test_file, target_vars, epochs_num):
         if str(type(prediction)) == "<class 'list'>":
             prediction = np.array([prediction])
 
-        percentAcc = percentageAccuracy(prediction,y_test)
+        percentAcc = percentageAccuracy(roundedPred,y_test)
         
         print("- - - - - - - - - - - - - Percentage Accuracy - - - - - - - - - - - - -")
         print(percentAcc)
