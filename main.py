@@ -26,8 +26,8 @@ import GUI
 from statistics import mean
 
 # un-comment to show all of pandas dataframe
-pd.set_option('display.max_rows', None)
-pd.set_option('display.max_columns', None)
+#pd.set_option('display.max_rows', None)
+#pd.set_option('display.max_columns', None)
 
 # un-comment to show all of numpy array
 #np.set_printoptions(threshold=sys.maxsize)
@@ -519,9 +519,7 @@ elif two_datasets == False:
 resultList = []
 prediction = []
 
-def feature_selection(pd_dataset,target_vars):
-
-    num_features = 10
+def feature_selection(pd_dataset,target_vars,num_features):
 
     # initialize bool as false
     multiple_targets = False
@@ -556,7 +554,8 @@ def feature_selection(pd_dataset,target_vars):
 
 def model(data_file, test_file, target_vars, epochs_num):
 
-    features = list(feature_selection(data_file,target_vars).keys())
+    # get top 10 most correlated features to utilize
+    features = list(feature_selection(data_file,target_vars,10).keys())
 
     # only use features determined by feature_selection
     data_file = data_file[data_file.columns.intersection(features)]
@@ -1010,6 +1009,7 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
             y_train = min_max_scaler.fit_transform(y_train)
 
         print(activation_function)
+        print(X_train.columns)
 
         if str(type(target_vars))!="<class 'list'>" or len(target_vars) == 1:
             # set input shape to dimension of data
