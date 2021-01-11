@@ -26,8 +26,8 @@ import GUI
 from statistics import mean
 
 # un-comment to show all of pandas dataframe
-#pd.set_option('display.max_rows', None)
-#pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
 
 # un-comment to show all of numpy array
 #np.set_printoptions(threshold=sys.maxsize)
@@ -195,7 +195,9 @@ def cleanData(pd_dataset):
     df = pd_dataset.dropna()
     return df
 
+codeDict = {}
 def encodeText(dataset):
+    global codeDict
 
     if str(type(dataset)) == "<class 'str'>":
         dataset = pd.read_csv(dataset,low_memory=False)
@@ -235,6 +237,8 @@ def encodeText(dataset):
                 divisor = 10**lenData
                 strData = strData/divisor
 
+                codeDict[strData] = data
+
                 if longestAxis == axis1:
                     dataset.iloc[i,n] = strData
                 else:
@@ -248,6 +252,108 @@ def encodeText(dataset):
     return dataset
 
 main_data = encodeText(main_data)
+
+# function for determining if target variable(s) are binary val
+# returns bool if single var 
+# returns list of bools in corresponding order to target variables list if multiple vars   
+def isBinary(target_var, pd_dataset): 
+
+    # check if param is a list of multiple vars 
+    if str(type(target_var)) == "<class 'list'>" and len(target_var) > 1:
+
+        # initialize list to hold bools 
+        areBinary = []
+
+        for vars in target_var: 
+            col = list(pd_dataset[vars])
+
+            # remove duplicates 
+            col = list(set(col))
+
+            # check if data is numerical 
+            for vals in col: 
+                if str(type(vals)) == "<class 'int'>" or str(type(vals)) == "<class 'float'>": 
+                    numeric = True
+                else: 
+                    numeric = False 
+
+            if not numeric: 
+                if len(col) == 2: 
+                    isBinary = True
+                else: 
+                    isBinary = False 
+
+                areBinary.append(isBinary)
+            else: 
+                areBinary = False
+
+        isBinary = areBinary 
+
+    else: 
+
+        col = list(pd_dataset[target_var])
+
+        # remove duplicates 
+        col = list(set(col))
+
+        if len(col) == 2: 
+            isBinary = True
+        else: 
+            isBinary = False 
+
+    return isBinary
+
+isBinary = isBinary(target_variables,main_data)
+
+# function to decode post-training vals into text
+# only use with binary values
+# function rounds vals to convert  
+def decode(iterable): 
+    
+    if str(type(iterable)) == "<class 'list'>": 
+        iterable = np.array(iterable)
+
+    initialShape = iterable.shape
+    
+    iterable = iterable.flatten()
+
+    iterable = np.around(iterable,decimals=0)
+
+    dictKeys = list(codeDict.keys())
+    dictVals = list(codeDict.values())
+
+    i = 0 
+    for keys in dictKeys: 
+        keys = round(keys,0)
+        dictKeys[i] = keys
+        i = i + 1 
+
+    roundedDict = dict(zip(dictKeys,dictVals))
+
+    def target_dict(): 
+        colData = main_data.loc[:,target_variables]
+        try: 
+            for cols in list(colData.columns): 
+                col = colData[cols].tolist()
+                col = list(set(col))
+        except: 
+            col = colData.tolist()
+            col = list(set(col))
+
+    if isBinary: 
+        target_dict()
+    
+    convIt = []
+    for vals in iterable: 
+        tran = roundedDict[vals]
+        convIt.append(tran)
+
+    convIt = np.array(convIt)
+
+    # make array back into initial shape
+    convIt = np.reshape(convIt,initialShape)
+
+    return convIt
 
 # function that returns percentage accuracy from rounded values
 def percentageAccuracy(iterable1,iterable2):
@@ -554,8 +660,27 @@ def feature_selection(pd_dataset,target_vars,num_features):
 
 def model(data_file, test_file, target_vars, epochs_num):
 
-    # get top 10 most correlated features to utilize
-    features = list(feature_selection(data_file,target_vars,10).keys())
+    # initialize bool as false
+    multiple_targets = False
+
+    if str(type(target_vars)) == "<class 'list'>" and len(target_vars) > 1:
+        multiple_targets = True
+
+    if multiple_targets == False:  
+        # get top 10 most correlated features to utilize
+        features = list(feature_selection(data_file,target_vars,10).keys())
+    else: 
+        # initialize list 
+        features = []
+
+        # make list with top 10 most correlated features from both vars. 
+        # Ex. 20 total features for 2 target vars 
+        for vars in target_vars: 
+            featuresVar = list(feature_selection(data_file,vars,10).keys())
+            features = features + featuresVar
+
+        # remove duplicates 
+        features = list(set(features))
 
     # only use features determined by feature_selection
     data_file = data_file[data_file.columns.intersection(features)]
@@ -608,12 +733,6 @@ def model(data_file, test_file, target_vars, epochs_num):
     def NN(data_file, target_vars, epochs_num,activation_function):
         global resultList
         global prediction
-
-        # initialize bool as false
-        multiple_targets = False
-
-        if str(type(target_vars)) == "<class 'list'>" and len(target_vars) > 1:
-            multiple_targets = True
 
         # Get data. Data must already be in a Pandas Dataframe
         df = data_file
@@ -765,13 +884,36 @@ def model(data_file, test_file, target_vars, epochs_num):
         prediction = model.predict(X_test, batch_size=1)
         roundedPred = np.around(prediction,0)
 
-        i = 0
-        for vals in roundedPred:
-            if int(vals) == -0:
-                vals = abs(vals)
-                roundedPred[i] = vals
+        if multiple_targets == False and roundedPred.ndim == 1: 
+            i = 0
+            for vals in roundedPred:
+                if int(vals) == -0:
+                    vals = abs(vals)
+                    roundedPred[i] = vals
 
-            i = i + 1
+                i = i + 1
+        else: 
+            preShape = roundedPred.shape
+
+            # if array has multiple dimensions, flatten the array 
+            roundedPred = roundedPred.flatten()
+
+            i = 0 
+            for vals in roundedPred: 
+                if int(vals) == -0: 
+                    vals = abs(vals)
+                    roundedPred[i] = vals 
+                
+                i = i + 1 
+
+            if len(preShape) == 3: 
+                if preShape[2] == 1: 
+                    # reshape array to previous shape without the additional dimension
+                    roundedPred = np.reshape(roundedPred,preShape[:2])
+                else: 
+                    roundedPred = np.reshape(roundedPred,preShape)
+            else: 
+                roundedPred = np.reshape(roundedPred,preShape)
 
         print("- - - - - - - - - - - - - Unrounded Prediction - - - - - - - - - - - - -")
         print(prediction)
@@ -796,6 +938,21 @@ def model(data_file, test_file, target_vars, epochs_num):
         resultList.append(str(roundedPred))
         resultList.append(str(y_test))
         resultList.append(str(percentAcc))
+
+        if multiple_targets == True and str(type(isBinary)) == "<class 'list'>": 
+            i = 0
+            for bools in isBinary: 
+                if bools == True: 
+                    decodedPrediction = decode(prediction[0,i])
+                i = i + 1     
+        else: 
+            if isBinary: 
+                decodedPrediction = decode(prediction)
+            else: 
+                decodedPrediction = "One or all of the target variables are non-binary and/or numeric"
+
+        print("- - - - - - - - - - - - - Translated Prediction - - - - - - - - - - - - -")
+        print(decodedPrediction)
 
     NN(adapted_dataset, target_vars, epochs_num, act_func)
 
