@@ -50,7 +50,7 @@ if useFront == False:
     test_file = "test_2.csv"
 
     # list with strings or a single string may be inputted
-    target_variables = "chemotherapy"
+    target_variables = "type_of_breast_surgery"
 
     # if true, converted images will be in png format instead of jpg
     png = False
@@ -191,6 +191,8 @@ elif useFront == True:
     # number of epochs in model
     num_epochs = int(dictTxt["num_epochs "])
 
+mainPath = main_data
+
 def cleanData(pd_dataset):
     df = pd_dataset.dropna()
     return df
@@ -237,7 +239,7 @@ def encodeText(dataset):
                 divisor = 10**lenData
                 strData = strData/divisor
 
-                codeDict[strData] = data
+                codeDict[data] = strData
 
                 if longestAxis == axis1:
                     dataset.iloc[i,n] = strData
@@ -253,10 +255,15 @@ def encodeText(dataset):
 
 main_data = encodeText(main_data)
 
+col = None
 # function for determining if target variable(s) are binary val
 # returns bool if single var 
 # returns list of bools in corresponding order to target variables list if multiple vars   
-def isBinary(target_var, pd_dataset): 
+def isBinary(target_var): 
+    global col 
+
+    orgPD = pd.read_csv(mainPath)
+    orgPD = orgPD.dropna()
 
     # check if param is a list of multiple vars 
     if str(type(target_var)) == "<class 'list'>" and len(target_var) > 1:
@@ -265,7 +272,8 @@ def isBinary(target_var, pd_dataset):
         areBinary = []
 
         for vars in target_var: 
-            col = list(pd_dataset[vars])
+        
+            col = list(orgPD[vars])
 
             # remove duplicates 
             col = list(set(col))
@@ -278,6 +286,7 @@ def isBinary(target_var, pd_dataset):
                     numeric = False 
 
             if not numeric: 
+
                 if len(col) == 2: 
                     isBinary = True
                 else: 
@@ -291,24 +300,95 @@ def isBinary(target_var, pd_dataset):
 
     else: 
 
-        col = list(pd_dataset[target_var])
+        col = list(orgPD[target_var])
 
         # remove duplicates 
         col = list(set(col))
 
-        if len(col) == 2: 
-            isBinary = True
+        # test code 
+        print("This is COL - - - - - - - - - - - - - -")
+        print(col)
+        # end test code 
+
+        # check if original data is numerical
+        for vals in col: 
+            if str(type(vals)) == "<class 'int'>" or str(type(vals)) == "<class 'float'>": 
+                numeric = True
+            else: 
+                numeric = False 
+        
+        if not numeric: 
+            if len(col) == 2: 
+                isBinary = True
+            else: 
+                isBinary = False 
+
         else: 
-            isBinary = False 
+            isBinary = False
 
     return isBinary
 
-isBinary = isBinary(target_variables,main_data)
+isBinary = isBinary(target_variables)
+
+# make dictionary with definitions for only target var 
+convCol = main_data.loc[:,target_variables]
+if str(type(target_variables)) == "<class 'list'>" and len(target_variables) > 1: 
+    valList = []
+    for cols in convCol: 
+        for vals in list(cols): 
+            valList.append(vals)
+
+    valList = list(set(valList))
+
+    i = 0 
+    for vals in valList: 
+        vals = round(vals,0)
+        valList[i] = vals 
+        i = i + 1 
+
+    orgPD = pd.read_csv(mainPath)
+    orgPD = orgPD.dropna()
+
+    orgList = []
+    for cols in orgPD.loc[:,target_variables]: 
+        for vals in list(cols):
+            orgList.append(vals)
+
+    orgList = list(set(orgList))
+    
+    targetDict = dict(zip(orgList,valList))
+
+else: 
+
+    valList = []
+    for vals in list(convCol): 
+        valList.append(vals)
+
+    valList = list(set(valList))
+
+    i = 0 
+    for vals in valList: 
+        vals = round(vals,0)
+        valList[i] = vals 
+        i = i + 1 
+
+    orgPD = pd.read_csv(mainPath)
+    orgPD = orgPD.dropna()
+
+    orgList = []
+    for cols in orgPD.loc[:,target_variables]: 
+        for vals in list(cols): 
+            orgList.append(vals)
+    
+    orgList = list(set(orgList))
+
+    targetDict = dict(zip(orgList,valList))
+    print(targetDict)
 
 # function to decode post-training vals into text
 # only use with binary values
 # function rounds vals to convert  
-def decode(iterable): 
+def decode(iterable,codeDict): 
     
     if str(type(iterable)) == "<class 'list'>": 
         iterable = np.array(iterable)
@@ -322,11 +402,25 @@ def decode(iterable):
     dictKeys = list(codeDict.keys())
     dictVals = list(codeDict.values())
 
-    i = 0 
+    # determine type of vals
+    # initialize text bool as false 
+    textKeys = False 
     for keys in dictKeys: 
-        keys = round(keys,0)
-        dictKeys[i] = keys
-        i = i + 1 
+        if str(type(keys)) == "<class 'str'>": 
+            textKeys = True
+
+    if not textKeys: 
+        i = 0 
+        for keys in dictKeys: 
+            keys = round(keys,0)
+            dictKeys[i] = keys
+            i = i + 1 
+    else: 
+        i = 0 
+        for vals in dictVals: 
+            vals = round(vals,0)
+            dictVals[i] = vals
+            i = i + 1 
 
     roundedDict = dict(zip(dictKeys,dictVals))
 
@@ -943,11 +1037,11 @@ def model(data_file, test_file, target_vars, epochs_num):
             i = 0
             for bools in isBinary: 
                 if bools == True: 
-                    decodedPrediction = decode(prediction[0,i])
+                    decodedPrediction = decode(prediction[0,i],targetDict)
                 i = i + 1     
         else: 
             if isBinary: 
-                decodedPrediction = decode(prediction)
+                decodedPrediction = decode(prediction,targetDict)
             else: 
                 decodedPrediction = "One or all of the target variables are non-binary and/or numeric"
 
