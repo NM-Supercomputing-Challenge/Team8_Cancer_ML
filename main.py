@@ -26,8 +26,8 @@ import GUI
 from statistics import mean
 
 # un-comment to show all of pandas dataframe
-pd.set_option('display.max_rows', None)
-pd.set_option('display.max_columns', None)
+#pd.set_option('display.max_rows', None)
+#pd.set_option('display.max_columns', None)
 
 # un-comment to show all of numpy array
 #np.set_printoptions(threshold=sys.maxsize)
@@ -45,12 +45,12 @@ if useFront == False:
     save_fit = False
     model_save_loc = "saved_model"
 
-    main_data = "D:\\Cancer_Project\\Team8_Cancer_ML\\METABRIC_RNA_Mutation\\METABRIC_RNA_Mutation.csv"
+    main_data = "D:\\Cancer_Project\\Team8_Cancer_ML\\HNSCC-HN1\\Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020 (original).csv"
     sec_data = ""
     test_file = "test_2.csv"
 
     # list with strings or a single string may be inputted
-    target_variables = ["chemotherapy","cancer_type"]
+    target_variables = "chemotherapy_given"
 
     # if true, converted images will be in png format instead of jpg
     png = False
@@ -62,7 +62,7 @@ if useFront == False:
     save_dir = "D:\\Cancer_Project\\converted_img"
 
     # directory to save imagery array
-    img_array_save = "D:\\Cancer_Project\\Team8_Cancer_ML\\HNSCC-HN1\\img_array"
+    img_array_save = "D:\\Cancer_Project\\Team8_Cancer_ML\\HNSCC-HN1\\img_array_HN1\\img_arrays"
 
     # if true, numpy image array will be searched for in img_array_save
     load_numpy_img = True
@@ -74,7 +74,7 @@ if useFront == False:
     del_converted_imgs = False
 
     # if true, image model will be ran instead of clinical only model
-    run_img_model = False
+    run_img_model = True
 
     # if true, two data files will be expected for input
     two_datasets = False
@@ -87,7 +87,7 @@ if useFront == False:
     img_id_name_loc = (3,6)
 
     # Column of IDs in dataset. Acceptable values include "index" or a column name.
-    ID_dataset_col = "patient_id"
+    ID_dataset_col = "id"
 
     # tuple with dimension of imagery. All images must equal this dimension
     img_dimensions = (512, 512, 3)
@@ -1058,9 +1058,9 @@ elif run_img_model == False and target_all == True:
 def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
     print("starting image model")
 
-    features = list(feature_selection(data_file, target_vars).keys())
+    features = list(feature_selection(data_file, target_vars,10).keys())
 
-    # only use features determined by feature_selection
+    # only use features determined by feature_selection in clinical data
     data_file = data_file[data_file.columns.intersection(features)]
 
     def format_data(data_file, test_file, target_vars):
@@ -1201,6 +1201,9 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
         # Get data
         df = pd_data
 
+        # round all values in dataset to 3rd decimal place
+        df = df.astype('float').round(3)
+
         # y data
         labels = df[target_vars]
         # x data
@@ -1210,10 +1213,25 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
         y = labels
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-        y_test = y_test.to_numpy()
-        y_train = y_train.to_numpy()
-        X_train = X_train.to_numpy()
-        X_test = X_test.to_numpy()
+        # scale data
+        scaler = StandardScaler().fit(X_train)
+        X_train = scaler.transform(X_train)
+        X_test = scaler.transform(X_test)
+
+        # normalize data
+        min_max_scaler = MinMaxScaler()
+        X_train = min_max_scaler.fit_transform(X_train)
+        X_test = min_max_scaler.fit_transform(X_test)
+
+        if multiple_targets:
+            y_test = min_max_scaler.fit_transform(y_test)
+            y_train = min_max_scaler.fit_transform(y_train)
+
+        if str(type(y_train)) == "<class 'pandas.core.frame.DataFrame'>":
+            y_train = y_train.to_numpy()
+
+        if str(type(y_test)) == "<class 'pandas.core.frame.DataFrame'>":
+            y_test = y_test.to_numpy()
 
         y_test = np.asarray(y_test).astype(np.float32)
         y_train = np.asarray(y_train).astype(np.float32)
@@ -1257,7 +1275,6 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
             y_train = min_max_scaler.fit_transform(y_train)
 
         print(activation_function)
-        print(X_train.columns)
 
         if str(type(target_vars))!="<class 'list'>" or len(target_vars) == 1:
             # set input shape to dimension of data
@@ -1344,12 +1361,46 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
         prediction = model.predict(data_test, batch_size=1)
         roundedPred = np.around(prediction,0)
 
+        if multiple_targets == False and roundedPred.ndim == 1: 
+            i = 0
+            for vals in roundedPred: 
+                if int(vals) == -0: 
+                    vals = abs(vals)
+                    roundedPred[i] = vals
+
+                i = i + 1 
+        else: 
+            preShape = roundedPred.shape
+
+            roundedPred = roundedPred.flatten()
+
+            i = 0
+            for vals in roundedPred: 
+                if int(vals) == -0: 
+                    vals = abs(vals)
+                    roundedPred[i] = vals
+                
+                i = i + 1 
+
+                if len(preShape) == 3: 
+                    if preShape[2] == 1:
+                        # reshape array to previous shape without the additional dimension
+                        roundedPred = np.reshape(roundedPred,preShape[:2])
+                    else: 
+                        roundedPred = np.reshape(roundedPred,preShape)
+
+                else: 
+                    roundedPred = np.reshape(roundedPred,preShape)
+
         print("- - - - - - - - - - - - - Unrounded Prediction - - - - - - - - - - - - -")
         print(prediction)
         print("- - - - - - - - - - - - - Rounded Prediction - - - - - - - - - - - - -")
         print(roundedPred)
         print("- - - - - - - - - - - - - y test - - - - - - - - - - - - -")
         print(y_test)
+
+        if str(type(prediction)) == "<class 'list'>":
+            prediction = np.array([prediction])
 
         percentAcc = percentageAccuracy(prediction,y_test)
         
@@ -1364,6 +1415,26 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
         resultList.append(str(roundedPred))
         resultList.append(str(y_test))
         resultList.append(str(percentAcc))
+
+        if multiple_targets == True and str(type(isBinary)) == "<class 'list'>": 
+
+            # initialize var as error message 
+            decodedPrediction = "One or all of the target variables are non-binary and/or numeric"
+
+            i = 0
+            for bools in isBinary: 
+                if bools == True: 
+                    decodedPrediction = decode(prediction[0,i],targetDict)
+                i = i + 1
+
+        else:
+            if isBinary:
+                decodedPrediction = decode(prediction,targetDict)
+            else:
+                decodedPrediction = "One or all of the target variables are non-binary and/or numeric"
+
+        print("- - - - - - - - - - - - - Translated Prediction - - - - - - - - - - - - -")
+        print(decodedPrediction)
 
     model(adapted_dataset,img_array,target_vars,act_func)
 
