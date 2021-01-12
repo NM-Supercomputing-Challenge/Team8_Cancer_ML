@@ -305,11 +305,6 @@ def isBinary(target_var):
         # remove duplicates 
         col = list(set(col))
 
-        # test code 
-        print("This is COL - - - - - - - - - - - - - -")
-        print(col)
-        # end test code 
-
         # check if original data is numerical
         for vals in col: 
             if str(type(vals)) == "<class 'int'>" or str(type(vals)) == "<class 'float'>": 
@@ -340,11 +335,11 @@ if str(type(target_variables)) == "<class 'list'>" and len(target_variables) > 1
 
     valList = list(set(valList))
 
-    i = 0 
-    for vals in valList: 
-        vals = round(vals,0)
-        valList[i] = vals 
-        i = i + 1 
+    smNum = min(valList)
+    lgNum = max(valList)
+
+    valList[valList.index(smNum)] = 0
+    valList[valList.index(lgNum)] = 1
 
     orgPD = pd.read_csv(mainPath)
     orgPD = orgPD.dropna()
@@ -356,7 +351,7 @@ if str(type(target_variables)) == "<class 'list'>" and len(target_variables) > 1
 
     orgList = list(set(orgList))
     
-    targetDict = dict(zip(orgList,valList))
+    targetDict = dict(zip(valList,orgList))
 
 else: 
 
@@ -366,23 +361,25 @@ else:
 
     valList = list(set(valList))
 
-    i = 0 
-    for vals in valList: 
-        vals = round(vals,0)
-        valList[i] = vals 
-        i = i + 1 
+    smNum = min(valList)
+    lgNum = max(valList)
+
+    valList[valList.index(smNum)] = 0
+    valList[valList.index(lgNum)] = 1
 
     orgPD = pd.read_csv(mainPath)
     orgPD = orgPD.dropna()
 
     orgList = []
-    for cols in orgPD.loc[:,target_variables]: 
-        for vals in list(cols): 
-            orgList.append(vals)
+    for vals in orgPD.loc[:,target_variables]:  
+        orgList.append(vals)
     
     orgList = list(set(orgList))
 
-    targetDict = dict(zip(orgList,valList))
+    print(valList)
+    print(orgList)
+
+    targetDict = dict(zip(valList,orgList))
     print(targetDict)
 
 # function to decode post-training vals into text
