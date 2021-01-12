@@ -50,7 +50,7 @@ if useFront == False:
     test_file = "test_2.csv"
 
     # list with strings or a single string may be inputted
-    target_variables = "type_of_breast_surgery"
+    target_variables = ["chemotherapy","cancer_type"]
 
     # if true, converted images will be in png format instead of jpg
     png = False
@@ -268,10 +268,10 @@ def isBinary(target_var):
     # check if param is a list of multiple vars 
     if str(type(target_var)) == "<class 'list'>" and len(target_var) > 1:
 
-        # initialize list to hold bools 
-        areBinary = []
-
         for vars in target_var: 
+
+            # initialize list to hold bools 
+            areBinary = []
         
             col = list(orgPD[vars])
 
@@ -376,11 +376,7 @@ else:
     
     orgList = list(set(orgList))
 
-    print(valList)
-    print(orgList)
-
     targetDict = dict(zip(valList,orgList))
-    print(targetDict)
 
 # function to decode post-training vals into text
 # only use with binary values
@@ -1031,6 +1027,10 @@ def model(data_file, test_file, target_vars, epochs_num):
         resultList.append(str(percentAcc))
 
         if multiple_targets == True and str(type(isBinary)) == "<class 'list'>": 
+            
+            # initialize var as error message
+            decodedPrediction = "One or all of the target variables are non-binary and/or numeric"
+
             i = 0
             for bools in isBinary: 
                 if bools == True: 
