@@ -50,7 +50,7 @@ if useFront == False:
     test_file = "test_2.csv"
 
     # list with strings or a single string may be inputted
-    target_variables = "chemotherapy_given"
+    target_variables = 'chemotherapy_given'
 
     # if true, converted images will be in png format instead of jpg
     png = False
@@ -729,14 +729,20 @@ def feature_selection(pd_dataset,target_vars,num_features):
         features = []
         for vars in target_vars:
             f = pd_dataset.corr().abs().nlargest(num_features,vars).index
+            f = list(f)
             features.append(f)
+
+        features = sum(features,[])
 
     # get the top correlation values
     if multiple_targets:
         corrVals=[]
         for vars in target_vars:
             c = pd_dataset.corr().abs().nlargest(num_features,vars).values[:,pd_dataset.shape[1]-1]
+            c = list(c)
             corrVals.append(c)
+
+        corrVals = sum(corrVals,[])
     else:
         corrVals = list(pd_dataset.corr().abs().nlargest(num_features,target_vars).values[:,pd_dataset.shape[1]-1])
 
@@ -1253,14 +1259,6 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
         data = np.concatenate((X_train_img,X_train),axis=1)
         data_test = np.concatenate((X_test,X_test_img),axis=1)
 
-        if str(type(target_vars)) == "<class 'list'>" and len(target_vars) > 1:
-            # divide y_train's columns into separate dataframes and store them in a list
-            list_y_train = []
-            y_cols = list(y_train.columns)
-            for col in y_cols:
-                var_col = y_train[col]
-                list_y_train.append(var_col)
-
         scaler = StandardScaler().fit(data)
         data = scaler.transform(data)
         data_test = scaler.transform(data_test)
@@ -1328,7 +1326,7 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
                           loss='mean_squared_error',
                           metrics=['accuracy'])
 
-            fit = model.fit(data,list_y_train,epochs=epochs_num,batch_size=5)
+            fit = model.fit(data,y_train,epochs=epochs_num,batch_size=5)
 
         #plotting
         history = fit
@@ -1374,23 +1372,27 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
 
             roundedPred = roundedPred.flatten()
 
-            i = 0
-            for vals in roundedPred: 
+            roundedPred = roundedPred.tolist()
+
+            i = 0 
+            for vals in roundedPred:
                 if int(vals) == -0: 
                     vals = abs(vals)
                     roundedPred[i] = vals
                 
                 i = i + 1 
 
-                if len(preShape) == 3: 
-                    if preShape[2] == 1:
-                        # reshape array to previous shape without the additional dimension
-                        roundedPred = np.reshape(roundedPred,preShape[:2])
-                    else: 
-                        roundedPred = np.reshape(roundedPred,preShape)
+            roundedPred = np.array(roundedPred)
 
+            if len(preShape) == 3: 
+                if preShape[2] == 1:
+                    # reshape array to previous shape without the additional dimension
+                    roundedPred = np.reshape(roundedPred,preShape[:2])
                 else: 
                     roundedPred = np.reshape(roundedPred,preShape)
+
+            else: 
+                roundedPred = np.reshape(roundedPred,preShape)
 
         print("- - - - - - - - - - - - - Unrounded Prediction - - - - - - - - - - - - -")
         print(prediction)
