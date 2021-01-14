@@ -104,8 +104,8 @@ if useFront == False:
     # if true, graphs will be saved after training model
     save_figs = False
 
-    # if true, convert dicom to standard format before put into numpy
-    dcmImg = False
+    # if true, convert dicom directly to numpy
+    dcmDirect = True
 
     # number of epochs in model
     num_epochs = 50
@@ -192,7 +192,7 @@ elif useFront == True:
     save_figs = dictBool["save_figs "]
 
     # if true, convert dicom to standard format before put into numpy
-    dcmImg = dictBool["dcmImg"]
+    dcmDirect = dictBool["dcmDirect"]
 
     # number of epochs in model
     num_epochs = int(dictTxt["num_epochs "])
@@ -692,9 +692,9 @@ def convert_npy(dirs_list,save_path):
 
     np.save(os.path.join(save_path, "img_array"), img_array)
 
-if convert_imgs == True and dcmImg == False:
+if convert_imgs == True and dcmDirect == False:
     convert_img(png, load_dirs,save_dir)
-elif convert_imgs == True and load_numpy_img == False and dcmImg == True:
+elif convert_imgs == True and load_numpy_img == False and dcmDirect == True:
     convert_npy(load_dirs,save_dir)
 
 def prep_data(data_file_1,data_file_2):

@@ -21,5 +21,5 @@ target_all = False
 data_save_loc = "D://Cancer_Project//Team8_Cancer_ML//result_graphs"
 show_figs = False
 save_figs = False
-dcmImg = True
+dcmDirect = True
 num_epochs = 50
