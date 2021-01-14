@@ -62,12 +62,12 @@ if useFront == False:
     save_dir = "D:\\Cancer_Project\\converted_img"
 
     # directory to save imagery array
-    img_array_save = "D:\\Cancer_Project\\Team8_Cancer_ML\\HNSCC-HN1\\img_array_HN1\\img_arrays"
+    img_array_save = "D:\\Cancer_Project\\converted_img"
 
     # if true, numpy image array will be searched for in img_array_save
     load_numpy_img = True
 
-    # if true, attempt will be made to convert dicom files to jpg or png
+    # if true, attempt will be made to convert dicom files to jpg,png,or directly to npy
     convert_imgs = False
 
     #if true, converted dicom images will be deleted after use
@@ -90,7 +90,7 @@ if useFront == False:
     ID_dataset_col = "id"
 
     # tuple with dimension of imagery. All images must equal this dimension
-    img_dimensions = (512, 512, 3)
+    img_dimensions = (512, 512)
 
     # if true, every column in data will be inputted for target variable
     target_all = False
@@ -103,6 +103,9 @@ if useFront == False:
 
     # if true, graphs will be saved after training model
     save_figs = False
+
+    # if true, convert dicom to standard format before put into numpy
+    dcmImg = False
 
     # number of epochs in model
     num_epochs = 50
@@ -187,6 +190,9 @@ elif useFront == True:
 
     # if true, graphs will be saved after training model
     save_figs = dictBool["save_figs "]
+
+    # if true, convert dicom to standard format before put into numpy
+    dcmImg = dictBool["dcmImg"]
 
     # number of epochs in model
     num_epochs = int(dictTxt["num_epochs "])
@@ -651,8 +657,45 @@ def convert_img(png_boolean,dirs_list,save_path):
             percentage_done = (num_converted_img/num_imgs) * 100
             print(str(round(percentage_done,2)) + " percent completed")
 
-if convert_imgs == True:
+def convert_npy(dirs_list,save_path):
+    print("appending dicom files directly to numpy array")
+    img_array = np.array([])
+    img_conv = 0
+    for f in dirs_list:
+
+        # filter incompatible images
+        if os.path.basename(f) != "1-1.dcm":
+            ds = dicom.dcmread(f)
+            pixel_array_numpy = ds.pixel_array
+            id = ds.PatientID
+
+            for s in id:
+                if not s.isdigit():
+                    id = id.replace(s,'')
+
+            if pixel_array_numpy.shape == img_dimensions:
+                pixel_array_numpy = pixel_array_numpy.flatten()
+                pixel_array_numpy = np.insert(pixel_array_numpy,len(pixel_array_numpy),id)
+                img_array = np.append(img_array,pixel_array_numpy)
+
+        print(psutil.virtual_memory().percent)
+
+        # memory optimization
+        if psutil.virtual_memory().percent >= 50:
+            break
+
+        ## Loading info
+        num_imgs = len(dirs_list)
+        img_conv = img_conv + 1
+        percentage_done = (img_conv / num_imgs) * 100
+        print(str(round(percentage_done, 2)) + " percent completed")
+
+    np.save(os.path.join(save_path, "img_array"), img_array)
+
+if convert_imgs == True and dcmImg == False:
     convert_img(png, load_dirs,save_dir)
+elif convert_imgs == True and load_numpy_img == False and dcmImg == True:
+    convert_npy(load_dirs,save_dir)
 
 def prep_data(data_file_1,data_file_2):
     if str(type(data_file_1)) != "<class 'pandas.core.frame.DataFrame'>":
@@ -1109,7 +1152,10 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
 
     if load_numpy_img == True:
         img_array = np.load(os.path.join(img_array_save,os.listdir(img_array_save)[0]))
-        flat_res = int((img_dimensions[0]*img_dimensions[1]*img_dimensions[2])+1)
+        if len(img_dimensions) == 3:
+            flat_res = int((img_dimensions[0]*img_dimensions[1]*img_dimensions[2])+1)
+        elif len(img_dimensions) == 2:
+            flat_res = int((img_dimensions[0]*img_dimensions[1])+1)
         num_img = int(img_array.shape[0]/flat_res)
         img_array = np.reshape(img_array,(num_img,flat_res))
 
