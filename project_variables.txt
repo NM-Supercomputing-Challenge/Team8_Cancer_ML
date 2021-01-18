@@ -23,3 +23,4 @@ show_figs = False
 save_figs = False
 dcmDirect = True
 num_epochs = 50
+useCNN = True

@@ -62,7 +62,7 @@ if useFront == False:
     save_dir = "D:\\Cancer_Project\\converted_img"
 
     # directory to save imagery array
-    img_array_save = "D:\\Cancer_Project\\converted_img"
+    img_array_save = "D:\Cancer_Project\converted_img"
 
     # if true, numpy image array will be searched for in img_array_save
     load_numpy_img = True
@@ -108,7 +108,10 @@ if useFront == False:
     dcmDirect = True
 
     # number of epochs in model
-    num_epochs = 50
+    num_epochs = 1
+
+    # if true, CNN will be used
+    useCNN = True
 
     # END VARIABLES - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 elif useFront == True:
@@ -1300,19 +1303,52 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        print(X_train_img.shape)
-        print(X_train.shape)
-        X_train = np.concatenate((X_train_img,X_train),axis=1)
-        X_test = np.concatenate((X_test,X_test_img),axis=1)
+        if useCNN:
 
-        scaler = StandardScaler().fit(X_train)
-        X_train = scaler.transform(X_train)
-        X_test = scaler.transform(X_test)
+            # initialize empty array
+            newImg = np.empty((0,img_dimensions[0]*img_dimensions[1]))
 
-        # normalize data
-        min_max_scaler = MinMaxScaler()
-        X_train = min_max_scaler.fit_transform(X_train)
-        X_test = min_max_scaler.fit_transform(X_test)
+            # remove ids from img data
+            i = 0
+            for arr in X_train_img:
+                arr = np.delete(arr,-1)
+                newImg = np.insert(newImg,i,arr,axis=0)
+                i = i + 1
+
+            X_train_img = newImg
+
+            # initialize empty array
+            newImg = np.empty((1,img_dimensions[0]*img_dimensions[1]))
+
+            # remove ids from img data
+            i = 0
+            for arr in X_test_img:
+                arr = np.delete(arr,-1)
+                newImg = np.insert(newImg,i,arr,axis=0)
+                i = i + 1
+
+            X_test_img = newImg
+
+            X_train_img = np.reshape(X_train_img,(X_train_img.shape[0],img_dimensions[0],img_dimensions[1],1))
+            X_test_img = np.reshape(X_test_img,(X_test_img.shape[0],img_dimensions[0],img_dimensions[1],1))
+
+            X_train = X_train_img
+            X_test = X_test_img
+
+        if not useCNN:
+            print(X_train_img.shape)
+            print(X_train.shape)
+            X_train = np.concatenate((X_train_img,X_train),axis=1)
+            X_test = np.concatenate((X_test,X_test_img),axis=1)
+
+            scaler = StandardScaler().fit(X_train)
+            X_train = scaler.transform(X_train)
+            X_test = scaler.transform(X_test)
+
+            # normalize data
+            min_max_scaler = MinMaxScaler()
+            X_train = min_max_scaler.fit_transform(X_train)
+            X_test = min_max_scaler.fit_transform(X_test)
 
         if multiple_targets:
             y_test = min_max_scaler.fit_transform(y_test)
@@ -1320,59 +1356,83 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
 
         print(activation_function)
 
-        if str(type(target_vars))!="<class 'list'>" or len(target_vars) == 1:
-            # set input shape to dimension of data
-            input = keras.layers.Input(shape=(X_train.shape[1],))
+        if not useCNN:
+            if str(type(target_vars))!="<class 'list'>" or len(target_vars) == 1:
+                # set input shape to dimension of data
+                input = keras.layers.Input(shape=(X_train.shape[1],))
 
-            x = Dense(150, activation=activation_function)(input)
-            x = Dense(150, activation=activation_function)(x)
-            x = Dense(150, activation=activation_function)(x)
-            x = Dense(120, activation=activation_function)(x)
-            x = Dense(120, activation=activation_function)(x)
-            x = Dense(100, activation=activation_function)(x)
-            x = Dense(100, activation=activation_function)(x)
-            x = Dense(80, activation=activation_function)(x)
-            x = Dense(80, activation=activation_function)(x)
-            x = Dense(45, activation=activation_function)(x)
-            output = Dense(1, activation='linear')(x)
-            model = keras.Model(input, output)
+                x = Dense(150, activation=activation_function)(input)
+                x = Dense(150, activation=activation_function)(x)
+                x = Dense(150, activation=activation_function)(x)
+                x = Dense(120, activation=activation_function)(x)
+                x = Dense(120, activation=activation_function)(x)
+                x = Dense(100, activation=activation_function)(x)
+                x = Dense(100, activation=activation_function)(x)
+                x = Dense(80, activation=activation_function)(x)
+                x = Dense(80, activation=activation_function)(x)
+                x = Dense(45, activation=activation_function)(x)
+                output = Dense(1, activation='linear')(x)
+                model = keras.Model(input, output)
 
-            model.compile(optimizer='adam',
+                model.compile(optimizer='adam',
+                                  loss='mean_squared_error',
+                                  metrics=['accuracy'])
+
+                fit = model.fit(X_train,y_train,epochs=epochs_num,batch_size=64)
+
+            else:
+                input = keras.layers.Input(shape=(X_train.shape[1],))
+
+                def add_target(Input):
+                    x = layers.Dense(40,activation=activation_function)(Input)
+                    x = layers.Dense(40, activation=activation_function)(x)
+                    x = layers.Dense(35, activation=activation_function)(x)
+                    x = layers.Dense(35, activation=activation_function)(x)
+                    return x
+
+                output_list = []
+                for vars in range(len(target_vars)):
+                    x = add_target(input)
+                    output_list.append(x)
+
+                x = layers.Concatenate()(output_list)
+                output_list.clear()
+                x = layers.Dense(12,activation=activation_function)(x)
+                for vars in range(len(target_vars)):
+                    # create output layer
+                    y = layers.Dense(1,activation='linear')(x)
+                    output_list.append(y)
+
+                model = keras.Model(inputs=input,outputs=output_list)
+
+                model.compile(optimizer='adam',
                               loss='mean_squared_error',
                               metrics=['accuracy'])
 
-            fit = model.fit(X_train,y_train,epochs=epochs_num,batch_size=64)
+                fit = model.fit(X_train,y_train,epochs=epochs_num,batch_size=5)
 
         else:
-            input = keras.layers.Input(shape=(X_train.shape[1],))
+            model = Sequential()
 
-            def add_target(Input):
-                x = layers.Dense(40,activation=activation_function)(Input)
-                x = layers.Dense(40, activation=activation_function)(x)
-                x = layers.Dense(35, activation=activation_function)(x)
-                x = layers.Dense(35, activation=activation_function)(x)
-                return x
+            model.add(layers.Conv2D(64,(3,3),input_shape=X_train.shape[1:]))
+            model.add(layers.Activation('relu'))
+            model.add(layers.MaxPooling2D(pool_size=(2,2)))
 
-            output_list = []
-            for vars in range(len(target_vars)):
-                x = add_target(input)
-                output_list.append(x)
+            model.add(layers.Conv2D(64,(3,3)))
+            model.add(layers.Activation('relu'))
+            model.add(layers.MaxPooling2D(pool_size=(2,2)))
 
-            x = layers.Concatenate()(output_list)
-            output_list.clear()
-            x = layers.Dense(12,activation=activation_function)(x)
-            for vars in range(len(target_vars)):
-                # create output layer
-                y = layers.Dense(1,activation='linear')(x)
-                output_list.append(y)
+            model.add(layers.Flatten())
+            model.add(layers.Dense(64))
 
-            model = keras.Model(inputs=input,outputs=output_list)
+            model.add(layers.Dense(1))
+            model.add(layers.Activation('linear'))
 
-            model.compile(optimizer='adam',
-                          loss='mean_squared_error',
+            model.compile(loss='mean_squared_error',
+                          optimizer='adam',
                           metrics=['accuracy'])
 
-            fit = model.fit(X_train,y_train,epochs=epochs_num,batch_size=5)
+            fit = model.fit(X_train,y_train,epochs=epochs_num)
 
         #plotting
         history = fit
