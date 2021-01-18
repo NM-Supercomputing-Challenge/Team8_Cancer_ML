@@ -1302,17 +1302,17 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
 
         print(X_train_img.shape)
         print(X_train.shape)
-        data = np.concatenate((X_train_img,X_train),axis=1)
-        data_test = np.concatenate((X_test,X_test_img),axis=1)
+        X_train = np.concatenate((X_train_img,X_train),axis=1)
+        X_test = np.concatenate((X_test,X_test_img),axis=1)
 
-        scaler = StandardScaler().fit(data)
-        data = scaler.transform(data)
-        data_test = scaler.transform(data_test)
+        scaler = StandardScaler().fit(X_train)
+        X_train = scaler.transform(X_train)
+        X_test = scaler.transform(X_test)
 
         # normalize data
         min_max_scaler = MinMaxScaler()
-        data = min_max_scaler.fit_transform(data)
-        data_test = min_max_scaler.fit_transform(data_test)
+        X_train = min_max_scaler.fit_transform(X_train)
+        X_test = min_max_scaler.fit_transform(X_test)
 
         if multiple_targets:
             y_test = min_max_scaler.fit_transform(y_test)
@@ -1322,7 +1322,7 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
 
         if str(type(target_vars))!="<class 'list'>" or len(target_vars) == 1:
             # set input shape to dimension of data
-            input = keras.layers.Input(shape=(data.shape[1],))
+            input = keras.layers.Input(shape=(X_train.shape[1],))
 
             x = Dense(150, activation=activation_function)(input)
             x = Dense(150, activation=activation_function)(x)
@@ -1341,10 +1341,10 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
                               loss='mean_squared_error',
                               metrics=['accuracy'])
 
-            fit = model.fit(data,y_train,epochs=epochs_num,batch_size=64)
+            fit = model.fit(X_train,y_train,epochs=epochs_num,batch_size=64)
 
         else:
-            input = keras.layers.Input(shape=(data.shape[1],))
+            input = keras.layers.Input(shape=(X_train.shape[1],))
 
             def add_target(Input):
                 x = layers.Dense(40,activation=activation_function)(Input)
@@ -1372,7 +1372,7 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
                           loss='mean_squared_error',
                           metrics=['accuracy'])
 
-            fit = model.fit(data,y_train,epochs=epochs_num,batch_size=5)
+            fit = model.fit(X_train,y_train,epochs=epochs_num,batch_size=5)
 
         #plotting
         history = fit
@@ -1402,7 +1402,7 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
         if str(type(prediction)) == "<class 'list'>":
             prediction = np.array([prediction])
 
-        prediction = model.predict(data_test, batch_size=1)
+        prediction = model.predict(X_test, batch_size=1)
         roundedPred = np.around(prediction,0)
 
         if multiple_targets == False and roundedPred.ndim == 1: 
@@ -1455,7 +1455,7 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
         print("- - - - - - - - - - - - - Percentage Accuracy - - - - - - - - - - - - -")
         print(percentAcc)
 
-        eval = model.evaluate(data_test)
+        eval = model.evaluate(X_test)
         results = dict(zip(model.metrics_names, eval))
         print(results)
 
