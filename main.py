@@ -99,10 +99,10 @@ if useFront == False:
     data_save_loc = "D://Cancer_Project//Team8_Cancer_ML//result_graphs"
 
     # if true, graphs will be shown after training model
-    show_figs = False
+    show_figs = True
 
     # if true, graphs will be saved after training model
-    save_figs = False
+    save_figs = True
 
     # if true, convert dicom directly to numpy
     dcmDirect = True
@@ -886,7 +886,7 @@ def model(data_file, test_file, target_vars, epochs_num):
 
         X = features
         y = labels
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
         # scale data
         scaler = StandardScaler().fit(X_train)
@@ -993,7 +993,7 @@ def model(data_file, test_file, target_vars, epochs_num):
                           loss='mean_absolute_error',
                           metrics=['accuracy'])
 
-            fit = model.fit(X_train, y_train, epochs=epochs_num, batch_size=1024)
+            fit = model.fit(X_train, y_train, epochs=epochs_num, batch_size=32)
 
         # plotting
         history = fit
@@ -1432,7 +1432,9 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
             model.add(layers.MaxPooling2D(pool_size=(2,2)))
 
             model.add(layers.Flatten())
+
             model.add(layers.Dense(64))
+            model.add(layers.Activation('relu'))
 
             model.add(layers.Dense(1))
             model.add(layers.Activation('linear'))
