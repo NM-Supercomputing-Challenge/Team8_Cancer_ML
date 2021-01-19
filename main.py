@@ -1305,6 +1305,15 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
 
         if useCNN:
 
+            scaler = StandardScaler().fit(X_train_img)
+            X_train_img = scaler.transform(X_train_img)
+            X_test_img = scaler.transform(X_test_img)
+
+            # normalize data
+            min_max_scaler = MinMaxScaler()
+            X_train_img = min_max_scaler.fit_transform(X_train_img)
+            X_test_img = min_max_scaler.fit_transform(X_test_img)
+
             # initialize empty array
             newImg = np.empty((0,img_dimensions[0]*img_dimensions[1]))
 
