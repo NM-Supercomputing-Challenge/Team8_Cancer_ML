@@ -108,7 +108,7 @@ if useFront == False:
     dcmDirect = True
 
     # number of epochs in model
-    num_epochs = 1
+    num_epochs = 10
 
     # if true, CNN will be used
     useCNN = True
