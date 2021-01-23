@@ -43,8 +43,8 @@ if useFront == False:
     # SPECIFY VARIABLES HERE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     save_fit = False
-    load_fit = True
-    model_save_loc = "D:\Cancer_Project\Team8_Cancer_ML\HNSCC-HN1\saved_model (Clinical)"
+    load_fit = False
+    model_save_loc = "D:\Cancer_Project\Team8_Cancer_ML\HNSCC-HN1\saved_model (CNN)"
 
     main_data = "D:\\Cancer_Project\\Team8_Cancer_ML\\HNSCC-HN1\\Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020 (original).csv"
     sec_data = ""
@@ -109,7 +109,7 @@ if useFront == False:
     dcmDirect = True
 
     # number of epochs in model
-    num_epochs = 10
+    num_epochs = 50
 
     # if true, CNN will be used
     useCNN = False
@@ -1014,7 +1014,7 @@ def model(data_file, test_file, target_vars, epochs_num):
                 else:
                     plt.clf()
 
-            plot(history,'loss','model accuracy')
+            plot(history,'loss','model loss')
 
             def save_fitted_model(model,save_location):
                 model.save(save_location)
