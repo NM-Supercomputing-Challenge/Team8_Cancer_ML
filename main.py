@@ -43,7 +43,8 @@ if useFront == False:
     # SPECIFY VARIABLES HERE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     save_fit = False
-    model_save_loc = "saved_model"
+    load_fit = True
+    model_save_loc = "D:\Cancer_Project\Team8_Cancer_ML\HNSCC-HN1\saved_model (Clinical)"
 
     main_data = "D:\\Cancer_Project\\Team8_Cancer_ML\\HNSCC-HN1\\Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020 (original).csv"
     sec_data = ""
@@ -74,7 +75,7 @@ if useFront == False:
     del_converted_imgs = False
 
     # if true, image model will be ran instead of clinical only model
-    run_img_model = True
+    run_img_model = False
 
     # if true, two data files will be expected for input
     two_datasets = False
@@ -111,7 +112,7 @@ if useFront == False:
     num_epochs = 10
 
     # if true, CNN will be used
-    useCNN = True
+    useCNN = False
 
     # END VARIABLES - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 elif useFront == True:
@@ -942,83 +943,87 @@ def model(data_file, test_file, target_vars, epochs_num):
 
         hasNan(y_train)
 
-        if str(type(target_vars))=="<class 'list'>" and len(target_vars) > 1:
-            input = keras.Input(shape=X_train.shape)
+        if not load_fit:
+            if str(type(target_vars))=="<class 'list'>" and len(target_vars) > 1:
+                input = keras.Input(shape=X_train.shape)
 
-            def add_target(Input):
-                x = layers.Dense(40,activation=activation_function)(Input)
-                x = layers.Dense(40,activation=activation_function)(x)
-                x = layers.Dense(35,activation=activation_function)(x)
-                x = layers.Dense(35,activation=activation_function)(x)
-                return x
+                def add_target(Input):
+                    x = layers.Dense(40,activation=activation_function)(Input)
+                    x = layers.Dense(40,activation=activation_function)(x)
+                    x = layers.Dense(35,activation=activation_function)(x)
+                    x = layers.Dense(35,activation=activation_function)(x)
+                    return x
 
-            output_list = []
-            for vars in range(len(target_vars)):
-                x = add_target(input)
-                output_list.append(x)
+                output_list = []
+                for vars in range(len(target_vars)):
+                    x = add_target(input)
+                    output_list.append(x)
 
-            x = layers.Concatenate()(output_list)
-            output_list.clear()
-            x = layers.Dense(12,activation='relu')(x)
-            for vars in range(len(target_vars)):
-                y = layers.Dense(1,activation='linear')(x)
-                output_list.append(y)
+                x = layers.Concatenate()(output_list)
+                output_list.clear()
+                x = layers.Dense(12,activation='relu')(x)
+                for vars in range(len(target_vars)):
+                    y = layers.Dense(1,activation='linear')(x)
+                    output_list.append(y)
 
-            model = keras.Model(inputs=input,outputs=output_list)
+                model = keras.Model(inputs=input,outputs=output_list)
 
-            model.compile(optimizer='SGD',
-                          loss='mean_absolute_error',
-                          metrics=['accuracy'])
+                model.compile(optimizer='SGD',
+                              loss='mean_absolute_error',
+                              metrics=['accuracy'])
 
-            fit = model.fit(X_train, y_train, epochs=epochs_num, batch_size=5)
+                fit = model.fit(X_train, y_train, epochs=epochs_num, batch_size=5)
+
+            else:
+                # set input shape to dimension of data
+                input = keras.layers.Input(shape=(X_train.shape[1],))
+
+                x = Dense(100, activation=activation_function)(input)
+                x = Dense(65, activation=activation_function)(x)
+                x = Dense(30, activation=activation_function)(x)
+                x = Dense(25, activation=activation_function)(x)
+                x = Dense(25, activation=activation_function)(x)
+                x = Dense(25, activation=activation_function)(x)
+                x = Dense(20, activation=activation_function)(x)
+                x = Dense(20, activation=activation_function)(x)
+                x = Dense(15, activation=activation_function)(x)
+                x = Dense(10, activation=activation_function)(x)
+                output = Dense(1, activation='linear')(x)
+                model = keras.Model(input, output)
+
+                model.compile(optimizer='adam',
+                              loss='mean_absolute_error',
+                              metrics=['accuracy'])
+
+                fit = model.fit(X_train, y_train, epochs=epochs_num, batch_size=32)
+
+            # plotting
+            history = fit
+
+            def plot(model_history,metric,graph_title):
+                history = model_history
+                plt.plot(history.history[metric])
+                plt.title(graph_title)
+                plt.ylabel(metric)
+                plt.xlabel('epoch')
+                if save_figs == True:
+                    plt.savefig(os.path.join(data_save_loc, str(target_vars) + " " + metric + ".jpg"))
+
+                if show_figs == True:
+                    plt.show()
+                else:
+                    plt.clf()
+
+            plot(history,'loss','model accuracy')
+
+            def save_fitted_model(model,save_location):
+                model.save(save_location)
+
+            if save_fit == True:
+                save_fitted_model(model,model_save_loc)
 
         else:
-            # set input shape to dimension of data
-            input = keras.layers.Input(shape=(X_train.shape[1],))
-
-            x = Dense(100, activation=activation_function)(input)
-            x = Dense(65, activation=activation_function)(x)
-            x = Dense(30, activation=activation_function)(x)
-            x = Dense(25, activation=activation_function)(x)
-            x = Dense(25, activation=activation_function)(x)
-            x = Dense(25, activation=activation_function)(x)
-            x = Dense(20, activation=activation_function)(x)
-            x = Dense(20, activation=activation_function)(x)
-            x = Dense(15, activation=activation_function)(x)
-            x = Dense(10, activation=activation_function)(x)
-            output = Dense(1, activation='linear')(x)
-            model = keras.Model(input, output)
-
-            model.compile(optimizer='adam',
-                          loss='mean_absolute_error',
-                          metrics=['accuracy'])
-
-            fit = model.fit(X_train, y_train, epochs=epochs_num, batch_size=32)
-
-        # plotting
-        history = fit
-
-        def plot(model_history,metric,graph_title):
-            history = model_history
-            plt.plot(history.history[metric])
-            plt.title(graph_title)
-            plt.ylabel(metric)
-            plt.xlabel('epoch')
-            if save_figs == True:
-                plt.savefig(os.path.join(data_save_loc, str(target_vars) + " " + metric + ".jpg"))
-
-            if show_figs == True:
-                plt.show()
-            else:
-                plt.clf()
-
-        plot(history,'loss','model accuracy')
-
-        def save_fitted_model(model,save_location):
-            model.save(save_location)
-
-        if save_fit == True:
-            save_fitted_model(model,model_save_loc)
+            model = keras.models.load_model(model_save_loc)
 
         prediction = model.predict(X_test, batch_size=1)
         roundedPred = np.around(prediction,0)
@@ -1365,110 +1370,114 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
 
         print(activation_function)
 
-        if not useCNN:
-            if str(type(target_vars))!="<class 'list'>" or len(target_vars) == 1:
-                # set input shape to dimension of data
-                input = keras.layers.Input(shape=(X_train.shape[1],))
+        if not load_fit:
+            if not useCNN:
+                if str(type(target_vars))!="<class 'list'>" or len(target_vars) == 1:
+                    # set input shape to dimension of data
+                    input = keras.layers.Input(shape=(X_train.shape[1],))
 
-                x = Dense(150, activation=activation_function)(input)
-                x = Dense(150, activation=activation_function)(x)
-                x = Dense(150, activation=activation_function)(x)
-                x = Dense(120, activation=activation_function)(x)
-                x = Dense(120, activation=activation_function)(x)
-                x = Dense(100, activation=activation_function)(x)
-                x = Dense(100, activation=activation_function)(x)
-                x = Dense(80, activation=activation_function)(x)
-                x = Dense(80, activation=activation_function)(x)
-                x = Dense(45, activation=activation_function)(x)
-                output = Dense(1, activation='linear')(x)
-                model = keras.Model(input, output)
+                    x = Dense(150, activation=activation_function)(input)
+                    x = Dense(150, activation=activation_function)(x)
+                    x = Dense(150, activation=activation_function)(x)
+                    x = Dense(120, activation=activation_function)(x)
+                    x = Dense(120, activation=activation_function)(x)
+                    x = Dense(100, activation=activation_function)(x)
+                    x = Dense(100, activation=activation_function)(x)
+                    x = Dense(80, activation=activation_function)(x)
+                    x = Dense(80, activation=activation_function)(x)
+                    x = Dense(45, activation=activation_function)(x)
+                    output = Dense(1, activation='linear')(x)
+                    model = keras.Model(input, output)
 
-                model.compile(optimizer='adam',
+                    model.compile(optimizer='adam',
+                                      loss='mean_squared_error',
+                                      metrics=['accuracy'])
+
+                    fit = model.fit(X_train,y_train,epochs=epochs_num,batch_size=64)
+
+                else:
+                    input = keras.layers.Input(shape=(X_train.shape[1],))
+
+                    def add_target(Input):
+                        x = layers.Dense(40,activation=activation_function)(Input)
+                        x = layers.Dense(40, activation=activation_function)(x)
+                        x = layers.Dense(35, activation=activation_function)(x)
+                        x = layers.Dense(35, activation=activation_function)(x)
+                        return x
+
+                    output_list = []
+                    for vars in range(len(target_vars)):
+                        x = add_target(input)
+                        output_list.append(x)
+
+                    x = layers.Concatenate()(output_list)
+                    output_list.clear()
+                    x = layers.Dense(12,activation=activation_function)(x)
+                    for vars in range(len(target_vars)):
+                        # create output layer
+                        y = layers.Dense(1,activation='linear')(x)
+                        output_list.append(y)
+
+                    model = keras.Model(inputs=input,outputs=output_list)
+
+                    model.compile(optimizer='adam',
                                   loss='mean_squared_error',
                                   metrics=['accuracy'])
 
-                fit = model.fit(X_train,y_train,epochs=epochs_num,batch_size=64)
+                    fit = model.fit(X_train,y_train,epochs=epochs_num,batch_size=5)
 
             else:
-                input = keras.layers.Input(shape=(X_train.shape[1],))
+                model = Sequential()
 
-                def add_target(Input):
-                    x = layers.Dense(40,activation=activation_function)(Input)
-                    x = layers.Dense(40, activation=activation_function)(x)
-                    x = layers.Dense(35, activation=activation_function)(x)
-                    x = layers.Dense(35, activation=activation_function)(x)
-                    return x
+                model.add(layers.Conv2D(64,(3,3),input_shape=X_train.shape[1:]))
+                model.add(layers.Activation('relu'))
+                model.add(layers.MaxPooling2D(pool_size=(2,2)))
 
-                output_list = []
-                for vars in range(len(target_vars)):
-                    x = add_target(input)
-                    output_list.append(x)
+                model.add(layers.Conv2D(64,(3,3)))
+                model.add(layers.Activation('relu'))
+                model.add(layers.MaxPooling2D(pool_size=(2,2)))
 
-                x = layers.Concatenate()(output_list)
-                output_list.clear()
-                x = layers.Dense(12,activation=activation_function)(x)
-                for vars in range(len(target_vars)):
-                    # create output layer
-                    y = layers.Dense(1,activation='linear')(x)
-                    output_list.append(y)
+                model.add(layers.Flatten())
 
-                model = keras.Model(inputs=input,outputs=output_list)
+                model.add(layers.Dense(64))
+                model.add(layers.Activation('relu'))
 
-                model.compile(optimizer='adam',
-                              loss='mean_squared_error',
+                model.add(layers.Dense(1))
+                model.add(layers.Activation('linear'))
+
+                model.compile(loss='mean_squared_error',
+                              optimizer='adam',
                               metrics=['accuracy'])
 
-                fit = model.fit(X_train,y_train,epochs=epochs_num,batch_size=5)
+                fit = model.fit(X_train,y_train,epochs=epochs_num)
+
+            #plotting
+            history = fit
+
+            def plot(model_history, metric, graph_title):
+                history = model_history
+                plt.plot(history.history[metric])
+                plt.title(graph_title)
+                plt.ylabel(metric)
+                plt.xlabel('epoch')
+                if save_figs == True:
+                    plt.savefig(os.path.join(data_save_loc, str(target_vars) + " " + metric + ".jpg"))
+
+                if show_figs == True:
+                    plt.show()
+                else:
+                    plt.clf()
+
+            plot(history, 'loss', 'model loss')
+
+            def save_fitted_model(model, save_location):
+                model.save(save_location)
+
+            if save_fit == True:
+                save_fitted_model(model, model_save_loc)
 
         else:
-            model = Sequential()
-
-            model.add(layers.Conv2D(64,(3,3),input_shape=X_train.shape[1:]))
-            model.add(layers.Activation('relu'))
-            model.add(layers.MaxPooling2D(pool_size=(2,2)))
-
-            model.add(layers.Conv2D(64,(3,3)))
-            model.add(layers.Activation('relu'))
-            model.add(layers.MaxPooling2D(pool_size=(2,2)))
-
-            model.add(layers.Flatten())
-
-            model.add(layers.Dense(64))
-            model.add(layers.Activation('relu'))
-
-            model.add(layers.Dense(1))
-            model.add(layers.Activation('linear'))
-
-            model.compile(loss='mean_squared_error',
-                          optimizer='adam',
-                          metrics=['accuracy'])
-
-            fit = model.fit(X_train,y_train,epochs=epochs_num)
-
-        #plotting
-        history = fit
-
-        def plot(model_history, metric, graph_title):
-            history = model_history
-            plt.plot(history.history[metric])
-            plt.title(graph_title)
-            plt.ylabel(metric)
-            plt.xlabel('epoch')
-            if save_figs == True:
-                plt.savefig(os.path.join(data_save_loc, str(target_vars) + " " + metric + ".jpg"))
-
-            if show_figs == True:
-                plt.show()
-            else:
-                plt.clf()
-
-        plot(history, 'loss', 'model loss')
-
-        def save_fitted_model(model, save_location):
-            model.save(save_location)
-
-        if save_fit == True:
-            save_fitted_model(model, model_save_loc)
+            model = keras.models.load_model(model_save_loc)
 
         if str(type(prediction)) == "<class 'list'>":
             prediction = np.array([prediction])
