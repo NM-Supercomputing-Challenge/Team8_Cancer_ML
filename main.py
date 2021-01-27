@@ -43,7 +43,7 @@ if useFront == False:
     # SPECIFY VARIABLES HERE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     save_fit = False
-    load_fit = True
+    load_fit = False
     model_save_loc = "D:\Cancer_Project\Team8_Cancer_ML\HNSCC-HN1\saved_model (CNN)"
 
     main_data = "D:\\Cancer_Project\\Team8_Cancer_ML\\HNSCC-HN1\\Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020 (original).csv"
@@ -75,7 +75,7 @@ if useFront == False:
     del_converted_imgs = False
 
     # if true, image model will be ran instead of clinical only model
-    run_img_model = True
+    run_img_model = False
 
     # if true, two data files will be expected for input
     two_datasets = False
@@ -105,14 +105,14 @@ if useFront == False:
     # if true, graphs will be saved after training model
     save_figs = True
 
-    # if true, convert dicom directly to numpy
+    # if true, convert dicom directly to numpy. Otherwise, convert to jpg or png first in save_dir
     dcmDirect = True
 
     # number of epochs in model
-    num_epochs = 10
+    num_epochs = 50
 
     # if true, CNN will be used
-    useCNN = True
+    useCNN = False
 
     # END VARIABLES - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 elif useFront == True:
