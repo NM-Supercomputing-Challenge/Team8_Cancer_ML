@@ -46,12 +46,12 @@ if useFront == False:
     load_fit = False
     model_save_loc = "D:\Cancer_Project\Team8_Cancer_ML\HNSCC-HN1\saved_model (CNN)"
 
-    main_data = "D:\\Cancer_Project\\Team8_Cancer_ML\\HNSCC-HN1\\Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020 (original).csv"
+    main_data = "D:\Cancer_Project\Team8_Cancer_ML\METABRIC_RNA_Mutation\METABRIC_RNA_Mutation.csv"
     sec_data = ""
     test_file = "test_2.csv"
 
     # list with strings or a single string may be inputted
-    target_variables = 'chemotherapy_given'
+    target_variables = 'chemotherapy'
 
     # if true, converted images will be in png format instead of jpg
     png = False
@@ -88,7 +88,7 @@ if useFront == False:
     img_id_name_loc = (3,6)
 
     # Column of IDs in dataset. Acceptable values include "index" or a column name.
-    ID_dataset_col = "id"
+    ID_dataset_col = "patient_id"
 
     # tuple with dimension of imagery. All images must equal this dimension
     img_dimensions = (512, 512)
@@ -109,7 +109,7 @@ if useFront == False:
     dcmDirect = True
 
     # number of epochs in model
-    num_epochs = 50
+    num_epochs = 15
 
     # if true, CNN will be used
     useCNN = False
@@ -1025,6 +1025,7 @@ def model(data_file, test_file, target_vars, epochs_num):
         else:
             model = keras.models.load_model(model_save_loc)
 
+        print(X_test.shape)
         prediction = model.predict(X_test, batch_size=1)
         roundedPred = np.around(prediction,0)
 
@@ -1064,7 +1065,7 @@ def model(data_file, test_file, target_vars, epochs_num):
         print("- - - - - - - - - - - - - Rounded Prediction - - - - - - - - - - - - -")
         print(roundedPred)
         print("- - - - - - - - - - - - - y test - - - - - - - - - - - - -")
-        print(y_test)
+        print(y_test.tolist())
 
         if str(type(prediction)) == "<class 'list'>":
             prediction = np.array([prediction])
