@@ -1025,7 +1025,6 @@ def model(data_file, test_file, target_vars, epochs_num):
         else:
             model = keras.models.load_model(model_save_loc)
 
-        print(X_test.shape)
         prediction = model.predict(X_test, batch_size=1)
         roundedPred = np.around(prediction,0)
 
@@ -1065,7 +1064,7 @@ def model(data_file, test_file, target_vars, epochs_num):
         print("- - - - - - - - - - - - - Rounded Prediction - - - - - - - - - - - - -")
         print(roundedPred)
         print("- - - - - - - - - - - - - y test - - - - - - - - - - - - -")
-        print(y_test.tolist())
+        print(y_test)
 
         if str(type(prediction)) == "<class 'list'>":
             prediction = np.array([prediction])
