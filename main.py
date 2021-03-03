@@ -887,7 +887,11 @@ def model(data_file, test_file, target_vars, epochs_num):
 
         X = features
         y = labels
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=42)
+
+        # split test vars into validation and test
+        X_test, X_val = train_test_split(X_test, test_size=0.5, random_state=34)
+        y_test, y_val = train_test_split(y_test, test_size=0.5, random_state=34)
 
         # scale data
         scaler = StandardScaler().fit(X_train)
@@ -1025,7 +1029,66 @@ def model(data_file, test_file, target_vars, epochs_num):
         else:
             model = keras.models.load_model(model_save_loc)
 
-        prediction = model.predict(X_test, batch_size=1)
+        # utilize validation data
+        prediction = model.predict(X_val, batch_size=1)
+
+        roundedPred = np.around(prediction,0)
+
+        if multiple_targets == False and roundedPred.ndim == 1:
+            i = 0
+            for vals in roundedPred:
+                if int(vals) == -0:
+                    vals = abs(vals)
+                    roundedPred[i] = vals
+
+                i = i + 1
+        else:
+            preShape = roundedPred.shape
+
+            # if array has multiple dimensions, flatten the array
+            roundedPred = roundedPred.flatten()
+
+            i = 0
+            for vals in roundedPred:
+                if int(vals) == -0:
+                    vals = abs(vals)
+                    roundedPred[i] = vals
+
+                i = i + 1
+
+            if len(preShape) == 3:
+                if preShape[2] == 1:
+                    # reshape array to previous shape without the additional dimension
+                    roundedPred = np.reshape(roundedPred, preShape[:2])
+                else:
+                    roundedPred = np.reshape(roundedPred, preShape)
+            else:
+                roundedPred = np.reshape(roundedPred, preShape)
+
+        print("Validation Metrics")
+        print("- - - - - - - - - - - - - Unrounded Prediction - - - - - - - - - - - - -")
+        print(prediction)
+        print("- - - - - - - - - - - - - Rounded Prediction - - - - - - - - - - - - -")
+        print(roundedPred)
+        print("- - - - - - - - - - - - - y test - - - - - - - - - - - - -")
+        print(y_test)
+
+        if str(type(prediction)) == "<class 'list'>":
+            prediction = np.array([prediction])
+
+        percentAcc = percentageAccuracy(roundedPred, y_test)
+
+        print("- - - - - - - - - - - - - Percentage Accuracy - - - - - - - - - - - - -")
+        print(percentAcc)
+
+        resultList.append(str(prediction))
+        resultList.append(str(roundedPred))
+        resultList.append(str(y_test))
+        resultList.append(str(percentAcc))
+
+        # utilize test data
+        prediction = model.predict(X_test,batch_size=1)
+
         roundedPred = np.around(prediction,0)
 
         if multiple_targets == False and roundedPred.ndim == 1: 
@@ -1059,6 +1122,7 @@ def model(data_file, test_file, target_vars, epochs_num):
             else: 
                 roundedPred = np.reshape(roundedPred,preShape)
 
+        print("Test Metrics")
         print("- - - - - - - - - - - - - Unrounded Prediction - - - - - - - - - - - - -")
         print(prediction)
         print("- - - - - - - - - - - - - Rounded Prediction - - - - - - - - - - - - -")
@@ -1073,10 +1137,6 @@ def model(data_file, test_file, target_vars, epochs_num):
         
         print("- - - - - - - - - - - - - Percentage Accuracy - - - - - - - - - - - - -")
         print(percentAcc)
-
-        eval = model.evaluate(X_test)
-        results = dict(zip(model.metrics_names, eval))
-        print(results)
 
         resultList.append(str(prediction))
         resultList.append(str(roundedPred))
