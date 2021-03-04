@@ -109,7 +109,7 @@ if useFront == False:
     dcmDirect = True
 
     # number of epochs in model
-    num_epochs = 15
+    num_epochs = 50
 
     # if true, CNN will be used
     useCNN = False
@@ -889,7 +889,7 @@ def model(data_file, test_file, target_vars, epochs_num):
         y = labels
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=42)
 
-        # split test vars into validation and test
+        # split test data into validation and test
         X_test, X_val = train_test_split(X_test, test_size=0.5, random_state=34)
         y_test, y_val = train_test_split(y_test, test_size=0.5, random_state=34)
 
@@ -1076,7 +1076,7 @@ def model(data_file, test_file, target_vars, epochs_num):
         if str(type(prediction)) == "<class 'list'>":
             prediction = np.array([prediction])
 
-        percentAcc = percentageAccuracy(roundedPred, y_test)
+        percentAcc = percentageAccuracy(roundedPred, y_val)
 
         print("- - - - - - - - - - - - - Percentage Accuracy - - - - - - - - - - - - -")
         print(percentAcc)
@@ -1331,7 +1331,11 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
 
         X = features
         y = labels
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=42)
+
+        # split test data into validation and test
+        X_test, X_val = train_test_split(X_test, test_size=0.5, random_state=53)
+        y_test, y_val = train_test_split(y_test, test_size=0.5, random_state=53)
 
         # scale data
         scaler = StandardScaler().fit(X_train)
@@ -1364,7 +1368,7 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Image
 
-        X_train_img, X_test_img = train_test_split(input_imagery,test_size=0.2,random_state=42)
+        X_train_img, X_test_img = train_test_split(input_imagery,test_size=0.4,random_state=42)
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1409,6 +1413,8 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
             X_train = X_train_img
             X_test = X_test_img
 
+            X_test, X_val = train_test_split(X_test, test_size=0.5, random_state=34)
+
         if not useCNN:
             print(X_train_img.shape)
             print(X_train.shape)
@@ -1423,6 +1429,8 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
             min_max_scaler = MinMaxScaler()
             X_train = min_max_scaler.fit_transform(X_train)
             X_test = min_max_scaler.fit_transform(X_test)
+
+            X_test, X_val = train_test_split(X_test, test_size=0.5, random_state=34)
 
         if multiple_targets:
             y_test = min_max_scaler.fit_transform(y_test)
@@ -1542,7 +1550,9 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
         if str(type(prediction)) == "<class 'list'>":
             prediction = np.array([prediction])
 
-        prediction = model.predict(X_test, batch_size=1)
+        # utilize validation data
+        prediction = model.predict(X_val, batch_size=1)
+
         roundedPred = np.around(prediction,0)
 
         if multiple_targets == False and roundedPred.ndim == 1: 
@@ -1580,6 +1590,7 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
             else: 
                 roundedPred = np.reshape(roundedPred,preShape)
 
+        print("Validation Metrics")
         print("- - - - - - - - - - - - - Unrounded Prediction - - - - - - - - - - - - -")
         print(prediction)
         print("- - - - - - - - - - - - - Rounded Prediction - - - - - - - - - - - - -")
@@ -1590,14 +1601,65 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
         if str(type(prediction)) == "<class 'list'>":
             prediction = np.array([prediction])
 
-        percentAcc = percentageAccuracy(prediction,y_test)
+        percentAcc = percentageAccuracy(prediction,y_val)
         
         print("- - - - - - - - - - - - - Percentage Accuracy - - - - - - - - - - - - -")
         print(percentAcc)
 
-        eval = model.evaluate(X_test)
-        results = dict(zip(model.metrics_names, eval))
-        print(results)
+        resultList.append(str(prediction))
+        resultList.append(str(roundedPred))
+        resultList.append(str(y_test))
+        resultList.append(str(percentAcc))
+
+        # utilize test data
+        prediction = model.predict(X_test,batch_size=1)
+
+        if multiple_targets == False and roundedPred.ndim == 1:
+            i = 0
+            for vals in roundedPred:
+                if int(vals) == -0:
+                    vals = abs(vals)
+                    roundedPred[i] = vals
+
+                i = i + 1
+        else:
+            preShape = roundedPred.shape
+
+            # if array has multiple dimensions, flatten the array
+            roundedPred = roundedPred.flatten()
+
+            i = 0
+            for vals in roundedPred:
+                if int(vals) == -0:
+                    vals = abs(vals)
+                    roundedPred[i] = vals
+
+                i = i + 1
+
+            if len(preShape) == 3:
+                if preShape[2] == 1:
+                    # reshape array to previous shape without the additional dimension
+                    roundedPred = np.reshape(roundedPred, preShape[:2])
+                else:
+                    roundedPred = np.reshape(roundedPred, preShape)
+            else:
+                roundedPred = np.reshape(roundedPred, preShape)
+
+        print("Test Metrics")
+        print("- - - - - - - - - - - - - Unrounded Prediction - - - - - - - - - - - - -")
+        print(prediction)
+        print("- - - - - - - - - - - - - Rounded Prediction - - - - - - - - - - - - -")
+        print(roundedPred)
+        print("- - - - - - - - - - - - - y test - - - - - - - - - - - - -")
+        print(y_test)
+
+        if str(type(prediction)) == "<class 'list'>":
+            prediction = np.array([prediction])
+
+        percentAcc = percentageAccuracy(roundedPred, y_test)
+
+        print("- - - - - - - - - - - - - Percentage Accuracy - - - - - - - - - - - - -")
+        print(percentAcc)
 
         resultList.append(str(prediction))
         resultList.append(str(roundedPred))
