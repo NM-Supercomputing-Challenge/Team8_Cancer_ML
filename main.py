@@ -1696,10 +1696,10 @@ elif run_img_model == True and target_all == True:
     for column in cols:
         image_model(save_dir,main_data,test_file,target_variables,num_epochs)
 
-def resultPage():
+def ValResultPage():
     root = tk.Tk()
 
-    root.title("Results")
+    root.title("Results - Validation")
     root.iconbitmap("D:\Cancer_Project\Team8_Cancer_ML\cancer_icon.ico")
 
     # MAKE SCROLLBAR
@@ -1763,7 +1763,7 @@ def resultPage():
 
     placeResults(percentAcc)
 
-    exitButton = tk.Button(second_frame,text="Exit",font=titleFont,fg=titleColor,command=destroy)
+    exitButton = tk.Button(second_frame,text="Next",font=titleFont,fg=titleColor,command=destroy)
     exitButton.grid()
 
     def quit_window():
@@ -1773,7 +1773,86 @@ def resultPage():
     root.protocol("WM_DELETE_WINDOW",quit_window)
     root.mainloop()
 
-resultPage()
+ValResultPage()
+
+def trainResultPage():
+    root = tk.Tk()
+
+    root.title("Results - Test")
+    root.iconbitmap("D:\Cancer_Project\Team8_Cancer_ML\cancer_icon.ico")
+
+    # Make scrollbar
+    main_frame = tk.Frame(root)
+    main_frame.pack(fill=tk.BOTH, expand=1)
+
+    canvas = tk.Canvas(main_frame)
+    canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
+
+    # Add a scrollbars to the canvas
+    scrollbar = ttk.Scrollbar(main_frame, orient=tk.VERTICAL, command=canvas.yview)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    scrollbar_x = ttk.Scrollbar(main_frame, orient=tk.HORIZONTAL, command=canvas.xview)
+    scrollbar_x.pack(side=tk.BOTTOM, fill=tk.X)
+
+    # Configure the canvas
+    canvas.configure(xscrollcommand=scrollbar_x.set)
+    canvas.configure(yscrollcommand=scrollbar.set)
+    canvas.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+
+    second_frame = tk.Frame(canvas)
+    canvas.create_window((0, 0), window=second_frame, anchor="nw")
+
+    # define fonts
+    titleFont = tkFont.Font(family="Georgia", size=20)
+    titleColor = "#f29c2c"
+
+    resultFont = tkFont.Font(family="Consolas", size=16)
+
+    # ADD WIDGETS
+    prediction = resultList[4]
+    roundedPred = resultList[5]
+    y_test = resultList[6]
+    percentAcc = resultList[7]
+
+    def placeResults(txt):
+        result = tk.Label(second_frame,text=txt,font=resultFont,bg='black',fg='white')
+        result.grid(pady=40)
+
+    def destroy():
+        root.quit()
+
+    resultTitle = tk.Label(second_frame, text="Prediction", font=titleFont, fg=titleColor)
+    resultTitle.grid()
+
+    placeResults(prediction)
+
+    resultTitle = tk.Label(second_frame, text="Rounded Prediction", font=titleFont, fg=titleColor)
+    resultTitle.grid()
+
+    placeResults(roundedPred)
+
+    resultTitle = tk.Label(second_frame, text="y_test", font=titleFont, fg=titleColor)
+    resultTitle.grid()
+
+    placeResults(y_test)
+
+    resultTitle = tk.Label(second_frame, text="Percentage Accuracy", font=titleFont, fg=titleColor)
+    resultTitle.grid()
+
+    placeResults(percentAcc)
+
+    exitButton = tk.Button(second_frame, text="Exit", font=titleFont, fg=titleColor, command=destroy)
+    exitButton.grid()
+
+    def quit_window():
+        root.quit()
+        root.destroy()
+
+    root.protocol("WM_DELETE_WINDOW", quit_window)
+    root.mainloop()
+
+trainResultPage()
 
 # delete converted dicom images after use if boolean is true
 if del_converted_imgs == True:
