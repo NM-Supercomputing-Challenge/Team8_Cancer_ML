@@ -46,12 +46,12 @@ if useFront == False:
     load_fit = False
     model_save_loc = "D:\Cancer_Project\Team8_Cancer_ML\HNSCC-HN1\saved_model (CNN)"
 
-    main_data = "D:\Cancer_Project\Team8_Cancer_ML\METABRIC_RNA_Mutation\METABRIC_RNA_Mutation.csv"
+    main_data = "D:\Cancer_Project\Team8_Cancer_ML\HNSCC-HN1\Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020 (original).csv"
     sec_data = ""
     test_file = "test_2.csv"
 
     # list with strings or a single string may be inputted
-    target_variables = 'chemotherapy'
+    target_variables = 'chemotherapy_given'
 
     # if true, converted images will be in png format instead of jpg
     png = False
@@ -88,7 +88,7 @@ if useFront == False:
     img_id_name_loc = (3,6)
 
     # Column of IDs in dataset. Acceptable values include "index" or a column name.
-    ID_dataset_col = "patient_id"
+    ID_dataset_col = "id"
 
     # tuple with dimension of imagery. All images must equal this dimension
     img_dimensions = (512, 512)
@@ -109,7 +109,7 @@ if useFront == False:
     dcmDirect = True
 
     # number of epochs in model
-    num_epochs = 50
+    num_epochs = 20
 
     # if true, CNN will be used
     useCNN = False
@@ -979,23 +979,20 @@ def model(data_file, test_file, target_vars, epochs_num):
                 fit = model.fit(X_train, y_train, epochs=epochs_num, batch_size=5)
 
             else:
+                print(X_train.shape[1])
+
                 # set input shape to dimension of data
                 input = keras.layers.Input(shape=(X_train.shape[1],))
 
-                x = Dense(100, activation=activation_function)(input)
-                x = Dense(65, activation=activation_function)(x)
-                x = Dense(30, activation=activation_function)(x)
-                x = Dense(25, activation=activation_function)(x)
-                x = Dense(25, activation=activation_function)(x)
-                x = Dense(25, activation=activation_function)(x)
-                x = Dense(20, activation=activation_function)(x)
-                x = Dense(20, activation=activation_function)(x)
-                x = Dense(15, activation=activation_function)(x)
-                x = Dense(10, activation=activation_function)(x)
+                x = Dense(9,activation=activation_function)(input)
+                x = Dense(9,activation=activation_function)(x)
+                x = Dense(5,activation=activation_function)(x)
+                x = Dense(4,activation=activation_function)(x)
+                x = Dense(3,activation=activation_function)(x)
                 output = Dense(1, activation='linear')(x)
                 model = keras.Model(input, output)
 
-                model.compile(optimizer='adam',
+                model.compile(optimizer='SGD',
                               loss='mean_absolute_error',
                               metrics=['accuracy'])
 
@@ -1070,8 +1067,8 @@ def model(data_file, test_file, target_vars, epochs_num):
         print(prediction)
         print("- - - - - - - - - - - - - Rounded Prediction - - - - - - - - - - - - -")
         print(roundedPred)
-        print("- - - - - - - - - - - - - y test - - - - - - - - - - - - -")
-        print(y_test)
+        print("- - - - - - - - - - - - - y val - - - - - - - - - - - - -")
+        print(y_val)
 
         if str(type(prediction)) == "<class 'list'>":
             prediction = np.array([prediction])
@@ -1083,7 +1080,7 @@ def model(data_file, test_file, target_vars, epochs_num):
 
         resultList.append(str(prediction))
         resultList.append(str(roundedPred))
-        resultList.append(str(y_test))
+        resultList.append(str(y_val))
         resultList.append(str(percentAcc))
 
         # utilize test data
@@ -1733,7 +1730,7 @@ def ValResultPage():
     # ADD WIDGETS
     prediction = resultList[0]
     roundedPred = resultList[1]
-    y_test = resultList[2]
+    y_val = resultList[2]
     percentAcc = resultList[3]
 
     def placeResults(txt):
@@ -1753,10 +1750,10 @@ def ValResultPage():
 
     placeResults(roundedPred)
 
-    resultTitle = tk.Label(second_frame,text="y_test",font=titleFont,fg=titleColor)
+    resultTitle = tk.Label(second_frame,text="y_val",font=titleFont,fg=titleColor)
     resultTitle.grid()
 
-    placeResults(y_test)
+    placeResults(y_val)
 
     resultTitle = tk.Label(second_frame,text="Percentage Accuracy",font=titleFont,fg=titleColor)
     resultTitle.grid()
