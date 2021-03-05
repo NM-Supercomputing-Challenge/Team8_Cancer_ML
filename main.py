@@ -46,12 +46,12 @@ if useFront == False:
     load_fit = False
     model_save_loc = "D:\Cancer_Project\Team8_Cancer_ML\HNSCC-HN1\saved_model (CNN)"
 
-    main_data = "D:\Cancer_Project\Team8_Cancer_ML\HNSCC-HN1\Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020 (original).csv"
+    main_data = "D:\Cancer_Project\Team8_Cancer_ML\METABRIC_RNA_Mutation\METABRIC_RNA_Mutation.csv"
     sec_data = ""
     test_file = "test_2.csv"
 
     # list with strings or a single string may be inputted
-    target_variables = 'chemotherapy_given'
+    target_variables = 'chemotherapy'
 
     # if true, converted images will be in png format instead of jpg
     png = False
@@ -88,7 +88,7 @@ if useFront == False:
     img_id_name_loc = (3,6)
 
     # Column of IDs in dataset. Acceptable values include "index" or a column name.
-    ID_dataset_col = "id"
+    ID_dataset_col = "patient_id"
 
     # tuple with dimension of imagery. All images must equal this dimension
     img_dimensions = (512, 512)
@@ -897,15 +897,19 @@ def model(data_file, test_file, target_vars, epochs_num):
         scaler = StandardScaler().fit(X_train)
         X_train = scaler.transform(X_train)
         X_test = scaler.transform(X_test)
+        X_val = scaler.transform(X_val)
+
 
         # normalize data
         min_max_scaler = MinMaxScaler()
         X_train = min_max_scaler.fit_transform(X_train)
         X_test = min_max_scaler.fit_transform(X_test)
+        X_val = min_max_scaler.fit_transform(X_val)
 
         if multiple_targets:
             y_test = min_max_scaler.fit_transform(y_test)
             y_train = min_max_scaler.fit_transform(y_train)
+            y_val = min_max_scaler.fit_transform(y_val)
 
         if str(type(y_train)) == "<class 'pandas.core.frame.DataFrame'>":
             y_train = y_train.to_numpy()
@@ -984,11 +988,13 @@ def model(data_file, test_file, target_vars, epochs_num):
                 # set input shape to dimension of data
                 input = keras.layers.Input(shape=(X_train.shape[1],))
 
-                x = Dense(9,activation=activation_function)(input)
-                x = Dense(9,activation=activation_function)(x)
+                x = Dense(8,activation=activation_function)(input)
+                x = Dense(8,activation=activation_function)(x)
+                x = Dense(5,activation=activation_function)(x)
                 x = Dense(5,activation=activation_function)(x)
                 x = Dense(4,activation=activation_function)(x)
-                x = Dense(3,activation=activation_function)(x)
+                x = Dense(4,activation=activation_function)(x)
+                x = Dense(2,activation=activation_function)(x)
                 output = Dense(1, activation='linear')(x)
                 model = keras.Model(input, output)
 
@@ -1338,15 +1344,18 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
         scaler = StandardScaler().fit(X_train)
         X_train = scaler.transform(X_train)
         X_test = scaler.transform(X_test)
+        X_val = scaler.transform(X_val)
 
         # normalize data
         min_max_scaler = MinMaxScaler()
         X_train = min_max_scaler.fit_transform(X_train)
         X_test = min_max_scaler.fit_transform(X_test)
+        X_val = min_max_scaler.fit_transform(X_val)
 
         if multiple_targets:
             y_test = min_max_scaler.fit_transform(y_test)
             y_train = min_max_scaler.fit_transform(y_train)
+            y_val = min_max_scaler.fit_transform(y_val)
 
         if str(type(y_train)) == "<class 'pandas.core.frame.DataFrame'>":
             y_train = y_train.to_numpy()
@@ -1426,8 +1435,6 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
             min_max_scaler = MinMaxScaler()
             X_train = min_max_scaler.fit_transform(X_train)
             X_test = min_max_scaler.fit_transform(X_test)
-
-            X_test, X_val = train_test_split(X_test, test_size=0.5, random_state=34)
 
         if multiple_targets:
             y_test = min_max_scaler.fit_transform(y_test)
