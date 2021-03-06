@@ -43,7 +43,7 @@ if useFront == False:
     # SPECIFY VARIABLES HERE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     save_fit = False
-    load_fit = True
+    load_fit = False
     model_save_loc = "D:\Cancer_Project\Team8_Cancer_ML\HNSCC-HN1\saved_model (CNN)"
 
     main_data = "D:\Cancer_Project\Team8_Cancer_ML\HNSCC-HN1\Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020 (original).csv"
@@ -109,10 +109,10 @@ if useFront == False:
     dcmDirect = True
 
     # number of epochs in model
-    num_epochs = 3
+    num_epochs = 20
 
     # if true, CNN will be used
-    useCNN = True
+    useCNN = False
 
     # END VARIABLES - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 elif useFront == True:
@@ -1441,19 +1441,23 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
             print(X_train.shape)
             X_train = np.concatenate((X_train_img,X_train),axis=1)
             X_test = np.concatenate((X_test,X_test_img),axis=1)
+            X_val = np.concatenate((X_val,X_val_img),axis=1)
 
             scaler = StandardScaler().fit(X_train)
             X_train = scaler.transform(X_train)
             X_test = scaler.transform(X_test)
+            X_val = scaler.transform(X_val)
 
             # normalize data
             min_max_scaler = MinMaxScaler()
             X_train = min_max_scaler.fit_transform(X_train)
             X_test = min_max_scaler.fit_transform(X_test)
+            X_val = min_max_scaler.fit_transform(X_val)
 
         if multiple_targets:
             y_test = min_max_scaler.fit_transform(y_test)
             y_train = min_max_scaler.fit_transform(y_train)
+            y_val = min_max_scaler.fit_transform(y_val)
 
         print(activation_function)
 
@@ -1627,7 +1631,7 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
 
         resultList.append(str(prediction))
         resultList.append(str(roundedPred))
-        resultList.append(str(y_test))
+        resultList.append(str(y_val))
         resultList.append(str(percentAcc))
 
         # utilize test data
