@@ -43,15 +43,15 @@ if useFront == False:
     # SPECIFY VARIABLES HERE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     save_fit = False
-    load_fit = False
+    load_fit = True
     model_save_loc = "D:\Cancer_Project\Team8_Cancer_ML\HNSCC-HN1\saved_model (CNN)"
 
-    main_data = "D:\Cancer_Project\Team8_Cancer_ML\METABRIC_RNA_Mutation\METABRIC_RNA_Mutation.csv"
+    main_data = "D:\Cancer_Project\Team8_Cancer_ML\HNSCC-HN1\Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020 (original).csv"
     sec_data = ""
     test_file = "test_2.csv"
 
     # list with strings or a single string may be inputted
-    target_variables = 'chemotherapy'
+    target_variables = 'chemotherapy_given'
 
     # if true, converted images will be in png format instead of jpg
     png = False
@@ -75,7 +75,7 @@ if useFront == False:
     del_converted_imgs = False
 
     # if true, image model will be ran instead of clinical only model
-    run_img_model = False
+    run_img_model = True
 
     # if true, two data files will be expected for input
     two_datasets = False
@@ -88,7 +88,7 @@ if useFront == False:
     img_id_name_loc = (3,6)
 
     # Column of IDs in dataset. Acceptable values include "index" or a column name.
-    ID_dataset_col = "patient_id"
+    ID_dataset_col = "id"
 
     # tuple with dimension of imagery. All images must equal this dimension
     img_dimensions = (512, 512)
@@ -109,10 +109,10 @@ if useFront == False:
     dcmDirect = True
 
     # number of epochs in model
-    num_epochs = 20
+    num_epochs = 3
 
     # if true, CNN will be used
-    useCNN = False
+    useCNN = True
 
     # END VARIABLES - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 elif useFront == True:
@@ -899,7 +899,6 @@ def model(data_file, test_file, target_vars, epochs_num):
         X_test = scaler.transform(X_test)
         X_val = scaler.transform(X_val)
 
-
         # normalize data
         min_max_scaler = MinMaxScaler()
         X_train = min_max_scaler.fit_transform(X_train)
@@ -1376,6 +1375,8 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
 
         X_train_img, X_test_img = train_test_split(input_imagery,test_size=0.4,random_state=42)
 
+        X_test_img, X_val_img = train_test_split(X_test_img,test_size=0.5,random_state=34)
+
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         if useCNN:
@@ -1383,11 +1384,13 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
             scaler = StandardScaler().fit(X_train_img)
             X_train_img = scaler.transform(X_train_img)
             X_test_img = scaler.transform(X_test_img)
+            X_val_img = scaler.transform(X_val_img)
 
             # normalize data
             min_max_scaler = MinMaxScaler()
             X_train_img = min_max_scaler.fit_transform(X_train_img)
             X_test_img = min_max_scaler.fit_transform(X_test_img)
+            X_val_img = min_max_scaler.fit_transform(X_val_img)
 
             # initialize empty array
             newImg = np.empty((0,img_dimensions[0]*img_dimensions[1]))
@@ -1413,13 +1416,25 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
 
             X_test_img = newImg
 
+            # initialize empty array
+            newImg = np.empty((1,img_dimensions[0]*img_dimensions[1]))
+
+            # remove ids from img data
+            i = 0
+            for arr in X_val_img:
+                arr = np.delete(arr,-1)
+                newImg = np.insert(newImg,i,arr,axis=0)
+                i = i + 1
+
+            X_val_img = newImg
+
             X_train_img = np.reshape(X_train_img,(X_train_img.shape[0],img_dimensions[0],img_dimensions[1],1))
             X_test_img = np.reshape(X_test_img,(X_test_img.shape[0],img_dimensions[0],img_dimensions[1],1))
+            X_val_img = np.reshape(X_test_img,(X_test_img.shape[0],img_dimensions[0],img_dimensions[1],1))
 
             X_train = X_train_img
             X_test = X_test_img
-
-            X_test, X_val = train_test_split(X_test, test_size=0.5, random_state=34)
+            X_val = X_val_img
 
         if not useCNN:
             print(X_train_img.shape)
@@ -1599,8 +1614,8 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
         print(prediction)
         print("- - - - - - - - - - - - - Rounded Prediction - - - - - - - - - - - - -")
         print(roundedPred)
-        print("- - - - - - - - - - - - - y test - - - - - - - - - - - - -")
-        print(y_test)
+        print("- - - - - - - - - - - - - y val - - - - - - - - - - - - -")
+        print(y_val)
 
         if str(type(prediction)) == "<class 'list'>":
             prediction = np.array([prediction])
