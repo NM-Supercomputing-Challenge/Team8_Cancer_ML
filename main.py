@@ -51,7 +51,7 @@ if useFront == False:
     test_file = "test_2.csv"
 
     # list with strings or a single string may be inputted
-    target_variables = 'chemotherapy_given'
+    target_variables = ['chemotherapy_given','cancer_surgery_performed']
 
     # if true, converted images will be in png format instead of jpg
     png = False
@@ -420,10 +420,12 @@ def decode(iterable,codeDict):
             i = i + 1 
     else: 
         i = 0 
-        for vals in dictVals: 
-            vals = round(vals,0)
-            dictVals[i] = vals
-            i = i + 1 
+        for vals in dictVals:
+            try:
+                vals = round(vals,0)
+                dictVals[i] = vals
+            except:
+                i = i + 1
 
     roundedDict = dict(zip(dictKeys,dictVals))
 
