@@ -51,7 +51,7 @@ if useFront == False:
     test_file = "test_2.csv"
 
     # list with strings or a single string may be inputted
-    target_variables = ['chemotherapy_given','cancer_surgery_performed']
+    target_variables = "chemotherapy_given"
 
     # if true, converted images will be in png format instead of jpg
     png = False
@@ -109,7 +109,7 @@ if useFront == False:
     dcmDirect = True
 
     # number of epochs in model
-    num_epochs = 5
+    num_epochs = 20
 
     # if true, CNN will be used
     useCNN = False
@@ -879,9 +879,6 @@ def model(data_file, test_file, target_vars, epochs_num):
         # Get data. Data must already be in a Pandas Dataframe
         df = data_file
 
-        # round all values in dataset to 3rd decimal place
-        df = df.astype("float").round(3)
-
         #y data
         labels = df.loc[:,target_vars]
         #x data
@@ -1318,9 +1315,6 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Clinical
         # Get data
         df = pd_data
-
-        # round all values in dataset to 3rd decimal place
-        df = df.astype('float').round(3)
 
         # y data
         labels = df[target_vars]
