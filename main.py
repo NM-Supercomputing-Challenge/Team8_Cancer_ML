@@ -109,7 +109,7 @@ if useFront == False:
     dcmDirect = True
 
     # number of epochs in model
-    num_epochs = 20
+    num_epochs = 5
 
     # if true, CNN will be used
     useCNN = False
@@ -895,12 +895,6 @@ def model(data_file, test_file, target_vars, epochs_num):
         X_test, X_val = train_test_split(X_test, test_size=0.5, random_state=34)
         y_test, y_val = train_test_split(y_test, test_size=0.5, random_state=34)
 
-        # scale data
-        scaler = StandardScaler().fit(X_train)
-        X_train = scaler.transform(X_train)
-        X_test = scaler.transform(X_test)
-        X_val = scaler.transform(X_val)
-
         # normalize data
         min_max_scaler = MinMaxScaler()
         X_train = min_max_scaler.fit_transform(X_train)
@@ -1341,12 +1335,6 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
         X_test, X_val = train_test_split(X_test, test_size=0.5, random_state=53)
         y_test, y_val = train_test_split(y_test, test_size=0.5, random_state=53)
 
-        # scale data
-        scaler = StandardScaler().fit(X_train)
-        X_train = scaler.transform(X_train)
-        X_test = scaler.transform(X_test)
-        X_val = scaler.transform(X_val)
-
         # normalize data
         min_max_scaler = MinMaxScaler()
         X_train = min_max_scaler.fit_transform(X_train)
@@ -1382,11 +1370,6 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         if useCNN:
-
-            scaler = StandardScaler().fit(X_train_img)
-            X_train_img = scaler.transform(X_train_img)
-            X_test_img = scaler.transform(X_test_img)
-            X_val_img = scaler.transform(X_val_img)
 
             # normalize data
             min_max_scaler = MinMaxScaler()
@@ -1444,11 +1427,6 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
             X_train = np.concatenate((X_train_img,X_train),axis=1)
             X_test = np.concatenate((X_test,X_test_img),axis=1)
             X_val = np.concatenate((X_val,X_val_img),axis=1)
-
-            scaler = StandardScaler().fit(X_train)
-            X_train = scaler.transform(X_train)
-            X_test = scaler.transform(X_test)
-            X_val = scaler.transform(X_val)
 
             # normalize data
             min_max_scaler = MinMaxScaler()
