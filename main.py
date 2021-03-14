@@ -51,7 +51,7 @@ if useFront == False:
     test_file = "test_2.csv"
 
     # list with strings or a single string may be inputted
-    target_variables = "chemotherapy_given"
+    target_variables = ["chemotherapy_given","cancer_surgery_performed"]
 
     # if true, converted images will be in png format instead of jpg
     png = False
@@ -1377,18 +1377,17 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
             return newImg
 
         if useCNN:
+            X_train_img = remove_ids(X_train_img)
+
+            X_test_img = remove_ids(X_test_img)
+
+            X_val_img = remove_ids(X_val_img)
 
             # normalize data
             min_max_scaler = MinMaxScaler()
             X_train_img = min_max_scaler.fit_transform(X_train_img)
             X_test_img = min_max_scaler.fit_transform(X_test_img)
             X_val_img = min_max_scaler.fit_transform(X_val_img)
-
-            X_train_img = remove_ids(X_train_img)
-
-            X_test_img = remove_ids(X_test_img)
-
-            X_val_img = remove_ids(X_val_img)
 
             X_train_img = np.reshape(X_train_img,(X_train_img.shape[0],img_dimensions[0],img_dimensions[1],1))
             X_test_img = np.reshape(X_test_img,(X_test_img.shape[0],img_dimensions[0],img_dimensions[1],1))
@@ -1451,10 +1450,11 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
                     input = keras.layers.Input(shape=(X_train.shape[1],))
 
                     def add_target(Input):
-                        x = layers.Dense(40,activation=activation_function)(Input)
-                        x = layers.Dense(40, activation=activation_function)(x)
+                        x = layers.Dense(90,activation=activation_function)(Input)
+                        x = layers.Dense(60, activation=activation_function)(x)
+                        x = layers.Dense(45, activation=activation_function)(x)
                         x = layers.Dense(35, activation=activation_function)(x)
-                        x = layers.Dense(35, activation=activation_function)(x)
+                        x = layers.Dense(20, activation=activation_function)(x)
                         return x
 
                     output_list = []
