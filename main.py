@@ -1363,6 +1363,19 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+        def remove_ids(dataset):
+            # initialize empty array
+            newImg = np.empty((0, img_dimensions[0] * img_dimensions[1]))
+
+            # remove ids from img data
+            i = 0
+            for arr in dataset:
+                arr = np.delete(arr, -1)
+                newImg = np.insert(newImg, i, arr, axis=0)
+                i = i + 1
+
+            return newImg
+
         if useCNN:
 
             # normalize data
@@ -1371,53 +1384,27 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
             X_test_img = min_max_scaler.fit_transform(X_test_img)
             X_val_img = min_max_scaler.fit_transform(X_val_img)
 
-            # initialize empty array
-            newImg = np.empty((0,img_dimensions[0]*img_dimensions[1]))
+            X_train_img = remove_ids(X_train_img)
 
-            # remove ids from img data
-            i = 0
-            for arr in X_train_img:
-                arr = np.delete(arr,-1)
-                newImg = np.insert(newImg,i,arr,axis=0)
-                i = i + 1
+            X_test_img = remove_ids(X_test_img)
 
-            X_train_img = newImg
-
-            # initialize empty array
-            newImg = np.empty((1,img_dimensions[0]*img_dimensions[1]))
-
-            # remove ids from img data
-            i = 0
-            for arr in X_test_img:
-                arr = np.delete(arr,-1)
-                newImg = np.insert(newImg,i,arr,axis=0)
-                i = i + 1
-
-            X_test_img = newImg
-
-            # initialize empty array
-            newImg = np.empty((1,img_dimensions[0]*img_dimensions[1]))
-
-            # remove ids from img data
-            i = 0
-            for arr in X_val_img:
-                arr = np.delete(arr,-1)
-                newImg = np.insert(newImg,i,arr,axis=0)
-                i = i + 1
-
-            X_val_img = newImg
+            X_val_img = remove_ids(X_val_img)
 
             X_train_img = np.reshape(X_train_img,(X_train_img.shape[0],img_dimensions[0],img_dimensions[1],1))
             X_test_img = np.reshape(X_test_img,(X_test_img.shape[0],img_dimensions[0],img_dimensions[1],1))
-            X_val_img = np.reshape(X_test_img,(X_test_img.shape[0],img_dimensions[0],img_dimensions[1],1))
+            X_val_img = np.reshape(X_val_img,(X_val_img.shape[0],img_dimensions[0],img_dimensions[1],1))
 
             X_train = X_train_img
             X_test = X_test_img
             X_val = X_val_img
 
         if not useCNN:
-            print(X_train_img.shape)
-            print(X_train.shape)
+            X_train_img = remove_ids(X_train_img)
+
+            X_test_img = remove_ids(X_test_img)
+
+            X_val_img = remove_ids(X_val_img)
+
             X_train = np.concatenate((X_train_img,X_train),axis=1)
             X_test = np.concatenate((X_test,X_test_img),axis=1)
             X_val = np.concatenate((X_val,X_val_img),axis=1)
