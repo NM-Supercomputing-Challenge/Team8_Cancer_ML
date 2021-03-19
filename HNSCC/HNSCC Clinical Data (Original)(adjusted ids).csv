@@ -1,0 +1,493 @@
+TCIA code,Gender,Age at Diag,Smoking status,Smoking status (Packs-Years),Tumor laterality,Cancer subsite of origin,HPV Status,T-category,N-category,AJCC Stage (7th edition),Therapeutic Combination,Radiation Treatment_duration,Total prescribed Radiation treatment dose,Radiation treatment_number of fractions,Radiation treatment_dose per fraction,Vital status,Overall survival_duration,Local control,Local control_duration,Regional control,Regional control_duration,Locoregional control,Locoregional control_duration,Freedom from distant metastasis,Freedom from distant metastasis_duration,Relapse-free survival,Days to last FU,Neck Dissection after IMRT
+242,Male,57,Current,38,R,Base of tongue,Unknown,4,2,IV,Concurrent chemoradiotherapy,36,72,40,1.8,Dead,223,Yes,223,Yes,223,Yes,223,Yes,7.3,Yes,220,No
+228,Male,48,Never,0,R,Base of tongue,Unknown,1,1,IV,Concurrent chemoradiotherapy,45,69.96,33,2.12,Alive,924,Yes,924,Yes,924,Yes,924,Yes,30.4,Yes,913,No
+53,Male,54,Current,30,R,Tonsil,Unknown,2,2,IV,Concurrent chemoradiotherapy,42,72,40,1.8,Alive,3770,Yes,3770,No,3770,No,3770,Yes,123.9,No,3717,Yes
+44,Female,55,Never,0,L,Tonsil,Unknown,2,1,IV,Radiation alone,40,66,30,2.2,Alive,4104,Yes,4104,Yes,4104,Yes,4104,Yes,135,Yes,4049,No
+257,Male,66,Former,25,L,Base of tongue,Unknown,4,0,IV,Concurrent chemoradiotherapy,44,69.96,33,2.12,Dead,3496,Yes,3496,Yes,3496,Yes,3496,Yes,114.8,Yes,3445,No
+272,Male,59,Current,3,R,Base of tongue,Unknown,2,2,IV,Concurrent chemoradiotherapy,43,69.96,33,2.12,Alive,857,Yes,857,Yes,857,Yes,857,Yes,28.2,Yes,845,Yes
+34,Male,48,Current,30,R,NOS,Unknown,4,2,IV,Concurrent chemoradiotherapy,43,72,42,1.71,Alive,4378,Yes,4378,Yes,4378,Yes,4378,Yes,144.4,Yes,4331,Yes
+24,Female,80,Never,0,L,Soft palate,Unknown,3,2,III,Radiation alone,38,66,30,2.2,Alive,3466,No,3466,Yes,3466,No,3466,Yes,113.5,No,3405,No
+251,Male,53,Former,72,R,Base of tongue,Unknown,1,1,III,Concurrent chemoradiotherapy,42,66,30,2.2,Alive,3982,Yes,3982,Yes,3982,Yes,3982,Yes,130.7,Yes,3920,No
+319,Male,50,Never,0,R,Base of tongue,Unknown,3,2,IV,Radiation alone,38,70,33,2.12,Alive,3344,Yes,3344,Yes,3344,Yes,3344,Yes,110.4,Yes,3311,No
+276,Male,58,Never,0,R,NOS,P,2,2,IV,Induction chemotherapy+Radiation alone,38,66,30,2.2,Alive,1611,Yes,1611,No,1611,No,1611,Yes,53,No,1590,Yes
+273,Male,64,Former,0,L,Base of tongue,Unknown,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,48,69.96,33,2.12,Alive,3891,Yes,3891,Yes,3891,Yes,3891,Yes,127.9,Yes,3836,No
+282,Male,52,Never,0,R,Base of tongue,Unknown,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,41,66,30,2.2,Alive,3557,Yes,3557,Yes,3557,Yes,3557,Yes,117.5,Yes,3524,No
+260,Male,59,Former,0,L,Tonsil,Unknown,2,2,IV,Radiation alone,39,72,40,1.8,Alive,4165,Yes,4165,Yes,4165,Yes,4165,Yes,136.5,Yes,4095,No
+280,Male,50,Never,0,R,Base of tongue,Unknown,1,2,IV,Concurrent chemoradiotherapy,44,69.96,33,2.12,Alive,3891,Yes,3891,Yes,3891,Yes,3891,Yes,127.9,Yes,3837,No
+271,Male,59,Former,0,R,Tonsil,Unknown,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,69.96,33,2.12,Alive,3618,Yes,3618,Yes,3618,Yes,3618,Yes,119.4,Yes,3581,No
+55,Female,55,Former,15,R,Tonsil,Unknown,2,0,II,Radiation alone,39,66,30,2.2,Alive,3861,Yes,3861,Yes,3861,Yes,3861,Yes,127.4,Yes,3821,No
+224,Female,48,Former,29,R,Base of tongue,Unknown,3,1,III,Induction chemotherapy + concurrent chemoradiotherapy,45,70,35,2,Alive,2146,No,2146,Yes,2146,No,2146,Yes,70.6,No,2117,No
+313,Male,52,Never,0,R,Tonsil,Unknown,2,1,III,Radiation alone,38,72,40,1.8,Alive,3587,Yes,3587,Yes,3587,Yes,3587,Yes,117.8,Yes,3535,No
+296,Male,42,Never,0,L,Base of tongue,Unknown,2,2,IV,Radiation alone,35,72,40,1.8,Alive,1389,Yes,1389,Yes,1389,Yes,1389,Yes,45.7,Yes,1371,No
+318,Male,63,Former,26,R,Base of tongue,Unknown,1,2,IV,Radiation alone,41,66,30,2.2,Alive,3618,No,3618,Yes,3618,No,3618,Yes,118.7,No,3562,No
+134,Male,75,Never,0,R,Base of tongue,Unknown,1,2,III,Concurrent chemoradiotherapy,41,66,30,2.2,Alive,3739,Yes,3739,No,3739,No,3739,Yes,122.9,No,3687,Yes
+128,Male,54,Former,50,R,Base of tongue,Unknown,3,1,III,Concurrent chemoradiotherapy,45,69.96,33,2.12,Alive,3800,Yes,3800,Yes,3800,Yes,3800,Yes,124.8,Yes,3744,No
+317,Male,52,Current,27,L,Base of tongue,P,1,2,IV,Radiation alone,39,66,30,2.2,Alive,1155,Yes,1155,Yes,1155,Yes,1155,Yes,38,Yes,1141,Yes
+118,Male,54,Former,18,R,Tonsil,P,2,2,IV,Induction chemotherapy+Radiation alone,38,66,30,2.2,Alive,3800,Yes,3800,Yes,3800,Yes,3800,Yes,124.9,Yes,3746,No
+284,Male,65,Former,5,L,Base of tongue,Unknown,2,2,IV,Induction chemotherapy+Radiation alone,41,66,30,2.2,Alive,3952,No,3952,No,3952,No,3952,No,128.2,No,3898,No
+292,Male,49,Never,0,L,Tonsil,Unknown,2,1,III,Radiation alone,38,66,30,2.2,Alive,3800,Yes,3800,Yes,3800,Yes,3800,Yes,125,Yes,3749,No
+141,Male,55,Never,0,L,Base of tongue,Unknown,3,2,IV,Induction chemotherapy+Radiation alone,41,66,30,2.2,Alive,3314,Yes,3314,Yes,3314,Yes,3314,Yes,108.9,Yes,3268,No
+372,Male,49,Never,0,L,Tonsil,P,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,45,70,33,2.12,Alive,3374,Yes,3374,Yes,3374,Yes,3374,Yes,110.8,No,3323,Yes
+325,Male,72,Never,0,L,Base of tongue,Unknown,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,37,68.1,30,2.27,Alive,3587,Yes,3587,Yes,3587,Yes,3587,Yes,117.7,Yes,3530,Yes
+3,Male,48,Former,5,R,Tonsil,Unknown,2,2,IV,Concurrent chemoradiotherapy,38,66,33,2,Alive,3192,No,3192,Yes,3192,No,3192,Yes,104.7,No,3142,No
+357,Male,59,Never,0,L,Tonsil,P,1,2,IV,Concurrent chemoradiotherapy,41,66,30,2.2,Alive,2943,Yes,2943,Yes,2943,Yes,2943,Yes,96.8,No,2905,Yes
+286,Male,61,Never,40,R,Base of tongue,Unknown,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Dead,2350,Yes,2350,Yes,2350,Yes,2350,Yes,77.3,No,2320,No
+482,Male,41,Current,6,L,NOS,P,2,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,1176,Yes,1176,Yes,1176,Yes,1176,Yes,38.7,Yes,1160,No
+116,Male,50,Current,32,R,Base of tongue,P,3,2,IV,Concurrent chemoradiotherapy,45,70,35,2,Dead,2326,Yes,2326,No,2326,No,2326,No,74.9,No,2295,Yes
+409,Female,51,Never,0,L,Tonsil,P,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,41,66,30,2.2,Alive,1277,Yes,1277,Yes,1277,Yes,1277,Yes,42,Yes,1260,Yes
+362,Male,56,Current,50,L,Tonsil,N,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,72,40,1.8,Dead,1985,No,1985,Yes,1985,No,1985,Yes,65.3,No,1960,Yes
+321,Male,49,Never,0,R,Base of tongue,Unknown,3,1,IV,Concurrent chemoradiotherapy,47,70,35,2,Alive,3557,Yes,3557,Yes,3557,Yes,3557,Yes,117.2,Yes,3515,No
+46,Male,67,Current,50,L,Tonsil,Unknown,3,2,IV,Induction chemotherapy+Radiation alone,41,66,30,2.2,Dead,1791,Yes,1791,Yes,1791,Yes,1791,Yes,58.9,Yes,1767,No
+115,Male,66,Current,50,L,Tonsil,P,2,2,IV,Concurrent chemoradiotherapy,41,66,30,2.2,Dead,1766,No,1766,Yes,1766,No,1766,Yes,58.1,No,1744,Yes
+387,Male,57,Never,0,R,Base of tongue,P,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Dead,1693,No,1693,No,1693,No,1693,Yes,55.7,No,1672,Yes
+396,Male,59,Never,0,L,Base of tongue,P,1,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Dead,1395,No,1395,No,1395,No,1395,No,26.8,No,1376,No
+243,Male,56,Current,35,R,Tonsil,Unknown,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,43,72,40,1.8,Dead,1207,Yes,1207,Yes,1207,Yes,1207,Yes,39.7,No,1192,No
+333,Male,70,Former,50,L,Base of tongue,Unknown,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,21,70,33,2.12,Dead,1456,Yes,1456,Yes,1456,Yes,1456,No,26.6,No,1436,Yes
+150,Male,60,Former,30,L,Tonsil,Unknown,3,3,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Dead,863,Yes,863,Yes,863,Yes,863,Yes,28.4,Yes,851,No
+434,Male,57,Former,0,L,Base of tongue,P,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,66,33,2,Dead,830,No,830,No,830,No,830,Yes,27.3,No,818,No
+365,Male,58,Former,21,R,Base of tongue,Unknown,1,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,42,70,35,2,Alive,4134,Yes,4134,Yes,4134,Yes,4134,No,39.7,No,4076,Yes
+225,Male,45,Former,5,Midline,Tonsil,Unknown,3,3,IV,Concurrent chemoradiotherapy,46,69.96,33,2.12,Alive,4651,Yes,4651,Yes,4651,Yes,4651,Yes,152.6,Yes,4578,No
+226,Male,64,Former,10,L,Tonsil,Unknown,4,3,IV,Concurrent chemoradiotherapy,29,72,22,3.27,Dead,3800,Yes,3800,Yes,3800,Yes,3800,Yes,125,Yes,3749,No
+227,Male,76,Never,0,R,Tonsil,P,1,2,IV,Radiation alone,42,70,30,2.33,Alive,4499,Yes,4499,Yes,4499,Yes,4499,No,136,No,4451,Yes
+235,Male,51,Former,10,L,Tonsil,Unknown,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,50,70,33,2.12,Dead,3253,Yes,3253,Yes,3253,Yes,3253,Yes,107.4,Yes,3222,No
+230,Female,70,Former,50,L,Tonsil,N,1,2,IV,Radiation alone,43,66,30,2.2,Alive,4286,Yes,4286,Yes,4286,Yes,4286,Yes,140.6,Yes,4218,Yes
+231,Male,51,Current,30,L,Base of tongue,Unknown,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,45,70,33,2.12,Alive,2468,Yes,2468,Yes,2468,Yes,2468,Yes,81.2,Yes,2436,No
+229,Male,47,Current,40,R,Base of tongue,Unknown,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,48,70,35,2,Dead,447,No,447,Yes,447,No,447,Yes,14.7,No,440,No
+232,Male,49,Never,0,R,Base of tongue,P,3,3,IV,Induction chemotherapy + concurrent chemoradiotherapy,43,72,40,1.8,Alive,4226,Yes,4226,Yes,4226,Yes,4226,Yes,139.3,Yes,4179,No
+234,Male,49,Former,69,L,Base of tongue,Unknown,3,2,IV,Concurrent chemoradiotherapy,42,72,40,1.8,Dead,2526,No,2526,Yes,2526,No,2526,Yes,83.1,No,2493,No
+233,Male,51,Never,0,L,Base of tongue,Unknown,1,2,IV,Induction chemotherapy+Radiation alone,37,66,30,2.2,Alive,4195,Yes,4195,Yes,4195,Yes,4195,Yes,138.1,Yes,4143,No
+236,Male,51,Never,0,R,Tonsil,Unknown,2,2,IV,Induction chemotherapy+Radiation alone,42,66,30,2.2,Alive,4165,Yes,4165,Yes,4165,Yes,4165,Yes,136.7,Yes,4102,Yes
+237,Male,66,Current,100,Midline,Soft palate,Unknown,3,2,IV,Concurrent chemoradiotherapy,38,72,40,1.8,Dead,3222,Yes,3222,Yes,3222,Yes,3222,Yes,105.8,Yes,3174,No
+238,Male,65,Never,0,R,Base of tongue,Unknown,3,0,III,Concurrent chemoradiotherapy,45,70,33,2.12,Alive,2882,Yes,2882,Yes,2882,Yes,2882,Yes,94.8,Yes,2843,No
+239,Male,54,Former,5,L,Tonsil,Unknown,2,2,IV,Radiation alone,43,70.5,39,1.81,Dead,879,Yes,879,Yes,879,Yes,879,No,9.5,No,867,No
+241,Male,67,Never,0,L,Base of tongue,Unknown,2,2,IV,Concurrent chemoradiotherapy,43,70,33,2.12,Alive,4347,Yes,4347,Yes,4347,Yes,4347,Yes,142.8,Yes,4285,No
+240,Male,50,Current,50,R,Tonsil,Unknown,3,2,IV,Induction chemotherapy+Radiation alone,36,72,30,2.4,Alive,4165,Yes,4165,Yes,4165,Yes,4165,Yes,136.5,Yes,4096,No
+35,Male,48,Former,1,Midline,Base of tongue,Unknown,4,2,IV,Concurrent chemoradiotherapy,41,72,40,1.8,Dead,869,Yes,869,No,869,No,869,No,23.5,No,859,No
+244,Male,62,Never,0,L,Base of tongue,Unknown,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,3982,Yes,3982,Yes,3982,Yes,3982,Yes,131,Yes,3930,No
+245,Male,53,Never,0,L,Base of tongue,Unknown,2,2,IV,Induction chemotherapy+Radiation alone,38,66,30,2.2,Alive,3922,Yes,3922,Yes,3922,Yes,3922,Yes,128.5,Yes,3855,No
+246,Male,70,Former,65,R,Base of tongue,Unknown,2,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,4043,Yes,4043,Yes,4043,Yes,4043,Yes,133.3,Yes,3999,No
+247,Male,49,Current,30,L,Base of tongue,P,3,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,4347,Yes,4347,Yes,4347,Yes,4347,Yes,143.2,Yes,4296,No
+26,Male,59,Never,0,R,Base of tongue,Unknown,2,2,IV,Concurrent chemoradiotherapy,46,69.96,33,2.12,Alive,1933,Yes,1933,Yes,1933,Yes,1933,Yes,63.6,Yes,1907,Yes
+30,Male,63,Never,0,R,Base of tongue,Unknown,4,1,IV,Concurrent chemoradiotherapy,44,69.96,33,2.12,Alive,3007,Yes,3007,Yes,3007,Yes,3007,Yes,98.9,Yes,2966,No
+248,Male,53,Former,60,R,Base of tongue,P,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,4195,No,4195,Yes,4195,No,4195,Yes,137.8,No,4134,Yes
+249,Male,63,Current,0,L,Base of tongue,Unknown,3,2,IV,Concurrent chemoradiotherapy,51,69.96,33,2.12,Dead,529,Yes,529,Yes,529,Yes,529,Yes,17.4,No,521,No
+250,Male,58,Former,1,L,Tonsil,Unknown,2,0,II,Concurrent chemoradiotherapy,37,72,40,1.8,Alive,3770,Yes,3770,Yes,3770,Yes,3770,Yes,123.9,Yes,3718,No
+33,Female,44,Current,30,Midline,NOS,Unknown,3,0,III,Concurrent chemoradiotherapy,44,70,33,2.12,Dead,3739,Yes,3739,Yes,3739,Yes,3739,Yes,123.1,Yes,3693,No
+252,Male,52,Current,40,L,Base of tongue,Unknown,2,2,IV,Concurrent chemoradiotherapy,44,69.96,33,2.12,Alive,3314,No,3314,Yes,3314,No,3314,Yes,109.4,No,3283,Yes
+258,Male,54,Current,30,L,Tonsil,Unknown,2,0,II,Radiation alone,43,72,30,2.4,Dead,3557,No,3557,Yes,3557,No,3557,Yes,116.8,No,3503,Yes
+253,Male,83,Former,40,R,Soft palate,Unknown,4,0,IV,Concurrent chemoradiotherapy,0,69.96,0,,Dead,33,NA,33,NA,33,NA,33,NA,,No,33,No
+47,Male,66,Current,40,R,Tonsil,Unknown,3,0,III,Concurrent chemoradiotherapy,42,70,30,2.33,Dead,2329,Yes,2329,Yes,2329,Yes,2329,Yes,76.6,No,2297,No
+254,Male,71,Former,60,R,Tonsil,Unknown,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Dead,1541,Yes,1541,Yes,1541,Yes,1541,Yes,50.7,Yes,1520,Yes
+45,Female,36,Former,8,R,Tonsil,Unknown,2,2,IV,Induction chemotherapy+Radiation alone,38,72,40,1.8,Alive,3040,Yes,3040,Yes,3040,Yes,3040,Yes,100.2,Yes,3005,No
+255,Female,47,Former,5,R,Tonsil,Unknown,2,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,4226,Yes,4226,Yes,4226,Yes,4226,Yes,139,Yes,4171,No
+48,Male,58,Never,0,L,Tonsil,Unknown,1,2,IV,Concurrent chemoradiotherapy,47,70,33,2.12,Alive,3739,Yes,3739,Yes,3739,Yes,3739,Yes,123,Yes,3689,No
+261,Male,56,Never,0,R,Base of tongue,Unknown,1,2,IV,Induction chemotherapy+Radiation alone,41,66,30,2.2,Alive,4165,Yes,4165,Yes,4165,Yes,4165,Yes,136.8,Yes,4105,Yes
+49,Male,77,Former,50,R,Base of tongue,Unknown,2,2,IV,Concurrent chemoradiotherapy,41,72,40,1.8,Alive,833,Yes,833,Yes,833,Yes,833,Yes,27.4,Yes,821,No
+51,Male,52,Never,0,L,Tonsil,Unknown,2,2,IV,Concurrent chemoradiotherapy,41,72,40,1.8,Alive,3022,Yes,3022,Yes,3022,Yes,3022,Yes,99.4,Yes,2981,Yes
+256,Male,53,Never,0,NOS,NOS,N,4,2,IV,Concurrent chemoradiotherapy,45,70.04,34,2.06,Dead,499,Yes,499,Yes,499,Yes,499,Yes,16.4,No,493,No
+259,Male,58,Former,30,R,Base of tongue,P,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Dead,2107,Yes,2107,Yes,2107,Yes,2107,Yes,69.3,Yes,2079,No
+52,Male,43,Never,0,L,Tonsil,Unknown,2,2,IV,Concurrent chemoradiotherapy,44,69.96,33,2.12,Alive,757,Yes,757,Yes,757,Yes,757,Yes,24.9,Yes,747,Yes
+71,Male,52,Former,32,L,Base of tongue,Unknown,2,2,IV,Concurrent chemoradiotherapy,39,72,40,1.8,Alive,4195,Yes,4195,Yes,4195,Yes,4195,Yes,138.5,Yes,4154,Yes
+262,Male,61,Former,5,R,Base of tongue,Unknown,3,2,IV,Concurrent chemoradiotherapy,46,66,33,2,Dead,1614,Yes,1614,Yes,1614,Yes,1614,Yes,53.1,Yes,1593,Yes
+263,Female,61,Never,0,R,Base of tongue,Unknown,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,41,70,33,2.12,Dead,4134,No,4134,No,4134,No,4134,Yes,135.7,No,4070,No
+56,Male,67,Never,0,L,Tonsil,Unknown,4,2,IV,Concurrent chemoradiotherapy,45,70,33,2.12,Dead,2587,Yes,2587,Yes,2587,Yes,2587,Yes,85.1,Yes,2554,Yes
+62,Male,59,Current,0,L,NOS,Unknown,2,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,3648,Yes,3648,Yes,3648,Yes,3648,Yes,120,Yes,3599,No
+264,Male,60,Current,60,Midline,NOS,Unknown,2,1,III,Concurrent chemoradiotherapy,45,70,33,2.12,Dead,1529,Yes,1529,Yes,1529,Yes,1529,Yes,50.3,No,1509,No
+266,Female,64,Never,0,R,Base of tongue,Unknown,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,41,72,30,2.4,Alive,4165,Yes,4165,Yes,4165,Yes,4165,Yes,137.5,Yes,4124,No
+265,Male,57,Never,0,L,Base of tongue,Unknown,4,2,IV,Concurrent chemoradiotherapy,41,72,40,1.8,Alive,3982,Yes,3982,Yes,3982,Yes,3982,Yes,130.7,Yes,3920,No
+59,Male,53,Current,20,Midline,Base of tongue,Unknown,2,2,IV,Concurrent chemoradiotherapy,42,72,30,2.4,Dead,2237,No,2237,Yes,2237,No,2237,Yes,73.6,No,2208,Yes
+69,Male,55,Former,80,R,Tonsil,Unknown,3,2,IV,Concurrent chemoradiotherapy,42,70,35,2,Alive,4165,Yes,4165,Yes,4165,Yes,4165,Yes,137.5,Yes,4124,No
+73,Male,45,Former,30,R,Base of tongue,Unknown,2,3,IV,Concurrent chemoradiotherapy,42,72,40,1.8,Alive,2964,Yes,2964,Yes,2964,Yes,2964,Yes,97.5,Yes,2924,No
+267,Male,67,Current,50,L,Base of tongue,Unknown,2,2,IV,Concurrent chemoradiotherapy,48,70,37,1.89,Alive,3891,Yes,3891,Yes,3891,Yes,3891,Yes,128.4,Yes,3852,No
+67,Male,58,Current,66,R,Base of tongue,N,4,1,III,Concurrent chemoradiotherapy,39,70,35,2,Dead,769,Yes,769,Yes,769,Yes,769,Yes,25.3,No,758,No
+75,Male,56,Never,10,R,Base of tongue,Unknown,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,3891,Yes,3891,Yes,3891,Yes,3891,Yes,128.1,Yes,3842,Yes
+269,Male,28,Current,10,L,Base of tongue,Unknown,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,39,72,40,1.8,Alive,3739,Yes,3739,Yes,3739,Yes,3739,Yes,122.9,Yes,3686,Yes
+72,Male,47,Current,30,R,Base of tongue,P,2,1,III,Radiation alone,41,66,30,2.2,Alive,3101,No,3101,Yes,3101,No,3101,Yes,101.8,No,3055,No
+268,Female,60,Current,60,L,Tonsil,Unknown,2,2,IV,Induction chemotherapy+Radiation alone,38,66,30,2.2,Dead,824,Yes,824,No,824,No,824,No,13.3,No,814,No
+77,Male,69,Never,0,R,Base of tongue,Unknown,4,2,IV,Concurrent chemoradiotherapy,43,70,35,2,Alive,4043,Yes,4043,Yes,4043,Yes,4043,Yes,132.7,Yes,3982,No
+78,Female,75,Current,60,L,Tonsil,Unknown,2,0,II,Concurrent chemoradiotherapy,38,72,40,1.8,Alive,3982,Yes,3982,Yes,3982,Yes,3982,Yes,131.1,Yes,3932,No
+82,Female,51,Current,66,R,Base of tongue,Unknown,3,1,III,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,3922,Yes,3922,Yes,3922,Yes,3922,Yes,128.8,Yes,3864,No
+79,Male,67,Current,40,R,Base of tongue,N,3,1,IV,Concurrent chemoradiotherapy,41,69.96,33,2.12,Dead,277,No,277,Yes,277,No,277,Yes,9.1,No,273,Yes
+81,Male,54,Former,8,R,Base of tongue,Unknown,2,2,IV,Induction chemotherapy+Radiation alone,43,66,30,2.2,Alive,3891,Yes,3891,Yes,3891,Yes,3891,Yes,128.1,Yes,3842,No
+86,Male,56,Current,66,R,Tonsil,Unknown,2,2,IV,Radiation alone,47,66,30,2.2,Dead,334,Yes,334,Yes,334,Yes,334,No,,No,330,No
+84,Male,51,Never,0,R,Base of tongue,Unknown,3,2,IV,Concurrent chemoradiotherapy,44,69.96,33,2.12,Alive,340,Yes,340,Yes,340,Yes,340,Yes,11.2,Yes,336,No
+274,Male,47,Current,25,R,Tonsil,Unknown,2,2,IV,Induction chemotherapy+Radiation alone,45,70,33,2.12,Alive,2852,Yes,2852,Yes,2852,Yes,2852,Yes,93.8,Yes,2814,No
+91,Male,67,Former,40,R,Base of tongue,Unknown,3,2,IV,Concurrent chemoradiotherapy,37,66,33,2,Dead,3283,Yes,3283,Yes,3283,Yes,3283,Yes,108.5,Yes,3254,No
+275,Male,58,Never,0,Midline,Base of tongue,Unknown,2,2,IV,Induction chemotherapy+Radiation alone,39,66,30,2.2,Alive,3982,Yes,3982,Yes,3982,Yes,3982,Yes,131,Yes,3931,No
+92,Male,59,Current,90,R,Base of tongue,Unknown,2,0,II,Concurrent chemoradiotherapy,41,71,40,1.78,Dead,1788,Yes,1788,Yes,1788,Yes,1788,Yes,58.8,No,1765,No
+100,Male,77,Former,60,R,Tonsil,Unknown,3,2,IV,Concurrent chemoradiotherapy,43,72,30,2.4,Dead,1052,No,1052,No,1052,No,1052,No,31.7,No,1037,Yes
+105,Male,44,Never,0,R,Tonsil,Unknown,3,3,IV,Induction chemotherapy + concurrent chemoradiotherapy,47,70,33,2.12,Dead,407,Yes,407,Yes,407,Yes,407,Yes,13.4,Yes,401,No
+277,Male,53,Never,0,R,Tonsil,Unknown,1,2,IV,Radiation alone,42,66,30,2.2,Alive,3982,Yes,3982,Yes,3982,Yes,3982,Yes,130.7,Yes,3922,Yes
+278,Male,47,Current,0,L,Tonsil,P,4,2,IV,Concurrent chemoradiotherapy,46,70,33,2.12,Alive,1234,Yes,1234,Yes,1234,Yes,1234,Yes,40.6,Yes,1219,Yes
+108,Female,64,Former,14,L,Tonsil,Unknown,3,2,IV,Concurrent chemoradiotherapy,42,70,35,2,Alive,3830,Yes,3830,Yes,3830,Yes,3830,Yes,126.1,Yes,3783,No
+283,Female,59,Never,0,R,Tonsil,Unknown,2,2,IV,Induction chemotherapy+Radiation alone,41,66,30,2.2,Alive,3952,Yes,3952,Yes,3952,Yes,3952,Yes,130.1,Yes,3902,No
+111,Male,36,Never,0,R,Base of tongue,Unknown,4,2,IV,Concurrent chemoradiotherapy,24,70,33,2.12,Alive,3709,Yes,3709,Yes,3709,Yes,3709,Yes,121.8,Yes,3654,No
+110,Female,67,Former,15,R,Base of tongue,N,2,2,IV,Concurrent chemoradiotherapy,46,60,33,1.82,Dead,3374,Yes,3374,Yes,3374,Yes,3374,Yes,111.2,Yes,3337,No
+113,Male,54,Current,1,L,Base of tongue,P,3,2,IV,Concurrent chemoradiotherapy,45,70,35,2,Dead,2073,Yes,2073,Yes,2073,Yes,2073,No,48.7,No,2047,Yes
+285,Male,58,Former,0,L,Tonsil,N,2,2,IV,Concurrent chemoradiotherapy,41,72,40,1.8,Dead,876,Yes,876,Yes,876,Yes,876,No,8,No,865,No
+287,Male,45,Former,10,L,Base of tongue,Unknown,1,2,IV,Concurrent chemoradiotherapy,38,66,30,2.2,Alive,1867,Yes,1867,Yes,1867,Yes,1867,Yes,61.4,Yes,1841,No
+289,Male,56,Former,30,L,Base of tongue,Unknown,3,1,III,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,3770,Yes,3770,Yes,3770,Yes,3770,Yes,123.7,Yes,3712,No
+290,Male,72,Never,0,R,Base of tongue,P,2,2,IV,Radiation alone,43,66,30,2.2,Alive,3861,Yes,3861,Yes,3861,Yes,3861,Yes,127.4,Yes,3822,No
+288,Male,71,Former,0,L,Tonsil,P,4,2,IV,Concurrent chemoradiotherapy,45,70,35,2,Dead,979,No,979,Yes,979,No,979,Yes,32.2,No,966,No
+120,Male,51,Never,0,Midline,Base of tongue,Unknown,4,2,IV,Concurrent chemoradiotherapy,41,70,35,2,Dead,304,Yes,304,Yes,304,Yes,304,Yes,10,No,301,No
+121,Male,54,Former,100,R,Base of tongue,Unknown,4,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,3557,Yes,3557,Yes,3557,Yes,3557,Yes,117,Yes,3511,No
+291,Male,58,Never,0,L,NOS,N,3,0,III,Radiation alone,41,60,30,2,Dead,377,No,377,Yes,377,No,377,No,8.3,No,371,No
+294,Male,79,Former,80,R,Base of tongue,Unknown,2,1,III,Concurrent chemoradiotherapy,45,70,33,2.12,Dead,450,Yes,450,Yes,450,Yes,450,Yes,14.8,No,445,No
+295,Male,63,Never,0,R,Tonsil,Unknown,4,2,IV,Concurrent chemoradiotherapy,42,70,35,2,Dead,654,Yes,654,Yes,654,Yes,654,No,17.2,No,645,No
+293,Male,71,Current,25,L,Tonsil,P,1,2,IV,Radiation alone,40,66,30,2.2,Alive,3861,Yes,3861,Yes,3861,Yes,3861,Yes,126.9,Yes,3808,No
+125,Female,62,Former,36,R,Tonsil,Unknown,4,0,IV,Concurrent chemoradiotherapy,48,70,33,2.12,Alive,2739,Yes,2739,Yes,2739,Yes,2739,Yes,90.1,Yes,2703,No
+131,Male,54,Never,0,R,Base of tongue,Unknown,2,2,IV,Concurrent chemoradiotherapy,42,70,35,2,Alive,3800,Yes,3800,Yes,3800,Yes,3800,Yes,124.8,Yes,3745,No
+299,Male,52,Current,62,L,Tonsil,N,1,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,42,66,30,2.2,Alive,2313,Yes,2313,Yes,2313,Yes,2313,Yes,76.1,Yes,2284,Yes
+297,Male,73,Former,19,L,Base of tongue,P,2,2,IV,Induction chemotherapy+Radiation alone,12,66,30,2.2,Dead,2988,Yes,2988,Yes,2988,Yes,2988,Yes,98.3,Yes,2949,No
+302,Male,67,Current,0,R,Tonsil,Unknown,4,2,IV,Concurrent chemoradiotherapy,37,72,40,1.8,Dead,426,Yes,426,Yes,426,Yes,426,No,12.8,No,419,Yes
+140,Male,45,Current,50,R,Base of tongue,P,4,2,IV,Concurrent chemoradiotherapy,41,70,35,2,Dead,468,No,468,Yes,468,No,468,No,12.8,No,463,No
+301,Male,61,Never,0,L,Base of tongue,Unknown,2,2,IV,Concurrent chemoradiotherapy,38,66,30,2.2,Alive,3678,Yes,3678,Yes,3678,Yes,3678,Yes,120.9,Yes,3628,No
+129,Male,61,Never,0,L,Base of tongue,Unknown,1,2,IV,Induction chemotherapy+Radiation alone,39,66,30,2.2,Alive,3222,Yes,3222,Yes,3222,Yes,3222,Yes,106.1,Yes,3182,Yes
+298,Male,72,Former,28,NOS,NOS,Unknown,2,0,II,Radiation alone,40,66,30,2.2,Dead,815,Yes,815,Yes,815,Yes,815,Yes,26.8,No,805,No
+133,Male,65,Never,0,L,Base of tongue,P,3,2,IV,Concurrent chemoradiotherapy,38,70,35,2,Alive,3435,Yes,3435,Yes,3435,Yes,3435,Yes,112.6,Yes,3379,No
+300,Male,52,Former,1,R,Tonsil,P,2,2,IV,Concurrent chemoradiotherapy,38,66,30,2.2,Alive,3709,Yes,3709,Yes,3709,Yes,3709,Yes,121.6,Yes,3647,No
+305,Male,47,Never,0,R,Base of tongue,Unknown,2,2,IV,Concurrent chemoradiotherapy,41,66,33,2,Alive,3314,Yes,3314,Yes,3314,Yes,3314,Yes,109.1,Yes,3272,No
+303,Male,63,Never,0,L,Tonsil,Unknown,1,2,IV,Induction chemotherapy+Radiation alone,43,66,30,2.2,Alive,3466,Yes,3466,Yes,3466,Yes,3466,Yes,114.4,Yes,3431,No
+304,Male,61,Current,40,R,Tonsil,Unknown,4,2,IV,Concurrent chemoradiotherapy,39,70,35,2,Alive,3709,Yes,3709,Yes,3709,Yes,3709,Yes,122.4,Yes,3673,No
+132,Male,62,Never,0,L,Tonsil,Unknown,4,0,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,2386,Yes,2386,Yes,2386,Yes,2386,Yes,78.5,Yes,2354,No
+306,Male,72,Never,0,R,Base of tongue,Unknown,2,0,II,Concurrent chemoradiotherapy,42,72,40,1.8,Dead,1508,Yes,1508,Yes,1508,Yes,1508,No,37.8,No,1489,No
+307,Male,64,Former,75,L,Tonsil,Unknown,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,45,70,33,2.12,Alive,3800,Yes,3800,Yes,3800,Yes,3800,Yes,124.8,Yes,3744,No
+136,Male,54,Never,0,R,Base of tongue,Unknown,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,40,72,33,2.18,Alive,3709,Yes,3709,Yes,3709,Yes,3709,Yes,122.2,Yes,3666,Yes
+138,Male,47,Never,0,L,Tonsil,Unknown,4,2,IV,Concurrent chemoradiotherapy,45,70,35,2,Alive,2490,Yes,2490,Yes,2490,Yes,2490,Yes,81.9,Yes,2457,No
+310,Male,53,Current,80,R,Tonsil,Unknown,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,45,70,33,2.12,Dead,1964,Yes,1964,Yes,1964,Yes,1964,Yes,64.6,Yes,1938,No
+309,Male,55,Never,5,L,Tonsil,Unknown,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,47,70,33,2.12,Alive,3618,Yes,3618,Yes,3618,Yes,3618,Yes,119.2,Yes,3577,No
+137,Female,53,Former,3,L,Tonsil,P,3,0,III,Concurrent chemoradiotherapy,41,70,35,2,Alive,3709,Yes,3709,Yes,3709,Yes,3709,Yes,122.4,Yes,3673,Yes
+311,Male,55,Never,0,L,Tonsil,Unknown,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,3101,Yes,3101,Yes,3101,Yes,3101,Yes,101.7,Yes,3051,No
+139,Male,46,Never,0,L,Base of tongue,P,4,2,IV,Concurrent chemoradiotherapy,38,70,35,2,Alive,3253,Yes,3253,Yes,3253,Yes,3253,Yes,107.4,Yes,3222,No
+308,Male,57,Never,0,R,Base of tongue,Unknown,2,2,IV,Concurrent chemoradiotherapy,44,69.96,33,2.12,Alive,118,Yes,118,Yes,118,Yes,118,Yes,3.9,Yes,116,Yes
+312,Male,52,Never,0,L,Tonsil,Unknown,2,2,IV,Concurrent chemoradiotherapy,38,72,40,1.8,Alive,3618,Yes,3618,Yes,3618,Yes,3618,Yes,118.5,Yes,3555,No
+315,Male,45,Former,10,R,Tonsil,Unknown,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,45,70,33,2.12,Alive,3587,Yes,3587,Yes,3587,Yes,3587,Yes,118.1,Yes,3544,Yes
+316,Male,56,Former,50,R,Base of tongue,N,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,60,33,1.82,Alive,3678,Yes,3678,Yes,3678,Yes,3678,Yes,120.7,Yes,3621,Yes
+314,Male,76,Former,10,R,Tonsil,Unknown,3,3,IV,Induction chemotherapy+Radiation alone,42,72,40,1.8,Dead,614,Yes,614,Yes,614,Yes,614,Yes,20.2,Yes,605,No
+143,Male,50,Current,1,R,Base of tongue,P,2,2,IV,Concurrent chemoradiotherapy,47,70,33,2.12,Alive,3648,Yes,3648,Yes,3648,Yes,3648,Yes,120.4,Yes,3611,Yes
+320,Male,53,Never,0,R,Tonsil,P,2,2,IV,Concurrent chemoradiotherapy,39,57,30,1.9,Alive,3162,No,3162,Yes,3162,No,3162,Yes,104,No,3121,Yes
+324,Female,57,Never,0,L,Tonsil,P,2,2,IV,Induction chemotherapy+Radiation alone,41,66,30,2.2,Alive,3587,Yes,3587,Yes,3587,Yes,3587,Yes,118.1,Yes,3542,No
+146,Male,56,Never,0,R,Base of tongue,P,2,1,IV,Concurrent chemoradiotherapy,43,72,40,1.8,Alive,3618,Yes,3618,Yes,3618,Yes,3618,No,26.6,No,3562,Yes
+322,Male,65,Former,15,R,NOS,Unknown,3,0,III,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,3344,Yes,3344,Yes,3344,Yes,3344,Yes,109.7,Yes,3291,No
+323,Male,45,Never,0,L,Tonsil,P,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,43,72,40,1.8,Dead,1705,Yes,1705,Yes,1705,Yes,1705,No,39.7,No,1684,Yes
+149,Male,51,Never,0,L,NOS,P,2,2,IV,Concurrent chemoradiotherapy,42,66,30,2.2,Alive,3678,Yes,3678,Yes,3678,Yes,3678,Yes,120.5,Yes,3615,No
+151,Male,48,Never,0,R,Base of tongue,Unknown,4,2,IV,Concurrent chemoradiotherapy,35,70,35,2,Alive,3000,Yes,3000,Yes,3000,Yes,3000,Yes,98.7,Yes,2962,No
+326,Male,41,Never,0,R,Base of tongue,Unknown,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,3466,Yes,3466,Yes,3466,Yes,3466,Yes,114.2,Yes,3427,No
+327,Male,54,Former,18,R,Base of tongue,Unknown,2,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,3496,Yes,3496,Yes,3496,Yes,3496,Yes,115.4,Yes,3462,Yes
+328,Male,47,Never,0,Midline,Base of tongue,Unknown,4,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,3283,Yes,3283,Yes,3283,Yes,3283,Yes,107.8,Yes,3234,No
+347,Male,55,Former,30,L,Base of tongue,Unknown,2,2,IV,Concurrent chemoradiotherapy,41,70,35,2,Alive,3435,Yes,3435,Yes,3435,Yes,3435,Yes,113.4,Yes,3403,No
+330,Male,51,Current,45,L,Base of tongue,Unknown,2,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,3496,Yes,3496,Yes,3496,Yes,3496,Yes,115.5,Yes,3464,Yes
+152,Male,49,Never,0,L,Base of tongue,P,4,2,IV,Concurrent chemoradiotherapy,43,70,33,2.12,Dead,389,No,389,No,389,No,389,No,8.2,No,385,No
+329,Male,57,Current,39,L,Base of tongue,P,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,2405,Yes,2405,Yes,2405,Yes,2405,No,66.2,No,2374,No
+331,Male,69,Former,50,R,Tonsil,Unknown,3,2,IV,Concurrent chemoradiotherapy,41,70,35,2,Dead,3253,Yes,3253,Yes,3253,Yes,3253,Yes,106.7,Yes,3200,No
+332,Male,56,Current,40,R,Base of tongue,Unknown,3,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,3374,Yes,3374,Yes,3374,Yes,3374,Yes,111.2,Yes,3336,No
+334,Male,65,Never,0,R,Tonsil,Unknown,1,3,IV,Concurrent chemoradiotherapy,50,70,33,2.12,Alive,1836,Yes,1836,Yes,1836,Yes,1836,Yes,60.4,Yes,1812,No
+341,Male,58,Former,5,R,Base of tongue,Unknown,3,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,1912,Yes,1912,Yes,1912,Yes,1912,Yes,62.9,Yes,1888,No
+335,Male,47,Never,0,L,Tonsil,Unknown,1,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,41,66,30,2.2,Alive,2727,Yes,2727,Yes,2727,Yes,2727,Yes,89.7,Yes,2690,No
+340,Male,57,Former,5,L,Base of tongue,P,2,2,IV,Concurrent chemoradiotherapy,38,72,40,1.8,Alive,3040,Yes,3040,Yes,3040,Yes,3040,Yes,100.3,Yes,3010,No
+336,Male,55,Former,5,L,Tonsil,Unknown,2,2,IV,Concurrent chemoradiotherapy,39,72,40,1.8,Alive,1906,Yes,1906,Yes,1906,Yes,1906,Yes,62.7,Yes,1882,No
+339,Male,57,Never,0,R,Base of tongue,Unknown,3,2,IV,Concurrent chemoradiotherapy,41,72,33,2.18,Alive,3162,Yes,3162,Yes,3162,Yes,3162,Yes,104.4,Yes,3133,No
+337,Male,57,Never,0,L,Tonsil,Unknown,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,42,66,30,2.2,Alive,3374,Yes,3374,Yes,3374,Yes,3374,Yes,111.2,Yes,3336,No
+343,Male,56,Never,0,R,Base of tongue,Unknown,3,3,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Dead,2788,No,2788,Yes,2788,No,2788,Yes,91.7,No,2751,No
+338,Male,50,Never,0,L,Tonsil,Unknown,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,38,66,30,2.2,Alive,3283,Yes,3283,Yes,3283,Yes,3283,Yes,107.8,Yes,3235,No
+346,Male,56,Former,30,L,Base of tongue,Unknown,2,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,2885,Yes,2885,Yes,2885,Yes,2885,Yes,94.9,Yes,2847,No
+344,Male,59,Never,0,R,Base of tongue,Unknown,2,2,IV,Concurrent chemoradiotherapy,41,70,35,2,Alive,3435,Yes,3435,Yes,3435,Yes,3435,Yes,113,Yes,3390,Yes
+342,Female,44,Never,0,R,Tonsil,P,1,2,IV,Concurrent chemoradiotherapy,42,66,30,2.2,Alive,3435,No,3435,Yes,3435,No,3435,Yes,113.1,No,3394,Yes
+345,Male,53,Never,0,R,Base of tongue,Unknown,2,2,IV,Concurrent chemoradiotherapy,43,66,33,2,Alive,3374,Yes,3374,Yes,3374,Yes,3374,Yes,111.3,Yes,3340,No
+351,Male,64,Never,0,L,Base of tongue,P,3,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,3283,Yes,3283,Yes,3283,Yes,3283,Yes,108.2,Yes,3245,No
+348,Male,56,Former,25,R,Tonsil,Unknown,2,2,IV,Concurrent chemoradiotherapy,43,70,35,2,Alive,3405,Yes,3405,Yes,3405,Yes,3405,Yes,111.7,Yes,3351,No
+349,Male,57,Never,0,R,Base of tongue,Unknown,3,2,IV,Concurrent chemoradiotherapy,48,70,33,2.12,Alive,3405,Yes,3405,Yes,3405,Yes,3405,Yes,112.2,Yes,3366,Yes
+354,Male,59,Current,56,R,Base of tongue,Unknown,1,2,IV,Concurrent chemoradiotherapy,38,70,30,2.33,Dead,2815,Yes,2815,Yes,2815,Yes,2815,Yes,92.6,Yes,2778,No
+352,Male,46,Current,0,R,Base of tongue,P,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,3466,Yes,3466,Yes,3466,Yes,3466,Yes,114,Yes,3420,Yes
+361,Male,58,Never,0,R,Glossopharyngeal sulcus,P,1,1,III,Concurrent chemoradiotherapy,41,66,30,2.2,Alive,3040,Yes,3040,Yes,3040,Yes,3040,Yes,100,Yes,2999,No
+350,Male,56,Never,0,R,Base of tongue,Unknown,3,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,3131,Yes,3131,Yes,3131,Yes,3131,Yes,103.3,Yes,3098,Yes
+355,Male,42,Never,0,R,Base of tongue,Unknown,2,2,IV,Induction chemotherapy+Radiation alone,38,66,30,2.2,Alive,3496,Yes,3496,Yes,3496,Yes,3496,Yes,115.1,Yes,3452,No
+356,Male,70,Former,12,Midline,Base of tongue,Unknown,3,2,IV,Concurrent chemoradiotherapy,43,70,30,2.33,Alive,3034,Yes,3034,Yes,3034,Yes,3034,Yes,99.8,Yes,2993,No
+359,Male,39,Never,0,R,NOS,P,2,1,III,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,3314,Yes,3314,Yes,3314,Yes,3314,Yes,108.7,Yes,3260,No
+353,Male,61,Former,54,L,Tonsil,Unknown,4,3,IV,Induction chemotherapy+Radiation alone,42,70,33,2.12,Dead,638,Yes,638,Yes,638,Yes,638,Yes,21,Yes,630,No
+360,Male,49,Current,35,R,Base of tongue,P,2,2,IV,Concurrent chemoradiotherapy,49,70,33,2.12,Alive,3374,Yes,3374,Yes,3374,Yes,3374,Yes,111,Yes,3331,No
+363,Male,53,Former,29,R,Tonsil,Unknown,2,2,IV,Induction chemotherapy+Radiation alone,41,66,30,2.2,Alive,3435,Yes,3435,Yes,3435,Yes,3435,Yes,113,Yes,3391,No
+367,Male,78,Never,0,R,Base of tongue,Unknown,1,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,3405,No,3405,Yes,3405,No,3405,Yes,111.6,No,3349,No
+364,Male,73,Never,0,L,Tonsil,Unknown,3,2,IV,Concurrent chemoradiotherapy,42,72,40,1.8,Alive,3344,Yes,3344,Yes,3344,Yes,3344,Yes,110.3,Yes,3308,No
+366,Male,57,Current,44,L,NOS,P,2,2,IV,Concurrent chemoradiotherapy,49,70,33,2.12,Dead,298,No,298,Yes,298,No,298,Yes,9.8,No,294,No
+371,Female,54,Never,0,R,Base of tongue,P,2,2,IV,Radiation alone,44,70,33,2.12,Alive,3344,Yes,3344,Yes,3344,Yes,3344,Yes,110.2,Yes,3306,Yes
+375,Male,52,Current,0,R,Glossopharyngeal sulcus,P,1,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,39,70,33,2.12,Alive,3101,Yes,3101,Yes,3101,Yes,3101,Yes,102.4,Yes,3072,No
+373,Male,55,Former,20,R,Base of tongue,Unknown,4,0,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,3222,Yes,3222,Yes,3222,Yes,3222,Yes,106.5,Yes,3194,No
+369,Male,46,Never,0,R,Base of tongue,Unknown,2,2,IV,Induction chemotherapy+Radiation alone,44,70,33,2.12,Alive,3101,Yes,3101,Yes,3101,Yes,3101,Yes,102.3,Yes,3068,No
+368,Male,62,Former,7,R,Tonsil,P,1,2,IV,Radiation alone,42,66,30,2.2,Alive,3192,Yes,3192,Yes,3192,Yes,3192,Yes,104.7,Yes,3141,Yes
+370,Male,57,Current,0,L,Base of tongue,P,1,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,41,66,30,2.2,Alive,3070,Yes,3070,Yes,3070,Yes,3070,Yes,100.6,Yes,3019,No
+374,Male,51,Never,0,L,Base of tongue,P,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,46,70,35,2,Alive,2122,Yes,2122,Yes,2122,Yes,2122,Yes,69.8,Yes,2095,No
+216,Male,57,Former,5,L,Tonsil,N,2,0,II,Radiation alone,41,66,30,2.2,Alive,3070,No,3070,Yes,3070,No,3070,Yes,101.4,No,3042,No
+443,Male,60,Never,0,L,Base of tongue,Unknown,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,37,66,30,2.2,Dead,2481,No,2481,Yes,2481,No,2481,Yes,81.6,No,2447,No
+382,Male,70,Former,40,R,Tonsil,P,4,0,IV,Induction chemotherapy + concurrent chemoradiotherapy,49,70,33,2.12,Dead,2748,Yes,2748,Yes,2748,Yes,2748,Yes,90.4,Yes,2712,No
+378,Female,61,Former,2.5,L,Base of tongue,P,2,0,II,Radiation alone,44,70,33,2.12,Alive,3070,Yes,3070,Yes,3070,Yes,3070,Yes,100.6,Yes,3017,No
+381,Male,56,Former,25,L,Tonsil,Unknown,3,2,IV,Concurrent chemoradiotherapy,38,70,35,2,Dead,1693,Yes,1693,Yes,1693,Yes,1693,No,46,No,1671,No
+221,Male,63,Current,95,L,Tonsil,Unknown,2,2,IV,Concurrent chemoradiotherapy,50,70,35,2,Alive,3070,Yes,3070,Yes,3070,Yes,3070,Yes,100.9,Yes,3026,No
+380,Male,57,Never,0,L,Tonsil,Unknown,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,3070,Yes,3070,Yes,3070,Yes,3070,Yes,101.4,Yes,3043,No
+376,Male,47,Never,0,L,Base of tongue,Unknown,1,2,IV,Induction chemotherapy+Radiation alone,39,66,30,2.2,Alive,3253,Yes,3253,Yes,3253,Yes,3253,Yes,106.8,Yes,3205,No
+383,Male,71,Former,20,L,Base of tongue,Unknown,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,39,66,30,2.2,Alive,3222,Yes,3222,Yes,3222,Yes,3222,Yes,105.5,Yes,3165,No
+379,Male,59,Never,0,L,Tonsil,P,1,2,IV,Induction chemotherapy+Radiation alone,38,66,30,2.2,Alive,2973,Yes,2973,Yes,2973,Yes,2973,Yes,97.8,Yes,2934,No
+384,Female,54,Never,0,R,Tonsil,P,1,1,III,Concurrent chemoradiotherapy,37,60,30,2,Alive,3222,Yes,3222,Yes,3222,Yes,3222,Yes,106.2,Yes,3185,No
+377,Male,59,Never,0,R,Base of tongue,P,4,2,IV,Concurrent chemoradiotherapy,41,70,35,2,Alive,3131,Yes,3131,Yes,3131,Yes,3131,Yes,103,Yes,3090,Yes
+385,Male,56,Former,5,L,Base of tongue,P,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,3283,Yes,3283,Yes,3283,Yes,3283,Yes,107.7,No,3230,Yes
+388,Male,63,Former,78,R,Tonsil,P,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,67,33,2.03,Alive,3253,Yes,3253,Yes,3253,Yes,3253,Yes,107.2,Yes,3216,No
+281,Female,55,Never,0,L,Base of tongue,Unknown,2,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,3283,Yes,3283,Yes,3283,Yes,3283,Yes,107.8,Yes,3235,Yes
+386,Male,51,Current,45,L,Tonsil,P,3,2,IV,Concurrent chemoradiotherapy,53,70,33,2.12,Dead,1338,Yes,1338,Yes,1338,Yes,1338,Yes,44,No,1321,Yes
+390,Male,60,Former,0,L,Tonsil,Unknown,3,0,III,Induction chemotherapy+Radiation alone,44,70,33,2.12,Alive,1067,Yes,1067,Yes,1067,Yes,1067,Yes,35.1,Yes,1053,No
+166,Male,67,Former,30,R,Glossopharyngeal sulcus,N,2,2,IV,Induction chemotherapy+Radiation alone,39,66,30,2.2,Alive,2985,Yes,2985,Yes,2985,Yes,2985,Yes,98.2,Yes,2946,Yes
+392,Male,72,Former,30,L,Tonsil,Unknown,3,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,3101,Yes,3101,Yes,3101,Yes,3101,Yes,101.8,Yes,3053,No
+172,Male,46,Current,20,L,Base of tongue,Unknown,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Dead,854,Yes,854,Yes,854,Yes,854,Yes,28.1,Yes,842,Yes
+393,Male,54,Former,1,R,Base of tongue,Unknown,2,2,IV,Concurrent chemoradiotherapy,48,75,35,2.14,Alive,2766,Yes,2766,Yes,2766,Yes,2766,Yes,91,Yes,2730,No
+391,Male,55,Former,15,R,Base of tongue,P,2,2,IV,Concurrent chemoradiotherapy,39,66,30,2.2,Alive,3192,Yes,3192,Yes,3192,Yes,3192,Yes,104.8,Yes,3144,No
+389,Male,63,Former,15,L,Base of tongue,P,1,1,III,Radiation alone,41,66,30,2.2,Alive,2648,Yes,2648,Yes,2648,Yes,2648,Yes,87.1,Yes,2612,No
+395,Male,52,Current,30,L,Tonsil,Unknown,1,2,IV,Induction chemotherapy+Radiation alone,42,66,30,2.2,Alive,3101,Yes,3101,Yes,3101,Yes,3101,Yes,102.5,Yes,3074,No
+397,Female,49,Current,15,R,Base of tongue,N,1,0,I,Radiation alone,39,66,30,2.2,Dead,1818,Yes,1818,Yes,1818,Yes,1818,Yes,59.8,Yes,1793,No
+400,Male,66,Former,105,L,Base of tongue,Unknown,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,45,70,33,2.12,Alive,2888,Yes,2888,Yes,2888,Yes,2888,Yes,95,Yes,2850,Yes
+394,Male,50,Former,10,R,Base of tongue,P,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,3000,Yes,3000,Yes,3000,Yes,3000,Yes,98.7,Yes,2961,No
+170,Male,62,Former,10,L,Soft palate,P,3,2,III,Concurrent chemoradiotherapy,44,70,33,2.12,Dead,395,No,395,No,395,No,395,Yes,13,No,390,No
+406,Male,65,Former,0,R,Base of tongue,Unknown,2,2,IV,Concurrent chemoradiotherapy,46,70,33,2.12,Alive,915,Yes,915,Yes,915,Yes,915,Yes,30.1,Yes,902,No
+401,Male,75,Former,90,R,Base of tongue,Unknown,2,2,IV,Induction chemotherapy+Radiation alone,44,69,33,2.09,Dead,1216,Yes,1216,Yes,1216,Yes,1216,No,39.4,No,1200,No
+405,Male,69,Current,14,R,Base of tongue,P,3,2,IV,Concurrent chemoradiotherapy,49,70,33,2.12,Dead,2551,Yes,2551,Yes,2551,Yes,2551,Yes,83.9,Yes,2516,No
+398,Male,45,Current,15,L,Tonsil,Unknown,2,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,2997,Yes,2997,Yes,2997,Yes,2997,Yes,98.6,Yes,2957,No
+407,Male,58,Never,0,L,Glossopharyngeal sulcus,N,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,2766,Yes,2766,Yes,2766,Yes,2766,Yes,91,Yes,2730,No
+399,Female,59,NA,0,R,Base of tongue,N,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,49,63,35,1.8,Dead,568,Yes,568,Yes,568,Yes,568,No,13.3,No,561,No
+403,Male,55,Former,22,L,Tonsil,P,2,2,IV,Concurrent chemoradiotherapy,39,72,33,2.18,Alive,3101,Yes,3101,Yes,3101,Yes,3101,Yes,101.6,Yes,3048,No
+404,Male,43,Current,0,L,Base of tongue,P,1,2,IV,Radiation alone,41,66,30,2.2,Alive,2690,Yes,2690,Yes,2690,Yes,2690,Yes,88.5,Yes,2656,No
+410,Male,48,Never,0,L,Tonsil,P,2,2,IV,Induction chemotherapy+Radiation alone,41,66,30,2.2,Alive,3070,Yes,3070,Yes,3070,Yes,3070,Yes,101.1,Yes,3033,Yes
+408,Male,54,Former,13,L,Base of tongue,P,1,2,IV,Concurrent chemoradiotherapy,43,66,30,2.2,Alive,2918,Yes,2918,Yes,2918,Yes,2918,Yes,96,Yes,2879,No
+411,Male,69,Never,0,L,Glossopharyngeal sulcus,P,1,1,III,Concurrent chemoradiotherapy,39,66,30,2.2,Alive,3070,Yes,3070,Yes,3070,Yes,3070,Yes,100.8,Yes,3023,No
+414,Male,52,Never,0,R,Base of tongue,Unknown,4,2,IV,Induction chemotherapy+Radiation alone,48,70,33,2.12,Alive,2800,Yes,2800,Yes,2800,Yes,2800,Yes,92.1,Yes,2762,No
+412,Male,59,Former,13,L,Base of tongue,Unknown,2,2,IV,Induction chemotherapy+Radiation alone,44,70,33,2.12,Alive,2946,Yes,2946,Yes,2946,Yes,2946,Yes,96.9,Yes,2908,Yes
+415,Male,60,Never,0,R,Tonsil,Unknown,3,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,2329,Yes,2329,Yes,2329,Yes,2329,Yes,76.6,Yes,2297,No
+419,Male,53,Current,37,L,Base of tongue,P,4,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Dead,1645,Yes,1645,Yes,1645,Yes,1645,Yes,54.1,Yes,1623,No
+413,Male,67,Never,0,R,Base of tongue,P,2,3,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Dead,1210,Yes,1210,Yes,1210,Yes,1210,No,21.3,No,1194,Yes
+457,Female,71,Current,60,L,Base of tongue,Unknown,3,0,III,Concurrent chemoradiotherapy,45,70,33,2.12,Alive,2903,Yes,2903,Yes,2903,Yes,2903,Yes,95.5,Yes,2866,No
+416,Male,61,Current,30,L,Base of tongue,P,2,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,958,Yes,958,Yes,958,Yes,958,Yes,31.5,Yes,946,Yes
+418,Male,42,Current,2,R,Tonsil,P,1,2,IV,Radiation alone,43,66,30,2.2,Alive,2879,Yes,2879,Yes,2879,Yes,2879,Yes,94.7,Yes,2840,Yes
+176,Male,53,Former,1,R,Base of tongue,P,1,3,IV,Induction chemotherapy + concurrent chemoradiotherapy,45,70,33,2.12,Dead,1079,No,1079,No,1079,No,1079,No,31.4,No,1066,Yes
+433,Male,74,Never,0,R,Tonsil,P,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,45,69.96,33,2.12,Dead,1587,Yes,1587,No,1587,No,1587,Yes,52.2,No,1566,No
+422,Male,55,Former,40,L,Tonsil,P,2,0,II,Concurrent chemoradiotherapy,39,66,30,2.2,Alive,2915,Yes,2915,Yes,2915,Yes,2915,Yes,95.9,Yes,2878,No
+222,Female,71,Former,26,L,Base of tongue,P,4,0,IV,Concurrent chemoradiotherapy,47,70,33,2.12,Alive,3162,Yes,3162,Yes,3162,Yes,3162,Yes,103.6,Yes,3107,No
+417,Male,42,Never,0,R,Tonsil,Unknown,2,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,2921,Yes,2921,Yes,2921,Yes,2921,Yes,96.1,Yes,2884,No
+420,Male,58,Former,0,L,Base of tongue,P,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,3040,Yes,3040,Yes,3040,Yes,3040,Yes,100,Yes,3000,Yes
+425,Male,70,Never,0,R,Base of tongue,P,2,2,IV,Concurrent chemoradiotherapy,43,70,35,2,Dead,2329,Yes,2329,Yes,2329,Yes,2329,Yes,76.6,Yes,2297,Yes
+428,Male,63,Former,25,R,Base of tongue,P,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,48,70,33,2.12,Alive,2897,Yes,2897,Yes,2897,Yes,2897,Yes,95.3,Yes,2858,No
+431,Male,61,Former,40,L,Soft palate,P,3,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Dead,386,Yes,386,No,386,No,386,No,10.6,No,380,Yes
+423,Male,45,Never,0,L,Base of tongue,Unknown,4,2,IV,Concurrent chemoradiotherapy,51,70,37,1.89,Alive,2748,Yes,2748,Yes,2748,Yes,2748,Yes,90.4,Yes,2711,No
+180,Male,51,Former,20,R,NOS,P,2,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,3040,Yes,3040,Yes,3040,Yes,3040,Yes,100.2,Yes,3005,Yes
+424,Male,64,Former,2,L,Base of tongue,P,2,2,IV,Concurrent chemoradiotherapy,39,72,40,1.8,Alive,2979,Yes,2979,Yes,2979,Yes,2979,Yes,98,Yes,2939,Yes
+427,Male,54,Never,0,L,Tonsil,P,1,0,I,Radiation alone,39,66,30,2.2,Alive,2411,Yes,2411,Yes,2411,Yes,2411,Yes,79.3,Yes,2380,No
+430,Male,58,Current,15,L,Base of tongue,P,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,3070,Yes,3070,No,3070,No,3070,Yes,101,No,3030,No
+426,Male,73,Never,0,R,Base of tongue,Unknown,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,2991,Yes,2991,Yes,2991,Yes,2991,Yes,98.4,Yes,2951,No
+432,Male,61,Current,0,L,Tonsil,P,3,2,IV,Concurrent chemoradiotherapy,37,70,33,2.12,Alive,1462,Yes,1462,Yes,1462,Yes,1462,Yes,48.1,Yes,1443,No
+219,Female,59,Never,0,L,Tonsil,P,2,2,IV,Concurrent chemoradiotherapy,54,70,33,2.12,Alive,2700,Yes,2700,Yes,2700,Yes,2700,Yes,88.8,Yes,2665,No
+182,Male,53,Never,0,L,Base of tongue,Unknown,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,42,70,33,2.12,Alive,2748,Yes,2748,No,2748,No,2748,Yes,90.4,No,2712,No
+421,Male,57,Former,25,L,Base of tongue,P,1,1,III,Concurrent chemoradiotherapy,42,66,30,2.2,Alive,2207,Yes,2207,Yes,2207,Yes,2207,Yes,72.6,Yes,2178,No
+429,Male,55,Former,0,L,Tonsil,N,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,41,66,30,2.2,Alive,3025,Yes,3025,Yes,3025,Yes,3025,Yes,99.5,Yes,2986,No
+435,Male,54,Never,0,R,Base of tongue,P,1,2,IV,Induction chemotherapy+Radiation alone,38,66,30,2.2,Alive,1338,Yes,1338,Yes,1338,Yes,1338,Yes,44,Yes,1321,No
+436,Male,68,Never,0,L,NOS,P,1,1,III,Radiation alone,38,66,30,2.2,Alive,2994,Yes,2994,Yes,2994,Yes,2994,Yes,98.5,Yes,2954,No
+186,Male,64,Former,8,L,Base of tongue,P,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,38,66,30,2.2,Alive,2964,Yes,2964,Yes,2964,Yes,2964,Yes,97.5,Yes,2926,No
+200,Male,55,Never,0,R,Tonsil,Unknown,2,2,IV,Induction chemotherapy+Radiation alone,44,66,33,2,Alive,2353,Yes,2353,Yes,2353,Yes,2353,Yes,77.4,Yes,2321,No
+437,Male,53,Current,61,L,Glossopharyngeal sulcus,P,1,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,43,70,33,2.12,Alive,2703,Yes,2703,Yes,2703,Yes,2703,Yes,88.9,Yes,2667,Yes
+440,Male,72,Former,20,L,Base of tongue,P,2,1,III,Radiation alone,38,66,30,2.2,Dead,2943,Yes,2943,Yes,2943,Yes,2943,Yes,96.8,Yes,2904,No
+191,Male,54,Never,0,L,Tonsil,P,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Dead,1657,Yes,1657,Yes,1657,Yes,1657,No,51.5,No,1635,No
+438,Male,60,Never,0,R,Tonsil,Unknown,1,2,IV,Concurrent chemoradiotherapy,41,66,30,2.2,Alive,1240,Yes,1240,Yes,1240,Yes,1240,Yes,40.8,Yes,1223,Yes
+193,Male,52,Never,0,R,Tonsil,Unknown,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,38,66,30,2.2,Alive,2335,Yes,2335,Yes,2335,Yes,2335,Yes,76.8,Yes,2303,No
+196,Male,50,Never,0,R,Base of tongue,P,2,2,IV,Concurrent chemoradiotherapy,38,72,34,2.12,Alive,2645,Yes,2645,Yes,2645,Yes,2645,Yes,87,Yes,2610,No
+441,Male,65,Former,0,L,Tonsil,P,2,1,III,Radiation alone,38,66,30,2.2,Dead,328,Yes,328,Yes,328,Yes,328,No,10.3,No,325,No
+442,Female,59,Former,30,R,Tonsil,P,2,2,IV,Concurrent chemoradiotherapy,38,66,30,2.2,Alive,2554,Yes,2554,Yes,2554,Yes,2554,Yes,84,Yes,2519,No
+189,Female,71,Current,15,R,Base of tongue,P,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,45,70,33,2.12,Alive,2675,Yes,2675,Yes,2675,Yes,2675,Yes,88,Yes,2639,No
+439,Male,42,Former,30,L,Tonsil,P,1,2,IV,Concurrent chemoradiotherapy,41,66,30,2.2,Alive,2973,Yes,2973,Yes,2973,Yes,2973,Yes,97.8,Yes,2934,No
+447,Male,54,Never,0,R,Base of tongue,P,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,45,70,33,2.12,Dead,882,Yes,882,Yes,882,Yes,882,Yes,29,Yes,869,No
+446,Male,69,Current,69,L,Tonsil,P,2,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,2852,Yes,2852,Yes,2852,Yes,2852,Yes,93.8,Yes,2814,No
+444,Male,53,Never,0,L,Tonsil,P,2,1,III,Concurrent chemoradiotherapy,41,66,30,2.2,Dead,1414,Yes,1414,Yes,1414,Yes,1414,Yes,46.5,Yes,1396,No
+445,Male,59,Current,58,L,Tonsil,P,1,2,IV,Radiation alone,38,66,30,2.2,Dead,2253,Yes,2253,Yes,2253,Yes,2253,Yes,74.1,Yes,2223,No
+451,Male,69,Former,8,L,Tonsil,N,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,39,66,30,2.2,Alive,2462,Yes,2462,No,2462,No,2462,Yes,81,No,2429,Yes
+454,Male,65,Current,30,L,Base of tongue,P,2,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,2873,Yes,2873,Yes,2873,Yes,2873,Yes,94.5,Yes,2836,Yes
+453,Female,62,Never,0,R,Tonsil,P,3,1,III,Concurrent chemoradiotherapy,39,70,35,2,Alive,2852,Yes,2852,Yes,2852,Yes,2852,Yes,93.8,Yes,2815,No
+452,Male,60,Never,0,R,Tonsil,Unknown,2,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,2809,Yes,2809,Yes,2809,Yes,2809,Yes,92.4,Yes,2772,Yes
+448,Male,60,Current,40,L,Base of tongue,P,2,2,IV,Induction chemotherapy+Radiation alone,47,66,30,2.2,Alive,2785,Yes,2785,Yes,2785,Yes,2785,Yes,91.6,Yes,2748,No
+458,Female,46,Never,0,L,Base of tongue,P,1,2,IV,Radiation alone,41,66,30,2.2,Alive,2937,Yes,2937,Yes,2937,Yes,2937,Yes,96.6,Yes,2898,No
+449,Male,64,Former,40,L,NOS,P,2,2,IV,Induction chemotherapy+Radiation alone,45,70,33,2.12,Alive,1651,No,1651,Yes,1651,No,1651,Yes,54.3,No,1629,No
+450,Male,52,Former,30,R,Glossopharyngeal sulcus,P,1,1,III,Radiation alone,38,66,30,2.2,Alive,2611,Yes,2611,Yes,2611,Yes,2611,Yes,85.9,Yes,2576,No
+202,Male,57,Former,19,R,Glossopharyngeal sulcus,P,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,66,33,2,Alive,2721,Yes,2721,No,2721,No,2721,Yes,89.5,No,2684,Yes
+462,Male,59,Former,1,L,Tonsil,P,3,0,III,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,2660,Yes,2660,Yes,2660,Yes,2660,Yes,87.5,Yes,2624,No
+470,Male,51,Never,0,L,Base of tongue,P,2,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Dead,471,Yes,471,Yes,471,Yes,471,Yes,15.5,Yes,465,No
+469,Male,76,Current,100,R,Tonsil,Unknown,3,0,III,Concurrent chemoradiotherapy,44,70,33,2.12,Dead,502,Yes,502,No,502,No,502,No,10.8,No,496,No
+467,Male,46,Never,0,R,Base of tongue,Unknown,2,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Dead,1502,No,1502,Yes,1502,No,1502,No,1.2,No,1482,No
+461,Male,53,NA,11,R,Base of tongue,N,4,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Dead,319,Yes,319,Yes,319,Yes,319,No,6.3,No,316,Yes
+455,Male,47,Current,70,L,Tonsil,P,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,45,70,33,2.12,Alive,2909,Yes,2909,Yes,2909,Yes,2909,Yes,95.7,Yes,2872,No
+456,Male,46,Never,0,R,Tonsil,P,2,2,IV,Radiation alone,44,70,33,2.12,Alive,2554,Yes,2554,Yes,2554,Yes,2554,Yes,84,Yes,2519,No
+468,Male,63,Never,0,R,Base of tongue,Unknown,2,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,2900,Yes,2900,Yes,2900,Yes,2900,Yes,95.4,Yes,2863,No
+465,Male,42,Former,1,R,Base of tongue,Unknown,2,2,IV,Concurrent chemoradiotherapy,44,70,32,2.19,Alive,2274,Yes,2274,Yes,2274,Yes,2274,Yes,74.8,Yes,2244,Yes
+460,Female,62,Former,2.5,L,Base of tongue,N,2,2,IV,Concurrent chemoradiotherapy,39,66,30,2.2,Alive,2833,Yes,2833,Yes,2833,Yes,2833,Yes,93.2,Yes,2795,No
+459,Male,68,Former,3,R,Base of tongue,N,2,2,IV,Concurrent chemoradiotherapy,39,66,30,2.2,Alive,2724,Yes,2724,Yes,2724,Yes,2724,Yes,89.6,Yes,2689,No
+471,Male,56,Former,0,L,Base of tongue,P,2,0,II,Radiation alone,39,66,30,2.2,Alive,2912,No,2912,Yes,2912,No,2912,Yes,95.8,No,2874,No
+472,Female,67,Former,40,R,NOS,P,3,2,IV,Concurrent chemoradiotherapy,43,70,33,2.12,Alive,2776,Yes,2776,Yes,2776,Yes,2776,Yes,91.3,Yes,2740,No
+463,Female,47,Current,40,R,Base of tongue,P,4,3,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,2724,Yes,2724,No,2724,No,2724,Yes,89.6,No,2688,Yes
+466,Male,60,Current,30,L,Base of tongue,P,2,2,IV,Induction chemotherapy+Radiation alone,38,66,33,2,Alive,2541,Yes,2541,Yes,2541,Yes,2541,No,17.4,No,2509,No
+464,Male,68,Former,40,R,Base of tongue,N,1,2,IV,Concurrent chemoradiotherapy,39,66,30,2.2,Alive,2779,Yes,2779,Yes,2779,Yes,2779,Yes,91.4,Yes,2742,No
+218,Female,55,Never,0,R,Base of tongue,P,2,2,IV,Concurrent chemoradiotherapy,45,66,30,2.2,Alive,1833,Yes,1833,Yes,1833,Yes,1833,Yes,60.3,Yes,1808,No
+473,Male,80,Never,0,L,Base of tongue,P,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,50,70,33,2.12,Alive,2788,Yes,2788,Yes,2788,Yes,2788,Yes,91.7,Yes,2751,No
+474,Male,51,Current,0,R,Glossopharyngeal sulcus,P,1,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,39,66,30,2.2,Alive,2666,Yes,2666,Yes,2666,Yes,2666,Yes,87.7,Yes,2631,Yes
+475,Male,38,Current,0,L,Tonsil,P,1,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,2794,Yes,2794,Yes,2794,Yes,2794,Yes,91.9,Yes,2757,No
+207,Male,73,Current,84,R,Tonsil,P,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Dead,803,Yes,803,No,803,No,803,No,17.6,No,793,No
+477,Male,63,Former,0,R,Base of tongue,P,3,2,IV,Induction chemotherapy+Radiation alone,44,70,33,2.12,Alive,2809,No,2809,Yes,2809,No,2809,Yes,92.4,No,2771,No
+478,Female,64,Former,19,L,Tonsil,Unknown,3,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,2493,No,2493,Yes,2493,No,2493,Yes,82,No,2459,No
+476,Male,66,Former,50,R,Base of tongue,P,3,1,III,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,2514,Yes,2514,Yes,2514,Yes,2514,Yes,82.7,Yes,2480,No
+484,Male,59,Former,0,L,Tonsil,P,2,2,IV,Concurrent chemoradiotherapy,38,66,30,2.2,Alive,2630,Yes,2630,Yes,2630,Yes,2630,Yes,86.5,Yes,2595,No
+479,Male,57,Former,30,R,Base of tongue,P,1,2,IV,Radiation alone,39,66,30,2.2,Alive,2240,Yes,2240,Yes,2240,Yes,2240,Yes,73.7,Yes,2212,No
+480,Male,54,Former,0,L,Tonsil,P,2,2,IV,Concurrent chemoradiotherapy,39,66,30,2.2,Alive,2347,Yes,2347,Yes,2347,Yes,2347,Yes,77.2,Yes,2317,Yes
+481,Male,69,Former,0,L,NOS,P,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,30,2.33,Dead,851,Yes,851,Yes,851,Yes,851,No,12.8,No,841,No
+483,Male,45,Never,0,L,Base of tongue,P,2,2,IV,Concurrent chemoradiotherapy,39,66,30,2.2,Alive,2414,Yes,2414,Yes,2414,Yes,2414,Yes,79.4,Yes,2382,No
+487,Female,65,Never,0,L,Base of tongue,Unknown,4,2,IV,Concurrent chemoradiotherapy,34,70,33,2.12,Alive,2608,Yes,2608,Yes,2608,Yes,2608,Yes,85.8,Yes,2573,No
+485,Male,46,Never,0,L,Tonsil,P,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,37,70,33,2.12,Alive,1155,Yes,1155,Yes,1155,Yes,1155,Yes,38,Yes,1139,No
+209,Male,45,Current,20,R,Tonsil,Unknown,1,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,46,70,35,2,Dead,432,No,432,No,432,No,432,Yes,14.2,No,427,No
+486,Male,43,Never,0,R,Base of tongue,P,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,45,70,33,2.12,Alive,2472,Yes,2472,Yes,2472,Yes,2472,Yes,81.3,Yes,2438,No
+488,Female,57,Never,0,R,Base of tongue,P,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,11,70,33,2.12,Alive,2298,Yes,2298,Yes,2298,Yes,2298,Yes,75.6,Yes,2268,Yes
+490,Male,56,Never,0,L,Tonsil,P,1,2,IV,Radiation alone,42,66,30,2.2,Alive,2301,Yes,2301,Yes,2301,Yes,2301,Yes,75.7,Yes,2272,No
+489,Male,70,Former,3,L,Tonsil,P,3,1,III,Concurrent chemoradiotherapy,45,70,33,2.12,Alive,2763,Yes,2763,Yes,2763,Yes,2763,Yes,90.9,Yes,2727,Yes
+493,Male,58,Never,0,R,Base of tongue,Unknown,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,45,70,33,2.12,Alive,2505,Yes,2505,Yes,2505,Yes,2505,Yes,82.4,Yes,2473,No
+491,Male,65,Current,20,L,Tonsil,Unknown,4,1,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,1593,Yes,1593,Yes,1593,Yes,1593,Yes,52.4,Yes,1573,No
+492,Male,65,Current,0,L,Base of tongue,P,2,2,IV,Concurrent chemoradiotherapy,38,70,35,2,Alive,2687,Yes,2687,Yes,2687,Yes,2687,No,15.1,No,2651,No
+500,Male,63,Former,20,L,Base of tongue,P,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,45,66,30,2.2,Dead,1368,No,1368,No,1368,No,1368,No,23.7,No,1349,No
+494,Male,52,Never,0,L,Base of tongue,P,1,2,IV,Concurrent chemoradiotherapy,38,66,30,2.2,Alive,2672,Yes,2672,Yes,2672,Yes,2672,Yes,87.9,Yes,2637,No
+497,Male,52,Current,0,L,Tonsil,P,3,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,2247,Yes,2247,Yes,2247,Yes,2247,Yes,73.9,Yes,2218,Yes
+495,Male,64,Former,26,L,Base of tongue,P,2,1,III,Radiation alone,42,66,30,2.2,Alive,1028,Yes,1028,Yes,1028,Yes,1028,Yes,33.8,Yes,1014,No
+496,Female,59,Current,43,R,Soft palate,N,3,1,III,Concurrent chemoradiotherapy,53,70,33,2.12,Alive,1933,No,1933,Yes,1933,No,1933,Yes,63.6,No,1907,Yes
+498,Male,75,Former,69,L,Base of tongue,N,1,3,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,2578,Yes,2578,Yes,2578,Yes,2578,Yes,84.8,Yes,2544,No
+526,Male,55,Current,60,R,Tonsil,Unknown,4,2,IV,Concurrent chemoradiotherapy,47,70,33,2.12,Dead,2052,Yes,2052,Yes,2052,Yes,2052,Yes,67.5,Yes,2024,No
+499,Male,50,Former,31,L,Tonsil,P,2,2,IV,Radiation alone,39,70,35,2,Dead,2192,No,2192,No,2192,No,2192,No,63,No,2162,Yes
+502,Male,57,Current,0,R,Base of tongue,P,2,2,IV,Concurrent chemoradiotherapy,39,70,33,2.12,Alive,2648,Yes,2648,Yes,2648,Yes,2648,Yes,87.1,Yes,2612,No
+509,Male,55,Never,0,R,Tonsil,P,1,2,IV,Concurrent chemoradiotherapy,39,66,30,2.2,Alive,2298,Yes,2298,Yes,2298,Yes,2298,Yes,75.6,Yes,2267,Yes
+501,Male,51,Former,10,R,Base of tongue,P,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,35,2,Dead,502,Yes,502,Yes,502,Yes,502,No,8.9,No,495,No
+503,Male,54,Current,15,R,Tonsil,P,3,2,IV,Induction chemotherapy+Radiation alone,44,66,30,2.2,Alive,2438,Yes,2438,Yes,2438,Yes,2438,Yes,80.2,Yes,2405,No
+504,Male,54,Former,6,L,Tonsil,P,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,39,66,30,2.2,Alive,2584,Yes,2584,Yes,2584,Yes,2584,Yes,85,Yes,2550,No
+510,Male,64,Former,3,R,Base of tongue,P,1,2,IV,Concurrent chemoradiotherapy,39,66,30,2.2,Alive,2572,Yes,2572,Yes,2572,Yes,2572,Yes,84.6,Yes,2538,No
+505,Male,56,Former,10,L,Tonsil,P,3,0,III,Concurrent chemoradiotherapy,46,70,33,2.12,Alive,1970,No,1970,Yes,1970,No,1970,Yes,64.8,No,1943,No
+506,Male,64,Former,25,L,Base of tongue,P,4,0,IV,Concurrent chemoradiotherapy,39,70,35,2,Alive,2572,Yes,2572,Yes,2572,Yes,2572,Yes,84.6,Yes,2538,No
+512,Male,59,Former,40,R,Tonsil,Unknown,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,2441,Yes,2441,Yes,2441,Yes,2441,Yes,80.3,Yes,2408,No
+511,Male,73,Former,40,L,Tonsil,Unknown,2,2,IV,Concurrent chemoradiotherapy,38,66,30,2.2,Alive,2584,Yes,2584,Yes,2584,Yes,2584,Yes,85,Yes,2550,No
+516,Male,55,Never,0,R,Tonsil,P,1,2,IV,Concurrent chemoradiotherapy,38,66,30,2.2,Alive,2429,Yes,2429,Yes,2429,Yes,2429,Yes,79.9,Yes,2396,No
+507,Male,44,Former,7,R,Base of tongue,P,3,3,IV,Induction chemotherapy + concurrent chemoradiotherapy,46,70,33,2.12,Alive,1857,Yes,1857,Yes,1857,Yes,1857,Yes,61.1,Yes,1833,No
+508,Female,41,Never,0,R,Tonsil,P,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,38,66,30,2.2,Alive,2450,Yes,2450,Yes,2450,Yes,2450,Yes,80.6,Yes,2417,Yes
+519,Male,46,Never,0,L,Base of tongue,Unknown,1,2,IV,Induction chemotherapy+Radiation alone,40,66,30,2.2,Alive,2560,Yes,2560,Yes,2560,Yes,2560,Yes,84.2,Yes,2527,No
+518,Female,49,Current,30,R,NOS,N,3,2,III,Induction chemotherapy + concurrent chemoradiotherapy,47,70,30,2.33,Alive,2377,Yes,2377,Yes,2377,Yes,2377,Yes,78.2,Yes,2345,No
+528,Female,29,Never,0,R,Tonsil,N,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,1043,Yes,1043,Yes,1043,Yes,1043,Yes,34.3,Yes,1028,No
+524,Male,62,Former,20,R,Base of tongue,P,2,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,2371,Yes,2371,Yes,2371,Yes,2371,Yes,78,Yes,2339,No
+513,Male,74,Never,0,NOS,Base of tongue,P,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,42,70,35,2,Alive,2538,Yes,2538,Yes,2538,Yes,2538,Yes,83.5,Yes,2505,Yes
+517,Male,59,Former,16,L,Tonsil,P,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,2560,Yes,2560,Yes,2560,Yes,2560,Yes,84.2,Yes,2526,No
+523,Male,73,Never,0,R,Base of tongue,P,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,41,70,35,2,Alive,2438,Yes,2438,Yes,2438,Yes,2438,Yes,80.2,Yes,2405,Yes
+522,Male,68,Former,75,R,Base of tongue,P,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,43,70,33,2.12,Dead,2481,Yes,2481,Yes,2481,Yes,2481,Yes,81.6,Yes,2448,No
+525,Female,53,Never,0,R,Base of tongue,P,2,0,II,Radiation alone,39,70,35,2,Alive,2678,Yes,2678,Yes,2678,Yes,2678,Yes,88.1,Yes,2644,No
+520,Male,62,Never,0,R,Base of tongue,P,1,2,IV,Induction chemotherapy+Radiation alone,39,66,30,2.2,Alive,2554,Yes,2554,Yes,2554,Yes,2554,Yes,84,Yes,2519,No
+515,Female,52,Never,0,R,NOS,P,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,2265,Yes,2265,Yes,2265,Yes,2265,Yes,74.5,Yes,2236,No
+521,Male,78,Former,0,R,Tonsil,N,3,2,IV,Concurrent chemoradiotherapy,45,70,33,2.12,Dead,605,No,605,No,605,No,605,Yes,19.9,No,596,No
+514,Male,54,Current,41,R,Tonsil,P,2,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,1815,Yes,1815,Yes,1815,Yes,1815,Yes,59.7,Yes,1791,No
+527,Male,58,Former,11,L,Tonsil,P,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,2377,Yes,2377,Yes,2377,Yes,2377,Yes,78.2,Yes,2346,No
+531,Male,62,Former,43,R,Tonsil,P,2,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,1897,Yes,1897,Yes,1897,Yes,1897,Yes,62.4,Yes,1872,No
+529,Male,63,Former,3,R,Base of tongue,P,3,0,III,Concurrent chemoradiotherapy,41,70,35,2,Alive,2645,Yes,2645,Yes,2645,Yes,2645,Yes,87,Yes,2609,No
+530,Male,50,Former,120,L,Tonsil,P,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,41,66,30,2.2,Alive,784,Yes,784,Yes,784,Yes,784,Yes,25.8,Yes,775,No
+539,Male,59,Never,0,L,NOS,P,1,2,IV,Concurrent chemoradiotherapy,37,66,30,2.2,Alive,1985,Yes,1985,Yes,1985,Yes,1985,Yes,65.3,Yes,1960,No
+223,Female,52,Never,0,R,Tonsil,Unknown,3,1,III,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,2544,Yes,2544,Yes,2544,Yes,2544,Yes,83.7,Yes,2511,No
+532,Male,50,Current,0,L,Tonsil,P,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,43,70,32,2.19,Alive,2335,Yes,2335,Yes,2335,Yes,2335,Yes,76.8,Yes,2305,No
+533,Female,47,Never,0,L,Base of tongue,P,2,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,2304,Yes,2304,Yes,2304,Yes,2304,Yes,75.8,Yes,2273,No
+535,Female,73,Current,51,R,Tonsil,N,2,1,III,Radiation alone,38,66,30,2.2,Dead,669,Yes,669,No,669,No,669,Yes,22,No,660,No
+545,Female,55,Never,0,R,Tonsil,P,1,2,IV,Radiation alone,39,66,30,2.2,Alive,2450,Yes,2450,Yes,2450,Yes,2450,Yes,80.6,Yes,2419,No
+541,Male,52,Never,0,L,Base of tongue,P,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,2289,Yes,2289,Yes,2289,Yes,2289,Yes,75.3,Yes,2259,No
+549,Male,52,Former,0,R,Tonsil,P,2,2,IV,Concurrent chemoradiotherapy,39,66,30,2.2,Alive,2399,No,2399,Yes,2399,No,2399,Yes,78.9,No,2368,No
+540,Female,56,Never,0,R,Tonsil,P,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,2092,Yes,2092,Yes,2092,Yes,2092,No,63.3,No,2065,No
+542,Male,54,Never,0,R,Base of tongue,P,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,43,66,30,2.2,Alive,1277,Yes,1277,Yes,1277,Yes,1277,Yes,42,Yes,1259,No
+534,Male,39,Never,0,L,Tonsil,P,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,66,33,2,Alive,2529,Yes,2529,Yes,2529,Yes,2529,Yes,83.2,Yes,2496,No
+538,Male,58,Never,0,R,Base of tongue,P,1,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,38,66,30,2.2,Alive,2207,Yes,2207,Yes,2207,Yes,2207,Yes,72.6,Yes,2179,No
+546,Female,48,Current,37.5,L,Tonsil,N,3,0,III,Concurrent chemoradiotherapy,45,70,33,2.12,Dead,1991,Yes,1991,Yes,1991,Yes,1991,Yes,65.5,Yes,1966,No
+544,Male,52,Former,10,R,Tonsil,P,3,1,III,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,784,Yes,784,Yes,784,Yes,784,Yes,25.8,Yes,774,No
+536,Female,57,Current,37,R,Base of tongue,P,3,2,IV,Induction chemotherapy+Radiation alone,45,70,33,2.12,Alive,1745,Yes,1745,Yes,1745,Yes,1745,Yes,57.4,Yes,1722,No
+550,Male,62,Never,0,R,Tonsil,P,2,0,II,Concurrent chemoradiotherapy,38,70,35,2,Alive,109,Yes,109,Yes,109,Yes,109,Yes,3.6,Yes,107,No
+547,Male,48,Current,30,R,Tonsil,P,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,2338,Yes,2338,Yes,2338,Yes,2338,Yes,76.9,Yes,2308,No
+548,Male,64,Former,44,R,Base of tongue,P,1,2,IV,Induction chemotherapy+Radiation alone,39,66,30,2.2,Alive,2289,Yes,2289,Yes,2289,Yes,2289,Yes,75.3,Yes,2260,No
+551,Male,58,Former,18,L,Base of tongue,P,1,2,IV,Concurrent chemoradiotherapy,39,66,30,2.2,Alive,2271,Yes,2271,Yes,2271,Yes,2271,Yes,74.7,Yes,2241,No
+537,Male,61,Never,0,L,Base of tongue,P,2,2,IV,Induction chemotherapy+Radiation alone,38,66,30,2.2,Alive,2417,Yes,2417,Yes,2417,Yes,2417,Yes,79.5,Yes,2384,Yes
+552,Male,78,Former,8,R,Tonsil,P,2,2,IV,Concurrent chemoradiotherapy,38,70,33,2.12,Alive,2441,Yes,2441,Yes,2441,Yes,2441,Yes,80.3,Yes,2408,Yes
+553,Female,59,Never,0,L,NOS,P,1,2,IV,Radiation alone,39,66,30,2.2,Alive,2244,Yes,2244,Yes,2244,Yes,2244,Yes,73.8,Yes,2215,No
+555,Male,48,Current,30,R,Tonsil,P,1,2,IV,Concurrent chemoradiotherapy,39,66,30,2.2,Alive,2301,Yes,2301,Yes,2301,Yes,2301,Yes,75.7,Yes,2270,No
+557,Male,79,Never,0,R,Base of tongue,P,4,0,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,2079,Yes,2079,Yes,2079,Yes,2079,Yes,68.4,Yes,2052,No
+556,Male,50,Never,0,R,Tonsil,P,2,2,IV,Concurrent chemoradiotherapy,39,66,30,2.2,Alive,2052,Yes,2052,Yes,2052,Yes,2052,Yes,67.5,Yes,2024,No
+554,Female,62,Former,22,L,Base of tongue,P,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,45,70,33,2.12,Dead,2031,No,2031,Yes,2031,No,2031,No,24,No,2004,No
+558,Male,81,Never,0,R,Base of tongue,P,3,2,IV,Concurrent chemoradiotherapy,49,70,33,2.12,Alive,1818,Yes,1818,Yes,1818,Yes,1818,Yes,59.8,Yes,1793,No
+559,Male,56,Former,15,L,Tonsil,P,3,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,2280,Yes,2280,Yes,2280,Yes,2280,Yes,75,Yes,2251,No
+563,Female,53,Former,1,R,Tonsil,P,1,0,I,Radiation alone,43,66,30,2.2,Alive,2174,Yes,2174,Yes,2174,Yes,2174,Yes,71.5,Yes,2144,No
+560,Male,71,Former,0,R,Base of tongue,P,2,1,III,Concurrent chemoradiotherapy,45,70,33,2.12,Alive,1763,Yes,1763,Yes,1763,Yes,1763,Yes,58,Yes,1740,No
+561,Male,58,Former,0,R,Tonsil,N,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,45,70,33,2.12,Alive,2289,Yes,2289,Yes,2289,Yes,2289,Yes,75.3,Yes,2258,No
+562,Male,47,Never,0,R,Base of tongue,P,2,1,III,Concurrent chemoradiotherapy,39,70,35,2,Alive,2304,Yes,2304,Yes,2304,Yes,2304,Yes,75.8,Yes,2274,No
+566,Male,49,Current,32,L,Tonsil,P,2,0,II,Concurrent chemoradiotherapy,45,70,33,2.12,Alive,2204,Yes,2204,Yes,2204,Yes,2204,Yes,72.5,Yes,2174,No
+564,Male,60,Never,0,L,Base of tongue,P,2,2,IV,Concurrent chemoradiotherapy,34,70,33,2.12,Alive,1377,Yes,1377,Yes,1377,Yes,1377,Yes,45.3,Yes,1358,No
+565,Male,52,Current,1,L,Base of tongue,P,1,2,IV,Concurrent chemoradiotherapy,38,66,30,2.2,Alive,1088,Yes,1088,Yes,1088,Yes,1088,Yes,35.8,Yes,1074,No
+568,Male,65,Never,0,L,Base of tongue,N,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Alive,1936,Yes,1936,Yes,1936,Yes,1936,Yes,63.7,Yes,1912,No
+570,Male,56,Former,30,R,Tonsil,N,3,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,48,70,33,2.12,Alive,2216,Yes,2216,Yes,2216,Yes,2216,Yes,72.9,Yes,2188,No
+567,Male,58,Never,0,L,Base of tongue,P,1,2,IV,Concurrent chemoradiotherapy,39,66,30,2.2,Alive,2107,Yes,2107,Yes,2107,Yes,2107,Yes,69.3,Yes,2079,No
+571,Male,68,Former,10,R,Tonsil,P,2,1,III,Concurrent chemoradiotherapy,38,60,30,2,Alive,2201,Yes,2201,Yes,2201,Yes,2201,Yes,72.4,Yes,2173,No
+569,Male,52,Former,0,L,Tonsil,N,1,2,IV,Concurrent chemoradiotherapy,43,70,33,2.12,Alive,1900,Yes,1900,Yes,1900,Yes,1900,Yes,62.5,Yes,1876,No
+572,Male,68,Former,25,L,Tonsil,P,3,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,2043,Yes,2043,Yes,2043,Yes,2043,Yes,67.2,Yes,2016,No
+573,Male,68,Former,2,L,Tonsil,P,1,2,IV,Radiation alone,43,66,30,2.2,Alive,2064,Yes,2064,Yes,2064,Yes,2064,Yes,67.9,Yes,2036,No
+574,Male,80,Former,18,R,Base of tongue,P,2,1,III,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,1538,Yes,1538,Yes,1538,Yes,1538,Yes,50.6,Yes,1517,No
+575,Male,52,Current,50,L,Base of tongue,N,4,3,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Dead,322,No,322,Yes,322,No,322,Yes,10.6,No,317,No
+577,Male,59,Never,0,R,Base of tongue,P,1,2,IV,Concurrent chemoradiotherapy,39,66,30,2.2,Dead,265,Yes,265,Yes,265,Yes,265,No,6.6,No,262,No
+581,Male,68,Never,0,R,Base of tongue,P,1,1,III,Radiation alone,39,66,30,2.2,Alive,1943,Yes,1943,Yes,1943,Yes,1943,Yes,63.9,Yes,1917,No
+580,Male,57,Current,1,R,Tonsil,P,3,0,III,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,2204,Yes,2204,Yes,2204,Yes,2204,Yes,72.5,Yes,2174,No
+220,Male,65,Never,0,R,Base of tongue,P,1,1,III,Concurrent chemoradiotherapy,39,66,30,2.2,Alive,2213,Yes,2213,Yes,2213,Yes,2213,Yes,72.8,Yes,2183,No
+578,Male,44,Never,0,L,Base of tongue,P,1,1,III,Concurrent chemoradiotherapy,37,66,30,2.2,Alive,1006,Yes,1006,Yes,1006,Yes,1006,Yes,33.1,Yes,992,No
+579,Male,54,Current,0,L,Tonsil,P,1,1,III,Radiation alone,44,70,33,2.12,Alive,1888,Yes,1888,Yes,1888,Yes,1888,Yes,62.1,Yes,1862,No
+583,Male,51,Current,15,L,Base of tongue,P,1,1,III,Concurrent chemoradiotherapy,42,66,30,2.2,Alive,1827,Yes,1827,Yes,1827,Yes,1827,Yes,60.1,Yes,1803,No
+576,Male,56,Current,0,L,Tonsil,P,1,2,IV,Concurrent chemoradiotherapy,39,66,30,2.2,Alive,1857,Yes,1857,Yes,1857,Yes,1857,Yes,61.1,Yes,1833,No
+584,Male,55,Never,0,R,Base of tongue,P,2,1,III,Concurrent chemoradiotherapy,45,66,30,2.2,Dead,183,No,183,Yes,183,No,183,Yes,6,No,181,No
+585,Male,77,Former,53,L,Base of tongue,P,3,1,III,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,2113,Yes,2113,Yes,2113,Yes,2113,Yes,69.5,Yes,2084,No
+582,Male,60,Current,0,R,Base of tongue,P,1,2,IV,Concurrent chemoradiotherapy,39,66,30,2.2,Alive,2110,Yes,2110,Yes,2110,Yes,2110,Yes,69.4,Yes,2083,No
+586,Female,68,Current,40,NOS,NOS,N,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,45,66,33,2,Alive,2143,Yes,2143,Yes,2143,Yes,2143,Yes,70.5,Yes,2115,No
+588,Female,67,Former,15,L,Tonsil,N,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,15,70,30,2.33,Alive,1958,Yes,1958,Yes,1958,Yes,1958,Yes,64.4,Yes,1932,No
+402,Female,74,Former,6,L,Base of tongue,P,3,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,2079,Yes,2079,Yes,2079,Yes,2079,Yes,68.4,Yes,2053,No
+543,Male,71,Former,6,R,Base of tongue,P,2,2,IV,Concurrent chemoradiotherapy,39,66,30,2.2,Alive,2098,Yes,2098,Yes,2098,Yes,2098,Yes,69,Yes,2069,No
+589,Male,56,Never,0,R,Tonsil,P,2,2,IV,Concurrent chemoradiotherapy,45,70,33,2.12,Alive,1973,Yes,1973,Yes,1973,Yes,1973,Yes,64.9,Yes,1947,No
+595,Male,63,Former,74,L,Soft palate,P,2,0,II,Concurrent chemoradiotherapy,39,70,35,2,Alive,1958,Yes,1958,Yes,1958,Yes,1958,Yes,64.4,Yes,1932,No
+587,Male,62,Former,17,R,Base of tongue,P,3,0,III,Concurrent chemoradiotherapy,42,70,33,2.12,Dead,2000,Yes,2000,Yes,2000,Yes,2000,Yes,65.8,Yes,1974,No
+590,Male,87,Former,52,R,Tonsil,N,4,2,IV,Concurrent chemoradiotherapy,34,66,33,2,Dead,73,Yes,73,Yes,73,Yes,73,Yes,2.4,Yes,72,No
+591,Male,51,Never,0,L,Tonsil,P,1,1,III,Concurrent chemoradiotherapy,39,66,30,2.2,Alive,1924,Yes,1924,Yes,1924,Yes,1924,Yes,63.3,Yes,1898,No
+592,Male,71,Never,0,L,Glossopharyngeal sulcus,P,2,1,III,Concurrent chemoradiotherapy,43,70,33,2.12,Alive,1909,Yes,1909,Yes,1909,Yes,1909,Yes,62.8,Yes,1885,Yes
+594,Male,43,Current,0,L,Tonsil,P,2,2,IV,Concurrent chemoradiotherapy,39,66,30,2.2,Alive,1599,Yes,1599,Yes,1599,Yes,1599,Yes,52.6,Yes,1579,No
+596,Male,54,Never,0,L,Tonsil,P,3,2,IV,Radiation alone,44,70,33,2.12,Alive,444,Yes,444,Yes,444,Yes,444,Yes,14.6,Yes,439,No
+593,Male,64,Current,95,R,Tonsil,P,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Dead,1067,No,1067,Yes,1067,No,1067,Yes,35.1,No,1052,Yes
+598,Male,70,Never,0,L,Base of tongue,P,2,2,IV,Concurrent chemoradiotherapy,43,70,33,2.12,Alive,1848,Yes,1848,Yes,1848,Yes,1848,Yes,60.8,Yes,1824,No
+597,Male,64,Never,0,R,Tonsil,P,2,1,III,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,1702,Yes,1702,Yes,1702,Yes,1702,Yes,56,Yes,1680,No
+601,Male,45,Current,19,L,Tonsil,N,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,42,70,33,2.12,Alive,1943,Yes,1943,Yes,1943,Yes,1943,Yes,63.9,Yes,1918,No
+600,Male,56,Former,0,L,Tonsil,P,2,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,1879,Yes,1879,Yes,1879,Yes,1879,Yes,61.8,Yes,1853,No
+602,Male,48,Former,6,R,Glossopharyngeal sulcus,P,1,2,IV,Radiation alone,38,66,30,2.2,Alive,1480,Yes,1480,Yes,1480,Yes,1480,Yes,48.7,Yes,1462,No
+603,Female,59,Former,35,R,Tonsil,N,3,2,IV,Concurrent chemoradiotherapy,43,70,33,2.12,Alive,1857,Yes,1857,Yes,1857,Yes,1857,Yes,61.1,Yes,1833,No
+604,Male,65,Never,0,L,Base of tongue,P,1,2,IV,Concurrent chemoradiotherapy,38,66,30,2.2,Alive,1809,Yes,1809,Yes,1809,Yes,1809,Yes,59.5,Yes,1786,No
+605,Male,42,Never,0,L,Tonsil,P,2,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,1988,Yes,1988,No,1988,No,1988,Yes,65.4,No,1963,No
+606,Female,46,Never,0,R,Tonsil,P,3,1,III,Concurrent chemoradiotherapy,44,70,33,2.12,Dead,538,Yes,538,No,538,No,538,Yes,17.7,No,531,No
+608,Male,52,Former,12,R,Base of tongue,P,2,1,III,Concurrent chemoradiotherapy,39,66,30,2.2,Alive,1982,Yes,1982,Yes,1982,Yes,1982,Yes,65.2,Yes,1957,No
+599,Female,56,Current,18,L,Base of tongue,P,1,2,IV,Radiation alone,39,66,30,2.2,Alive,851,Yes,851,Yes,851,Yes,851,Yes,28,Yes,839,No
+607,Male,68,Current,8,L,Base of tongue,P,2,2,IV,Concurrent chemoradiotherapy,42,70,33,2.12,Alive,1994,Yes,1994,Yes,1994,Yes,1994,Yes,65.6,Yes,1967,No
+610,Male,49,Former,5,R,Base of tongue,P,1,2,IV,Radiation alone,39,66,30,2.2,Alive,303,Yes,303,Yes,303,Yes,303,Yes,10,Yes,299,No
+611,Male,41,Current,24,R,Tonsil,N,2,2,IV,Concurrent chemoradiotherapy,45,70,35,2,Dead,1122,Yes,1122,Yes,1122,Yes,1122,No,12.9,No,1106,No
+612,Male,50,Never,0,L,Base of tongue,P,2,2,IV,Concurrent chemoradiotherapy,39,70,33,2.12,Alive,1946,Yes,1946,Yes,1946,Yes,1946,Yes,64,Yes,1920,No
+609,Male,61,Never,0,R,Base of tongue,P,2,2,IV,Concurrent chemoradiotherapy,42,66,30,2.2,Alive,1794,Yes,1794,Yes,1794,Yes,1794,Yes,59,Yes,1770,No
+613,Male,60,Never,0,R,Tonsil,P,3,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,1915,Yes,1915,Yes,1915,Yes,1915,Yes,63,Yes,1889,No
+614,Male,55,Current,40,R,Base of tongue,P,2,2,IV,Concurrent chemoradiotherapy,48,70,33,2.12,Dead,304,Yes,304,Yes,304,Yes,304,Yes,10,Yes,301,No
+616,Female,68,Never,0,R,Base of tongue,P,2,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,1788,Yes,1788,Yes,1788,Yes,1788,Yes,58.8,Yes,1765,No
+615,Male,54,Former,32,L,Tonsil,P,3,2,IV,Concurrent chemoradiotherapy,45,70,33,2.12,Alive,1724,Yes,1724,Yes,1724,Yes,1724,Yes,56.7,Yes,1701,No
+619,Male,69,Never,0,L,Tonsil,P,2,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,44,70,33,2.12,Dead,863,No,863,No,863,No,863,Yes,28.4,No,852,Yes
+217,Female,77,Former,75,R,Base of tongue,N,3,0,III,Concurrent chemoradiotherapy,48,70,35,2,Dead,380,Yes,380,Yes,380,Yes,380,Yes,12.5,Yes,374,No
+618,Male,74,Former,5,L,Base of tongue,P,1,2,IV,Concurrent chemoradiotherapy,39,66,30,2.2,Alive,1681,Yes,1681,Yes,1681,Yes,1681,Yes,55.3,Yes,1658,No
+617,Male,69,Former,2,L,Base of tongue,P,3,0,III,Concurrent chemoradiotherapy,44,70,33,2.12,Dead,486,No,486,No,486,No,486,No,12.2,No,480,No
+620,Male,51,Former,0,L,Base of tongue,P,1,2,IV,Radiation alone,39,66,30,2.2,Alive,1882,Yes,1882,Yes,1882,Yes,1882,Yes,61.9,Yes,1856,No
+621,Male,65,Never,0,R,Base of tongue,N,2,2,IV,Concurrent chemoradiotherapy,45,70,33,2.12,Alive,1800,Yes,1800,Yes,1800,Yes,1800,Yes,59.2,Yes,1776,No
+624,Male,52,Former,1,L,Base of tongue,P,1,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,882,Yes,882,Yes,882,Yes,882,Yes,29,Yes,870,Yes
+622,Male,54,Never,0,L,Base of tongue,P,3,2,IV,Concurrent chemoradiotherapy,44,70,33,2.12,Alive,1842,Yes,1842,Yes,1842,Yes,1842,Yes,60.6,Yes,1817,No
+625,Female,71,Never,0,R,Tonsil,P,2,2,IV,Concurrent chemoradiotherapy,46,70,33,2.12,Dead,1788,Yes,1788,Yes,1788,Yes,1788,Yes,58.8,Yes,1765,No
+626,Male,60,Current,0,L,Base of tongue,P,2,2,IV,Concurrent chemoradiotherapy,39,66,30,2.2,Alive,1760,Yes,1760,Yes,1760,Yes,1760,Yes,57.9,Yes,1738,No
+628,Female,69,Current,35,Midline,Base of tongue,P,4,2,IV,Concurrent chemoradiotherapy,45,70,33,2.12,Dead,227,Yes,227,Yes,227,Yes,227,Yes,7.5,Yes,224,No
+627,Male,65,Former,8,R,Base of tongue,P,1,2,IV,Radiation alone,39,70,33,2.12,Alive,1860,Yes,1860,Yes,1860,Yes,1860,Yes,61.2,Yes,1835,No
+623,Male,56,Never,0,NOS,NOS,N,4,2,IV,Induction chemotherapy + concurrent chemoradiotherapy,48,70,35,2,Alive,1912,Yes,1912,Yes,1912,Yes,1912,Yes,62.9,Yes,1887,No
+629,Female,63,Former,6,R,Base of tongue,N,4,2,IV,Concurrent chemoradiotherapy,49,70,33,2.12,Alive,775,Yes,775,Yes,775,Yes,775,Yes,25.5,Yes,766,No
+630,Female,74,Current,75,R,Soft palate,N,2,0,II,Radiation alone,56,70,33,2.12,Dead,383,No,383,Yes,383,No,383,Yes,12.6,No,377,Yes
