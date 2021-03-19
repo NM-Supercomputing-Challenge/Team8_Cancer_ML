@@ -51,7 +51,7 @@ if useFront == False:
     test_file = "test_2.csv"
 
     # list with strings or a single string may be inputted
-    target_variables = ["chemotherapy_given","cancer_surgery_performed"]
+    target_variables = "chemotherapy_given"
 
     # if true, converted images will be in png format instead of jpg
     png = False
@@ -75,7 +75,7 @@ if useFront == False:
     del_converted_imgs = False
 
     # if true, image model will be ran instead of clinical only model
-    run_img_model = True
+    run_img_model = False
 
     # if true, two data files will be expected for input
     two_datasets = False
@@ -980,18 +980,16 @@ def model(data_file, test_file, target_vars, epochs_num):
                 # set input shape to dimension of data
                 input = keras.layers.Input(shape=(X_train.shape[1],))
 
-                x = Dense(8,activation=activation_function)(input)
-                x = Dense(8,activation=activation_function)(x)
-                x = Dense(5,activation=activation_function)(x)
-                x = Dense(5,activation=activation_function)(x)
-                x = Dense(4,activation=activation_function)(x)
+                x = Dense(20,activation=activation_function)(input)
+                x = Dense(15,activation=activation_function)(x)
+                x = Dense(6,activation=activation_function)(x)
                 x = Dense(4,activation=activation_function)(x)
                 x = Dense(2,activation=activation_function)(x)
                 output = Dense(1, activation='linear')(x)
                 model = keras.Model(input, output)
 
                 model.compile(optimizer='SGD',
-                              loss='mean_absolute_error',
+                              loss='mean_squared_error',
                               metrics=['accuracy'])
 
                 fit = model.fit(X_train, y_train, epochs=epochs_num, batch_size=32)
