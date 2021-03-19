@@ -46,18 +46,18 @@ if useFront == False:
     load_fit = False
     model_save_loc = "D:\Cancer_Project\Team8_Cancer_ML\HNSCC-HN1\saved_model (CNN)"
 
-    main_data = "D:\Cancer_Project\Team8_Cancer_ML\HNSCC-HN1\Copy of HEAD-NECK-RADIOMICS-HN1 Clinical data updated July 2020 (original).csv"
+    main_data = "D:\Cancer_Project\Team8_Cancer_ML\HNSCC\Patient and Treatment Characteristics.csv"
     sec_data = ""
     test_file = "test_2.csv"
 
     # list with strings or a single string may be inputted
-    target_variables = "chemotherapy_given"
+    target_variables = "Received Concurrent Chemoradiotherapy?"
 
     # if true, converted images will be in png format instead of jpg
     png = False
 
     # folder containing Cancer Imagery
-    load_dir = "D:\Cancer_Project\\Cancer Imagery\\HEAD-NECK-RADIOMICS-HN1"
+    load_dir = "D:\Cancer_Project\\Cancer Imagery\\HNSCC"
 
     # directory to save data such as converted images
     save_dir = "D:\\Cancer_Project\\converted_img"
@@ -66,7 +66,7 @@ if useFront == False:
     img_array_save = "D:\Cancer_Project\converted_img"
 
     # if true, numpy image array will be searched for in img_array_save
-    load_numpy_img = True
+    load_numpy_img = False
 
     # if true, attempt will be made to convert dicom files to jpg,png,or directly to npy
     convert_imgs = False
@@ -88,7 +88,7 @@ if useFront == False:
     img_id_name_loc = (3,6)
 
     # Column of IDs in dataset. Acceptable values include "index" or a column name.
-    ID_dataset_col = "id"
+    ID_dataset_col = "TCIA ID"
 
     # tuple with dimension of imagery. All images must equal this dimension
     img_dimensions = (512, 512)
@@ -97,7 +97,7 @@ if useFront == False:
     target_all = False
 
     # save location for data/graphs
-    data_save_loc = "D://Cancer_Project//Team8_Cancer_ML//result_graphs"
+    data_save_loc = "D:\\Cancer_Project\\Team8_Cancer_ML\\result_graphs"
 
     # if true, graphs will be shown after training model
     show_figs = True
@@ -1003,8 +1003,14 @@ def model(data_file, test_file, target_vars, epochs_num):
                 plt.title(graph_title)
                 plt.ylabel(metric)
                 plt.xlabel('epoch')
+
+                save_path = os.path.join(data_save_loc, str(target_vars) + " " + metric + ".jpg")
+
+                if "?" in save_path:
+                    save_path = save_path.replace("?","")
+
                 if save_figs == True:
-                    plt.savefig(os.path.join(data_save_loc, str(target_vars) + " " + metric + ".jpg"))
+                    plt.savefig(save_path)
 
                 if show_figs == True:
                     plt.show()
