@@ -66,7 +66,7 @@ if useFront == False:
     img_array_save = "D:\Cancer_Project\converted_img"
 
     # if true, numpy image array will be searched for in img_array_save
-    load_numpy_img = False
+    load_numpy_img = True
 
     # if true, attempt will be made to convert dicom files to jpg,png,or directly to npy
     convert_imgs = False
@@ -75,7 +75,7 @@ if useFront == False:
     del_converted_imgs = False
 
     # if true, image model will be ran instead of clinical only model
-    run_img_model = False
+    run_img_model = True
 
     # if true, two data files will be expected for input
     two_datasets = False
@@ -109,10 +109,10 @@ if useFront == False:
     dcmDirect = True
 
     # number of epochs in model
-    num_epochs = 20
+    num_epochs = 10
 
     # if true, CNN will be used
-    useCNN = False
+    useCNN = True
 
     # END VARIABLES - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 elif useFront == True:
@@ -678,6 +678,9 @@ def convert_npy(dirs_list,save_path):
             for s in id:
                 if not s.isdigit():
                     id = id.replace(s,'')
+
+            if id[0] == '0':
+                id = id[-4:]
 
             if pixel_array_numpy.shape == img_dimensions:
                 pixel_array_numpy = pixel_array_numpy.flatten()
@@ -1516,8 +1519,14 @@ def image_model(save_loc,data_file,test_file,target_vars,epochs_num):
                 plt.title(graph_title)
                 plt.ylabel(metric)
                 plt.xlabel('epoch')
+
+                save_path = os.path.join(data_save_loc,str(target_vars) + " " + metric + ".jpg")
+
+                if "?" in save_path:
+                    save_path = save_path.replace("?","")
+
                 if save_figs == True:
-                    plt.savefig(os.path.join(data_save_loc, str(target_vars) + " " + metric + ".jpg"))
+                    plt.savefig(save_path)
 
                 if show_figs == True:
                     plt.show()
