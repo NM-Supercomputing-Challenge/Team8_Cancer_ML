@@ -948,7 +948,7 @@ def model(data_file, test_file, target_vars, epochs_num):
 
         if not load_fit:
             if str(type(target_vars))=="<class 'list'>" and len(target_vars) > 1:
-                input = keras.Input(shape=X_train.shape)
+                input = keras.Input(shape=X_train.shape[1],)
 
                 def add_target(Input):
                     x = layers.Dense(40,activation=activation_function)(Input)
